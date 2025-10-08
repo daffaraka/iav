@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('wigs', function (Blueprint $table) {
             $table->id();
+            $table->string('judul_wig');
+            $table->string('deskripsi_wig');
+            $table->date('tanggal_mulai_wig');
+            $table->date('tanggal_berakhir_wig');
+            $table->string('unit_wig');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('deleted_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

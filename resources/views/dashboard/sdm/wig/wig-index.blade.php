@@ -6,7 +6,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        <div class="d-flex justify-content-between">
                         <h4 class="card-title">WIG</h4>
+
+                        <a href="{{ route('wig.create') }}" class="btn btn-primary">Tambah WIG</a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div id="chart"></div>
@@ -44,7 +48,7 @@
             chart: {
                 type: 'area',
                 stacked: false,
-                height: 500,
+                height: 300,
                 zoom: {
                     type: 'x',
                     enabled: true,

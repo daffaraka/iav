@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sekolah;
 use App\Models\Wig;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -30,7 +31,17 @@ class WigController extends Controller
      */
     public function create()
     {
-        //
+
+        $title = 'Tambah WIG';
+        $unit = Sekolah::all()->unique('unit');
+
+        $data = [
+            'title' => $title,
+            'unit' => $unit,
+            'modul' => Str::lower($title)
+        ];
+
+        return view('dashboard.sdm.wig.wig-create',$data);
     }
 
     /**
@@ -38,7 +49,13 @@ class WigController extends Controller
      */
     public function store(Request $request)
     {
-        //
+   dd($request->all());
+        $request->validate([
+
+        ],[
+
+        ]);
+
     }
 
     /**
