@@ -72,7 +72,7 @@
              </li>
 
                 <li class="menu-item {{ request()->is('departement*') ? 'active' : '' }}">
-                 <a href="{{ route('wig.index') }}" class="menu-link">
+                 <a href="{{ route('departement.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Departemen</div>
                  </a>

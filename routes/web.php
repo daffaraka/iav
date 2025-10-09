@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\DataPrestasiController;
 use App\Http\Controllers\DepartementController;
-use App\Http\Controllers\DepartmentController;
+
 
 Route::get('/', function () {
     return view('welcome');

@@ -13,7 +13,15 @@ class DepartementController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Departement';
+        $departement = Departement::all();
+
+
+        $data = [
+            'title' => $title,
+            'departement' => $departement
+        ];
+        return view('dashboard.departement.dept-index', $data);
     }
 
     /**
