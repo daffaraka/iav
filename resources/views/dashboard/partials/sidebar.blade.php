@@ -64,6 +64,20 @@
                  </a>
              </li>
 
+              <li class="menu-item {{ request()->is('wig*') ? 'active' : '' }}">
+                 <a href="{{ route('wig.index') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-collection"></i>
+                     <div data-i18n="Basic">WIG</div>
+                 </a>
+             </li>
+
+                <li class="menu-item {{ request()->is('departement*') ? 'active' : '' }}">
+                 <a href="{{ route('wig.index') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-collection"></i>
+                     <div data-i18n="Basic">Departemen</div>
+                 </a>
+             </li>
+
              {{-- <li class="menu-item ">
                  <a href="{{ asset('dashboard-admin/html/index.html') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -162,12 +176,7 @@
              <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
              <!-- Cards -->
 
-             <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
-                 <a href="{{ route('wig.index') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                     <div data-i18n="Basic">WIG</div>
-                 </a>
-             </li>
+
 
                 <li class="menu-item {{ request()->is('sdm/lead-measure*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">

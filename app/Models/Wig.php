@@ -16,9 +16,6 @@ class Wig extends Model
         'deleted_by',
     ];
 
-
-
-
     public function deleted_by()
     {
         return $this->belongsTo(User::class, 'deleted_by');

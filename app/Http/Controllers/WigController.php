@@ -23,7 +23,7 @@ class WigController extends Controller
             // 'wig' => $wig,
             'modul' => Str::lower($title)
         ];
-        return view('dashboard.sdm.wig.wig-index', $data);
+        return view('dashboard.wig.wig-index', $data);
     }
 
     /**
@@ -41,7 +41,7 @@ class WigController extends Controller
             'modul' => Str::lower($title)
         ];
 
-        return view('dashboard.sdm.wig.wig-create',$data);
+        return view('dashboard.wig.wig-create',$data);
     }
 
     /**

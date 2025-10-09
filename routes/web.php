@@ -5,6 +5,8 @@ use App\Http\Controllers\WigController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\DataPrestasiController;
+use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\DepartmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,10 +20,9 @@ Route::resource('sekolah', SekolahController::class);
 Route::resource('data-prestasi', DataPrestasiController::class);
 
 
-Route::prefix('sdm')->group(function () {
-    Route::resource('wig', WigController::class);
+Route::resource('departement',DepartementController::class);
+Route::resource('wig', WigController::class);
 
-});
 
 
 
