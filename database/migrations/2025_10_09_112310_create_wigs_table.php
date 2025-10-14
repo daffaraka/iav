@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('unit_wig');
             $table->integer('from_x');
             $table->integer('to_y');
-            $table->enum('status_wig', [1, 2, 0])->default(1)->comment('1 aktif, 2 selesai, 0 tidak aktif');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('deleted_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('department_id')->constrained('departements')->onDelete('cascade')->onUpdate('cascade');
+            $table->enum('status_wig', [0, 1, 2,])->default(1)->comment('1 aktif, 2 selesai, 0 tidak aktif');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('departement_id')->constrained('departements')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

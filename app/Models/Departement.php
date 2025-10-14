@@ -19,4 +19,11 @@ class Departement extends Model
     {
         return $this->belongsTo(User::class, 'koor_id');
     }
+
+    public function wigs()
+    {
+        return $this->hasMany(Wig::class);
+    }
+
+
 }

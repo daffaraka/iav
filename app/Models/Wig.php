@@ -12,8 +12,10 @@ class Wig extends Model
         'tanggal_mulai_wig',
         'tanggal_berakhir_wig',
         'unit_wig',
-        'created_by',
-        'deleted_by',
+        'from_x',
+        'to_y',
+        'status_wig',
+        'department_id',
     ];
 
     public function deleted_by()
@@ -26,15 +28,21 @@ class Wig extends Model
     }
 
 
+    public function deptartement()
+    {
+        return $this->belongsTo(Departement::class, 'department_id');
+    }
+
+
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->created_by = auth()->user()->id;
+            $model->created_by = auth()->user()->id ?? null;
         });
 
         static::deleting(function ($model) {
-            $model->deleted_by = auth()->user()->id;
+            $model->deleted_by = auth()->user()->id ?? null;
         });
     }
 }

@@ -8,18 +8,25 @@
                     <div class="card-body">
                         <h5 class="card-title">Departemen Tersedia</h5>
                         <div class="d-flex flex-wrap gap-3">
-                            <div class="badge bg-primary p-2">
-                                <i class="bx bx-laptop me-1"></i>
-                                Departemen IT
+
+                            <div class="row">
+                                @foreach ($departement as $dept)
+                                    <div class="col-4 mb-3">
+                                        <a href="{{route('departement.show', $dept->id)}}" class="text-white text-decoration-none">
+                                            <div class="badge bg-dark p-3 w-100">
+
+                                                <i class="bx bx-group me-1"></i>
+                                                 {{ $dept->nama_dept }}
+
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+
                             </div>
-                            <div class="badge bg-info p-2">
-                                <i class="bx bx-user me-1"></i>
-                                Departemen SDM
-                            </div>
-                            <div class="badge bg-warning p-2">
-                                <i class="bx bx-group me-1"> </i>
-                                Departemen RND
-                            </div>
+
+
+
                         </div>
                     </div>
                 </div>
