@@ -6,13 +6,13 @@
             <div class="card-body py-3">
                 <div class="d-flex justify-content-between">
                     <h2 class="card-title fw-bold text-uppercase mb-0">{{ $title }}</h2>
-                    <a href="" class="btn btn-info">Tambah WIG</a>
+                    {{-- <a href="" class="btn btn-info">Tambah WIG</a> --}}
                 </div>
 
             </div>
         </div>
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-3">
                 <div class="card bg-light">
                     <div class="card-body">
@@ -49,11 +49,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
 
         <div class="row my-3">
-            {{-- <div class="col-8">
+            <div class="col-8">
                 <div class="card">
                     <div class="card-body">
                         <div id="chart"></div>
@@ -61,39 +61,8 @@
                     </div>
                 </div>
 
-            </div> --}}
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title fw-bold">Daftar WIG</h3>
-                        <hr>
-                        <ul class="list-group">
-                            @foreach ($departement->wigs as $wig)
-                                <li class="d-flex mb-4 pb-1">
-                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                        <div class="me-2">
-                                            <small class="text-success fw-semibold d-block mb-1">
-                                                {{ $wig->judul_wig }}
-                                            </small>
-                                            <h6 class="mb-0">{{ $wig->deskripsi_wig }}</h6>
-                                        </div>
-                                        {{-- <div class="user-progress d-flex align-items-center gap-1">
-                                        <h6 class="mb-0 text-success">100%</h6>
-                                        <span class="text-muted">Progress</span>
-                                    </div> --}}
-                                    </div>
-                                    <a href="{{route('dept.show.wig',[$departement->id,$wig->id])}}" class="btn btn-sm btn-outline-primary shadow d-flex align-items-center justify-content-center">Lihat
-
-                                    </a>
-                                </li>
-                            @endforeach
-
-
-
-                        </ul>
-                    </div>
-                </div>
             </div>
+
             <div class="col-4">
                 <div class="card">
                     <div class="card-body">
@@ -161,6 +130,53 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row p-3 " id="leadMeasure">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between bg-dark p-3">
+                        <h5 class="text-white fw-bold">Lead Measure</h5>
+                        <a href="" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center">
+                            <i class="bx bx-plus"></i> Tambah Lead Measure
+                        </a>
+                    </div>
+
+
+                    <div class="row mt-3">
+
+
+                        @if (count($wig->lead_measures) > 0)
+                            @foreach ($wig->lead_measures as $lm)
+                                <div class="col-12 mb-3">
+                                    <div class="card shadow border border-secondary">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{$lm->judul_lead}}</h5>
+                                            <p class="card-text">{{$lm->deskripsi_lead}}</p>
+
+
+                                            @foreach ($lm->tasks as $task)
+                                                {{$task}}
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title text-dark text-center">Belum Ada Lead Measure</h3>
+
+                                </div>
+                            </div>
+                        @endif
+
+
+                    </div>
+
                 </div>
             </div>
         </div>

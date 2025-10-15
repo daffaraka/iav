@@ -16,7 +16,7 @@
                                             <div class="badge bg-dark p-3 w-100">
 
                                                 <i class="bx bx-group me-1"></i>
-                                                 {{ $dept->nama_dept }}
+                                                 {{ $dept->nama_dept }} <button class="btn btn-warning btn-sm p-1 ms-1">{{$dept->wigs->count()}}</button>
 
                                             </div>
                                         </a>

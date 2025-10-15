@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Departement;
+use App\Models\Wig;
 use Illuminate\Http\Request;
 
 class DepartementController extends Controller
@@ -85,5 +86,24 @@ class DepartementController extends Controller
     public function destroy(Departement $departement)
     {
         //
+    }
+
+
+    public function showWig(Departement $departement, Wig $wig)
+    {
+
+
+        $wig = $wig->load('lead_measures.tasks');
+
+        // dd($wig->lead_measures->first());
+        $data = [
+            'title' => $departement->nama_dept.' | '. $wig->judul_wig,
+            'departement' => $departement,
+            'wig' => $wig
+        ];
+
+        // dd($data);
+
+        return view('dashboard.departement.dept-show-wig',$data);
     }
 }

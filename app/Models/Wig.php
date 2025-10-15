@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\LeadMeasure;
 use Illuminate\Database\Eloquent\Model;
 
 class Wig extends Model
@@ -31,6 +32,12 @@ class Wig extends Model
     public function deptartement()
     {
         return $this->belongsTo(Departement::class, 'department_id');
+    }
+
+
+    public function lead_measures()
+    {
+        return $this->hasMany(LeadMeasure::class);
     }
 
 

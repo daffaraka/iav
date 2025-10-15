@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             SekolahSeeder::class,
             MasterSiswaSeeder::class,
             DataPrestasiSeeder::class,
-            WigSeeder::class
+            WigSeeder::class,
+            LeadMeasureSeeder::class,
+            TaskProcessSeeder::class
         ]);
     }
 }

@@ -16,7 +16,7 @@ class WigSeeder extends Seeder
     {
         $dept = Departement::all()->pluck('id')->toArray();
         $status = [1,2,3];
-        for ($i = 1; $i < 100; $i++) {
+        for ($i = 1; $i < 30; $i++) {
             Wig::create([
                 'judul_wig' => 'WIG ' . $i,
                 'deskripsi_wig' => 'Deskripsi WIG ' . $i,
