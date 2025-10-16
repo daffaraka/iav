@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Departement;
 use App\Models\Wig;
+use App\Models\Departement;
+use App\Models\LeadMeasure;
+use App\Models\TaskProcess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DepartementController extends Controller
 {
@@ -92,18 +95,42 @@ class DepartementController extends Controller
     public function showWig(Departement $departement, Wig $wig)
     {
 
+        $progressTerbaru = TaskProcess::with('lead_measure')->orderBy('created_at', 'desc')->take(5)->get();
 
-        $wig = $wig->load('lead_measures.tasks');
+        // dd($progressTerbaru);
+        $tasks = DB::table('task_processes')
+            ->select(
+                'lead_measure_id',
+                DB::raw("DATE_FORMAT(tanggal_realisasi, '%M') as bulan"),
+                'nama_tugas',
+                'deskripsi',
+                'jumlah_realisasi',
+                'dokumen',
+                'tanggal_realisasi'
+            )
+            ->whereIn('lead_measure_id', $wig->lead_measures->pluck('id'))
+            ->orderBy(DB::raw("MONTH(tanggal_realisasi)"))
+            ->get()
+            ->groupBy(['lead_measure_id', 'bulan']); // 👈 group by 2 level
 
-        // dd($wig->lead_measures->first());
+
+
+        // $leadMeasure = LeadMeasure::with('tasks')->whereIn('id', $wig->lead_measures->pluck('id'))
+        //     ->get()->groupBy(function($item) {
+        //         return $item->tasks->first()->tanggal_realisasi;
+        //     });
+
+
+        // dd($leadMeasure);
+
         $data = [
-            'title' => $departement->nama_dept.' | '. $wig->judul_wig,
+            'title' => $departement->nama_dept . ' | ' . $wig->judul_wig,
             'departement' => $departement,
-            'wig' => $wig
+            'wig' => $wig,
+            'data_lm' => $tasks,
+            'progressTerbaru' => $progressTerbaru
         ];
 
-        // dd($data);
-
-        return view('dashboard.departement.dept-show-wig',$data);
+        return view('dashboard.departement.dept-show-wig', $data);
     }
 }
