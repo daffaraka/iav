@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->integer('jumlah_realisasi')->nullable();
             $table->string('dokumen')->nullable();
+            $table->enum('status_tugas',[0,1])->comment('0 = belum selesai, 1 = selesai')->default(0);
             $table->date('tanggal_realisasi')->default(date('Y-m-d'));
             $table->timestamps();
         });

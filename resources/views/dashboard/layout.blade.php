@@ -46,6 +46,9 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('dashboard-admin/assets/js/config.js') }}"></script>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -83,7 +86,7 @@
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3">
-                                <a class="github-button"
+                            <a class="github-button"
                                     href="https://github.com/themeselection/sneat-html-admin-template-free"
                                     data-icon="octicon-star" data-size="large" data-show-count="true"
                                     aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
@@ -161,14 +164,13 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-
+    @include('dashboard.flash')
                     @yield('content')
+                
 
                     <!-- / Content -->
 
                     <!-- Footer -->
-
-
 
                     @include('dashboard.partials.footer')
                     <!-- / Footer -->
@@ -192,6 +194,8 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('dashboard-admin/assets/vendor/js/bootstrap.js') }}"></script>
@@ -211,6 +215,9 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     @stack('scripts')
 </body>

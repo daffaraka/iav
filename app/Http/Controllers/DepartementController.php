@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\Wig;
 use App\Models\Departement;
 use App\Models\LeadMeasure;
@@ -41,9 +43,10 @@ class DepartementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -54,6 +57,25 @@ class DepartementController extends Controller
 
         $title = $departement->nama_dept;
 
+
+        $chartPerWig = [];
+
+        foreach ((clone $departement)->wigs as $index => $wig) {
+           
+
+            $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
+                return [
+                    'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
+                    'progress' => $progress->sum('progress_wig')
+                ];
+            })->sortKeys()->toArray();
+
+            // dd($chartWig);
+            $chartPerWig[$index] =  $chartWig;
+           
+        }
+
+        // dd($chartPerWig);
 
         $data = [
             'title' => $title,
@@ -69,6 +91,7 @@ class DepartementController extends Controller
 
         return view('dashboard.departement.dept-show', $data);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -97,6 +120,7 @@ class DepartementController extends Controller
 
         $progressTerbaru = TaskProcess::with('lead_measure')->orderBy('created_at', 'desc')->take(5)->get();
 
+
         // dd($progressTerbaru);
         $tasks = DB::table('task_processes')
             ->select(
@@ -108,27 +132,28 @@ class DepartementController extends Controller
                 'dokumen',
                 'tanggal_realisasi'
             )
-            ->whereIn('lead_measure_id', $wig->lead_measures->pluck('id'))
+            ->whereIn('lead_measure_id', (clone $wig)->lead_measures->pluck('id'))
             ->orderBy(DB::raw("MONTH(tanggal_realisasi)"))
             ->get()
             ->groupBy(['lead_measure_id', 'bulan']); // 👈 group by 2 level
 
 
+        $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
+            return [
+                'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
+                'progress' => $progress->sum('progress_wig')
+            ];
+        })->sortKeys()->toArray();
+        // dd($chartWig);
 
-        // $leadMeasure = LeadMeasure::with('tasks')->whereIn('id', $wig->lead_measures->pluck('id'))
-        //     ->get()->groupBy(function($item) {
-        //         return $item->tasks->first()->tanggal_realisasi;
-        //     });
-
-
-        // dd($leadMeasure);
 
         $data = [
             'title' => $departement->nama_dept . ' | ' . $wig->judul_wig,
             'departement' => $departement,
             'wig' => $wig,
             'data_lm' => $tasks,
-            'progressTerbaru' => $progressTerbaru
+            'progressTerbaru' => $progressTerbaru,
+            'chartWig' => $chartWig
         ];
 
         return view('dashboard.departement.dept-show-wig', $data);

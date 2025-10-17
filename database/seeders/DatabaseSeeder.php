@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\WigProgress;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,7 +29,8 @@ class DatabaseSeeder extends Seeder
             DataPrestasiSeeder::class,
             WigSeeder::class,
             LeadMeasureSeeder::class,
-            TaskProcessSeeder::class
+            TaskProcessSeeder::class,
+            WigProgressSeeder::class
         ]);
     }
 }

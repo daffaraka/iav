@@ -12,7 +12,8 @@ class TaskProcess extends Model
         'deskripsi',
         'jumlah_realisasi',
         'dokumen',
-        'tanggal_realisasi'
+        'tanggal_realisasi',
+        'status_tugas'
     ];
 
     public function lead_measure()

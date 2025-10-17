@@ -56,7 +56,12 @@
             <div class="col-8">
                 <div class="card">
                     <div class="card-body">
-                        <div id="chart"></div>
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-primary" id="btnModalWig" type="button" data-bs-toggle="modal"
+                                data-bs-target="#wigProgressModal">Tambah Progress WIG</button>
+
+                        </div>
+                        <div id="chart" class="mt-3"></div>
 
                     </div>
                 </div>
@@ -145,76 +150,217 @@
         @endforeach
 
 
+
     </div>
+
+    <!-- Modal trigger button -->
+
+
+    <!-- Modal Body -->
+    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+    <div class="modal fade" id="wigProgressModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Tambah Progress WIG
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form
+                        action="{{ route('departement.wig.progress-wig.store', ['departement' => $wig->departement_id, 'wig' => $wig->id]) }}"
+                        method="POST">
+                        @csrf
+
+                        <input type="hidden" name="wig_id" value="{{ $wig->id }}" id="wig_id">
+                        <div class="form-group mb-3">
+                            <label for="">Progres WIG</label>
+                            <input type="number" name="progress_wig" id="progress_wig" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Bulan</label>
+                            <select name="bulan_wig" id="bulan_wig" class="form-control">
+                                <option value="1">Januari</option>
+                                <option value="2">Februari</option>
+                                <option value="3">Maret</option>
+                                <option value="4">April</option>
+                                <option value="5">Mei</option>
+                                <option value="6">Juni</option>
+                                <option value="7">Juli</option>
+                                <option value="8">Agustus</option>
+                                <option value="9">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnSimpanWig">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional: Place to the bottom of scripts -->
 @endsection
 @push('scripts')
     <script>
-        var options = {
-            series: [{
-                name: 'Progress',
-                data: [76, 78, 82, 80, 85] // nilai per bulan
-            }],
-            chart: {
-                type: 'bar',
-                stacked: false,
-                height: 500,
-                zoom: {
-                    enabled: false // zoom tidak diperlukan untuk data bulanan
+        $('#btnSimpanWig').click(function(e) {
+            e.preventDefault();
+
+            url =
+                "{{ route('departement.wig.progress-wig.store', ['departement' => $wig->departement_id, 'wig' => $wig->id]) }}";
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    wig_id: $('#wig_id').val(),
+                    progress_wig: $('#progress_wig').val(),
+                    bulan_wig: $('#bulan_wig').val(),
                 },
-                toolbar: {
-                    show: false
+                dataType: "json",
+                success: function(response) {
+                    $('#wigProgressModal').modal('hide');
+
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open');
+                    $('body').css('overflow', 'auto'); // pastikan body bisa diklik/scroll
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Progress WIG berhasil ditambahkan',
+                        timer: 1500
+                    });
+                    loadChartData();
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat menambahkan progress WIG'
+                    });
                 }
-            },
-            dataLabels: {
-                enabled: true, // tampilkan nilai di atas batang
-                style: {
-                    colors: ['#fff']
-                }
-            },
-            title: {
-                text: 'Progress WIG',
-                align: 'center'
-            },
-            xaxis: {
-                categories: ['Januari', 'Februari', 'Maret', 'April', 'Mei'],
-                labels: {
+            });
+
+        });
+
+        let chart;
+
+        function initChart(data) {
+            const progressData = Object.values(data).map(item => item.progress);
+            const bulanData = Object.values(data).map(item => item.bulan);
+
+            const options = {
+                series: [{
+                    name: 'Progress',
+                    data: progressData
+                }],
+                chart: {
+                    type: 'bar',
+                    stacked: false,
+                    height: 500,
+                    toolbar: {
+                        show: true
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
                     style: {
-                        colors: '#333',
-                        fontSize: '14px'
+                        colors: ['#fff']
                     }
-                }
-            },
-            yaxis: {
-                title: {
-                    text: 'Persentase (%)'
                 },
-                labels: {
-                    formatter: function(val) {
-                        return val + '%'; // tampilkan persen
+                title: {
+                    text: 'Progress WIG',
+                    align: 'center'
+                },
+                xaxis: {
+                    categories: bulanData,
+                    labels: {
+                        style: {
+                            colors: '#333',
+                            fontSize: '14px'
+                        }
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Jumlah'
+                    },
+                    labels: {
+                        formatter: function(val) {
+                            return val;
+                        }
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        type: "vertical",
+                        gradientToColors: undefined,
+                        inverseColors: true,
+                        stops: [0, 90, 100]
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val;
+                        }
                     }
                 }
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shade: 'light',
-                    type: "vertical",
-                    gradientToColors: undefined,
-                    inverseColors: true,
-                    stops: [0, 90, 100]
+            };
+
+            chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        }
+
+        function updateChart(data) {
+            const progressData = Object.values(data).map(item => item.progress);
+            const bulanData = Object.values(data).map(item => item.bulan);
+
+            chart.updateOptions({
+                series: [{
+                    name: 'Progress',
+                    data: progressData
+                }],
+                xaxis: {
+                    categories: bulanData
                 }
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return val + '%';
+            });
+        }
+
+        function loadChartData() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                },
+                dataType: "json",
+                url: "{{ route('wig.chart', $wig->id) }}",
+                success: function(response) {
+                    if (chart) {
+                        updateChart(response.chartWig);
+                    } else {
+                        initChart(response.chartWig);
                     }
                 }
-            }
-        };
+            });
+        }
 
-
-                var chart = new ApexCharts(document.querySelector("#chart"), options);
-                chart.render();
+        // Initialize chart on page load
+        $(document).ready(function() {
+            const initialData = @json($chartWig);
+            initChart(initialData);
+        });
     </script>
 @endpush
