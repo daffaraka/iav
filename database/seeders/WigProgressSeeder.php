@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Wig;
 use App\Models\User;
 use App\Models\WigProgress;
 use Illuminate\Database\Seeder;
@@ -14,10 +15,11 @@ class WigProgressSeeder extends Seeder
      */
     public function run(): void
     {
+        $wig = Wig::all()->pluck('id')->toArray();
         $user = User::all()->pluck('id')->toArray();
-        for ($i = 1; $i <= 300; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             WigProgress::create([
-                'wig_id' => rand(1, 10),
+                'wig_id' => $wig[array_rand($wig)],
                 'progress_wig' => rand(1, 100),
                 'bulan' => rand(1,12),
             ]);

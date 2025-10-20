@@ -19,7 +19,7 @@ class WigSeeder extends Seeder
         $status = [1, 2, 3];
         $user = User::all()->pluck('id')->toArray();
 
-        for ($i = 1; $i < 30; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             Wig::create([
                 'judul_wig' => 'WIG ' . $i,
                 'deskripsi_wig' => 'Deskripsi WIG ' . $i,

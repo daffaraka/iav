@@ -7,7 +7,8 @@
                 <div class="d-flex justify-content-between">
                     <h2 class="card-title fw-bold text-uppercase mb-0">{{ $title }}</h2>
 
-                    <a class="btn btn-primary" data-bs-toggle="modal" href="#tambahWigModal" role="button">Tambah WIG Baru</a>
+                    <a class="btn btn-primary" data-bs-toggle="modal" href="#tambahWigModal" role="button">Tambah WIG
+                        Baru</a>
 
 
                     <div class="modal fade" id="tambahWigModal" aria-hidden="true" aria-labelledby="tambahWigModalLabel"
@@ -23,7 +24,7 @@
                                 </div>
                                 <hr class="my-1">
                                 <div class="modal-body mt-0 pt-0 pb-3">
-                                    <form action="" method="POST">
+                                    <form method="POST" id="formWig">
                                         @csrf
                                         <input type="hidden" name="departement_id" value="{{ $departement->id }}">
                                         <div class="form-group my-3">
@@ -74,12 +75,20 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label class="fw-bold"for="">From X (Angka)</label>
-                                                    <input type="number" class="form-control" value="from_x">
+                                                    <input type="number" class="form-control" name="from_x"
+                                                        value="{{ old('from_x') }}">
+                                                    @error('nama_wig')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="col-6">
                                                     <label class="fw-bold"for="">To Y (Angka)</label>
-                                                    <input type="number" class="form-control" value="from_y">
+                                                    <input type="number" class="form-control" name="to_y"
+                                                        value="{{ old('to_y') }}">
+                                                    @error('to_y')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
@@ -100,8 +109,9 @@
                                             @enderror
                                         </div>
 
-                                        <button class="btn btn-primary mt-3 shadow" type="submit"
-                                            id="submitWig">Submit</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Batal</button>
+                                        <button type="button" id="submitWig" class="btn btn-primary">Simpan</button>
                                     </form>
 
                                 </div>
@@ -123,7 +133,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Total</h5>
                         <p class="card-text h2">{{ $wig_total }}</p>
-                        <a href="#" class="btn btn-primary">Lihat Detail</a>
+                        {{-- <a href="#" class="btn btn-primary">Lihat Detail</a> --}}
                     </div>
                 </div>
             </div>
@@ -132,7 +142,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Aktif</h5>
                         <p class="card-text h2">{{ $wig_aktif }}</p>
-                        <a href="#" class="btn btn-light">Lihat Detail</a>
+                        {{-- <a href="#" class="btn btn-light">Lihat Detail</a> --}}
                     </div>
                 </div>
             </div>
@@ -141,7 +151,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Selesai</h5>
                         <p class="card-text h2">{{ $wig_selesai }}</p>
-                        <a href="#" class="btn btn-light">Lihat Detail</a>
+                        {{-- <a href="#" class="btn btn-light">Lihat Detail</a> --}}
                     </div>
                 </div>
             </div>
@@ -150,7 +160,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Tidak Aktif</h5>
                         <p class="card-text h2">{{ $wig_tidak_aktif }}</p>
-                        <a href="#" class="btn btn-light">Lihat Detail</a>
+                        {{-- <a href="#" class="btn btn-light">Lihat Detail</a> --}}
                     </div>
                 </div>
             </div>
@@ -163,40 +173,71 @@
                     <div class="card shadow-md border">
                         <div class="card-body">
 
-                            <ul class="list-group">
+                            <div class="d-flex justify-content-between">
+                                <div class="">
+                                    <small class="text-success fw-semibold d-block mb-1">
+                                        {{ $wig->judul_wig }}
+                                        <h6 class="mb-0">{{ $wig->deskripsi_wig }}</h6>
 
-                                <li class="d-flex mb-4 pb-1">
+                                    </small>
+                                </div>
+                                <div class="">
+
                                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                         <div class="me-2">
-                                            <small class="text-success fw-semibold d-block mb-1">
-                                                {{ $wig->judul_wig }}
-                                            </small>
-                                            <h6 class="mb-0">{{ $wig->deskripsi_wig }}</h6>
+
+                                            <div class="demo-inline-spacing">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                        class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li>
+                                                            <a class="dropdown-item fw-bold"
+                                                                href="{{ route('dept.edit.wig', [$departement->id, $wig->id]) }}">
+                                                                <i class="bi bi-pencil-square"></i> Edit WIG
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item fw-bold"
+                                                                href="{{ route('dept.show.wig', [$departement->id, $wig->id]) }}">
+                                                                <i class="bi bi-eye"></i> Lihat Lead Measures
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <form action="{{ route('wig.destroy', $wig->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" class="dropdown-item text-danger fw-bold"
+                                                                    id="deleteWig" data-id="{{ $wig->id }}">
+                                                                    <i class="bi bi-trash"></i> Hapus WIG
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        {{-- <div class="user-progress d-flex align-items-center gap-1">
-                                        <h6 class="mb-0 text-success">100%</h6>
-                                        <span class="text-muted">Progress</span>
-                                    </div> --}}
 
-                                     <div class="d-flex gap-2">
-                                        <a href="{{ route('dept.edit.wig', [$departement->id, $wig->id]) }}"
-                                            class="btn btn-dark">Edit </a>
-                                        <a href="{{ route('dept.show.wig', [$departement->id, $wig->id]) }}"
-                                            class="btn btn-sm btn-outline-primary shadow d-flex align-items-center justify-content-center">Lihat
 
-                                        </a>
-                                    </div>
+
+
                                     </div>
 
-                                   
 
-                                    </a>
-                                </li>
-
+                                </div>
+                            </div>
 
 
 
-                            </ul>
+
+
+
+                            <div id="chart_{{ $wig->id }}" class="mt-3"></div>
                         </div>
                     </div>
                 </div>
@@ -212,7 +253,9 @@
                     </div>
                 </div>
             @endforeach
-            {{--             
+
+        </div>
+        {{--
             <div class="col-4">
                 <div class="card">
                     <div class="card-body">
@@ -282,141 +325,170 @@
                     </div>
                 </div>
             </div> --}}
-        </div>
-
     </div>
 @endsection
 @push('scripts')
     <script>
-        $('#submitWig').click(function(e) {
-            e.preventDefault();
+        $(document).ready(function() {
+            $('#submitWig').on('click', function(e) {
+                e.preventDefault();
 
-            $.ajax({
-                url: "{{ route('wig.storeByDept') }}",
-                type: "POST",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                    'departement_id': $('input[name=departement_id]').val(),
-                    'nama_wig': $('input[name=nama_wig]').val(),
-                    'deskripsi_wig': $('textarea[name=deskripsi_wig]').val(),
-                    'tanggal_mulai_wig': $('input[name=tanggal_mulai_wig]').val(),
-                    'tanggal_berakhir_wig': $('input[name=tanggal_berakhir_wig]').val(),
-                    'from_x': $('input[value=from_x]').val(),
-                    'from_y': $('input[value=from_y]').val(),
-                    'satuan': $('select[name=satuan]').val()
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'WIG berhasil ditambahkan',
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    }).then((result) => {
-                        $('#tambahWigModal').modal('hide');
+                let formData = $('#formWig').serialize();
 
-                        // 🧹 Bersihkan backdrop yang tersisa (jika ada)
-                        $('.modal-backdrop').remove();
-                        $('body').removeClass('modal-open');
-                        $('body').css('overflow',
-                            'auto'); // pastikan body bisa diklik/scroll
-                        if (result.isConfirmed) {
-                            location.reload();
+                // Hapus error sebelumnya
+                $('#formWig').find('.is-invalid').removeClass('is-invalid');
+                $('#formWig').find('.invalid-feedback').text('');
+
+                $.ajax({
+                    url: "{{ route('wig.storeByDept') }}",
+                    type: "post",
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: 'WIG berhasil ditambahkan',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#wigProgressModal').modal('hide');
+
+                            // 🧹 Bersihkan backdrop putih & restore klik body
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                            $('body').css('overflow', 'auto');
+
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan, silahkan coba lagi',
+                            icon: 'error',
+                            confirmButtonText: 'Ok',
+                            position: 'absolute'
+                        });
+
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $(`[name="${key}"]`).addClass('is-invalid');
+                                $(`[name="${key}"]`).next('.invalid-feedback').text(
+                                    value[0]);
+                            });
                         }
-                    });
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Terjadi kesalahan, silahkan coba lagi',
-                        icon: 'error',
-                        confirmButtonText: 'Ok',
-                        position: 'absolute'
-                    });
-
-                    let errors = xhr.responseJSON.errors;
-                    $.each(errors, function(key, value) {
-                        $(`[name="${key}"]`).addClass('is-invalid');
-                        $(`[name="${key}"]`).next('.invalid-feedback').text(value[
-                            0]);
-                    });
-                }
+                    }
+                });
             });
         });
 
 
-        var options = {
-            series: [{
-                name: 'XYZ MOTORS',
-                data: [{
-                    x: new Date('2018-02-12').getTime(),
-                    y: 76
-                }, {
-                    x: new Date('2018-02-13').getTime(),
-                    y: 78
-                }, {
-                    x: new Date('2018-02-14').getTime(),
-                    y: 82
-                }, {
-                    x: new Date('2018-02-15').getTime(),
-                    y: 80
-                }, {
-                    x: new Date('2018-02-16').getTime(),
-                    y: 85
-                }]
-            }],
-            chart: {
-                type: 'bar',
-                stacked: false,
-                height: 500,
-                zoom: {
-                    type: 'x',
-                    enabled: true,
-                    autoScaleYaxis: true
-                },
-                toolbar: {
-                    autoSelected: 'zoom'
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            markers: {
-                size: 0,
-            },
-            title: {
-                text: 'WIG',
-                align: 'center'
-            },
-            fill: {
-                gradient: {
-                    opacityTo: 0,
-                    stops: [0, 90, 100]
-                },
-            },
-            yaxis: {
-                labels: {
-                    formatter: function(val) {
-                        return (val / 1000000).toFixed(0);
-                    },
-                },
-                title: {
-                    text: 'Price'
-                },
-            },
-            xaxis: {
-                type: 'datetime',
-            },
-            tooltip: {
-                shared: false,
-                y: {
-                    formatter: function(val) {
-                        return (val / 1000000).toFixed(0)
-                    }
-                }
-            }
-        };
+        $(document).ready(function() {
+            // Handle delete WIG button click
+            $(document).on('click', '#deleteWig', function(e) {
+                e.preventDefault();
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+                let form = $(this).closest('form');
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data WIG akan dihapus permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+        $(document).ready(function() {
+            // Data dari controller
+            const chartsData = @json($chartPerWig);
+            const wigIds = @json($departement->wigs->pluck('id'));
+
+            // Loop tiap WIG berdasarkan index dan data
+            $.each(chartsData, function(index, data) {
+                const wigId = wigIds[index];
+                const chartEl = $(`#chart_${wigId}`)[0]; // ambil elemen DOM (bukan jQuery object)
+
+                if (!chartEl) return; // skip jika elemen tidak ada
+
+                const progressData = $.map(data, function(item) {
+                    return item.progress;
+                });
+                const bulanData = $.map(data, function(item) {
+                    return item.bulan;
+                });
+
+                const options = {
+                    series: [{
+                        name: 'Progress',
+                        data: progressData
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 400,
+                        toolbar: {
+                            show: true
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            colors: ['#fff']
+                        }
+                    },
+                    title: {
+                        text: 'Progress WIG',
+                        align: 'center'
+                    },
+                    xaxis: {
+                        categories: bulanData,
+                        labels: {
+                            style: {
+                                colors: '#333',
+                                fontSize: '14px'
+                            }
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Jumlah'
+                        },
+                        labels: {
+                            formatter: function(val) {
+                                return val;
+                            }
+                        }
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shade: 'light',
+                            type: "vertical",
+                            inverseColors: true,
+                            stops: [0, 90, 100]
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val;
+                            }
+                        }
+                    }
+                };
+
+                const chart = new ApexCharts(chartEl, options);
+                chart.render();
+            });
+        });
     </script>
 @endpush

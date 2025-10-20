@@ -63,18 +63,25 @@
                      <div data-i18n="Analytics">Dashboard</div>
                  </a>
              </li>
-
+{{--
               <li class="menu-item {{ request()->is('wig*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">WIG</div>
                  </a>
-             </li>
+             </li> --}}
 
                 <li class="menu-item {{ request()->is('departement*') ? 'active' : '' }}">
                  <a href="{{ route('departement.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Departemen</div>
+                 </a>
+             </li>
+
+              <li class="menu-item ">
+                 <a href="{{ asset('dashboard-admin/html/index.html') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                     <div data-i18n="Analytics">Base Layout</div>
                  </a>
              </li>
 

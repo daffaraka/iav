@@ -99,13 +99,13 @@ class WigController extends Controller
 
         // dd($request->all());
         // Validate request
-        $validatedData = $request->validate([
+        $request->validate([
             'nama_wig' => 'required|string|max:255',
             'deskripsi_wig' => 'required|string',
             'tanggal_mulai_wig' => 'required|date',
             'tanggal_berakhir_wig' => 'required|date|after:tanggal_mulai_wig',
             'from_x' => 'required|numeric',
-            'from_y' => 'required|numeric|gt:from_x',
+            'to_y' => 'required|numeric',
             'satuan' => 'required|in:%,Angka'
         ]);
 
@@ -117,7 +117,7 @@ class WigController extends Controller
                 'tanggal_mulai_wig' => $request->tanggal_mulai_wig,
                 'tanggal_berakhir_wig' => $request->tanggal_berakhir_wig,
                 'from_x' => $request->from_x,
-                'to_y' => $request->from_y,
+                'to_y' => $request->to_y,
                 'unit_wig' => $request->satuan,
                 'status_wig' => 1, // Set as active
                 'departement_id' => $request->departement_id,
@@ -185,14 +185,14 @@ class WigController extends Controller
     {
 
 
-       
+
         $validatedData = $request->validate([
             'nama_wig' => 'required|string|max:255',
             'deskripsi_wig' => 'required|string',
             'tanggal_mulai_wig' => 'required|date',
             'tanggal_berakhir_wig' => 'required|date|after:tanggal_mulai_wig',
             'from_x' => 'required|numeric',
-            'from_y' => 'required|numeric|gt:from_x',
+            'to-y' => 'required|numeric',
             'satuan' => 'required|in:%,Angka'
         ]);
 
@@ -239,7 +239,8 @@ class WigController extends Controller
      */
     public function destroy(Wig $wig)
     {
-        //
+        $wig->delete();
+        return redirect()->back()->with('success', 'WIG berhasil dihapus');
     }
 
     public function wigChart($id)

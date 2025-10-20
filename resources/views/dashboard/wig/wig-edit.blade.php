@@ -5,7 +5,7 @@
 
 
             <div class="card-body p-3">
-              
+
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -70,8 +70,8 @@
 
                                         <div class="col-6">
                                             <label class="fw-bold"for="">To Y (Angka)</label>
-                                            <input type="number" name="from_y" class="form-control"
-                                                value="{{ $wig->to_y ?? old('from_y') }}">
+                                            <input type="number" name="to_y" class="form-control"
+                                                value="{{ $wig->to_y ?? old('to_y') }}">
                                         </div>
                                     </div>
 

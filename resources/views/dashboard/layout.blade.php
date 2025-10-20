@@ -7,7 +7,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>{{$title ?? 'Dashboard'}}</title>
+    <title>{{ $title ?? 'Dashboard' }}</title>
 
     <meta name="description" content="" />
 
@@ -34,7 +34,8 @@
     <link rel="stylesheet" href="{{ asset('dashboard-admin/assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('dashboard-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('dashboard-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('dashboard-admin/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
 
@@ -86,7 +87,7 @@
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3">
-                            <a class="github-button"
+                                <a class="github-button"
                                     href="https://github.com/themeselection/sneat-html-admin-template-free"
                                     data-icon="octicon-star" data-size="large" data-show-count="true"
                                     aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
@@ -164,9 +165,9 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-    @include('dashboard.flash')
+                    @include('dashboard.flash')
                     @yield('content')
-                
+
 
                     <!-- / Content -->
 
@@ -194,11 +195,15 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
 
+
+    {{-- <script src="{{ asset('dashboard-admin/libs/jquery/jquery.js') }}"></script> --}}
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('dashboard-admin/assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('dashboard-admin/assets/vendor/js/bootstrap.js') }}"></script>
+    {{-- <script src="{{ asset('dashboard-admin/assets/vendor/libs/popper/popper.js') }}"></script> --}}
+    {{-- <script src="{{ asset('dashboard-admin/assets/vendor/js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
     <script src="{{ asset('dashboard-admin/assets/vendor/js/menu.js') }}"></script>

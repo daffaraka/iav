@@ -109,35 +109,55 @@
             <div class="col-12 mb-3">
                 <div class="card shadow border border-secondary">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $lm->judul_lead }}</h5>
-                        <p class="card-text">{{ $lm->deskripsi_lead }}</p>
+                        <div class="d-flex justify-content-between">
+                            <div class="">
+                                <h5 class="card-title">{{ $lm->judul_lead }}</h5>
+                                <p class="card-text">{{ $lm->deskripsi_lead }}</p>
+                            </div>
+                            <div class="">
+                                <h3>{{ count($data_lm) }}</h3>
+                            </div>
+                        </div>
+
 
                         <div class="table-responsive">
                             <table class="table table-bordered ">
                                 <thead>
                                     <tr class="bg-dark text-white">
                                         @foreach ($data_lm[$lm->id] ?? [] as $bulan => $items)
-                                            <th colspan="4" class="text-center text-uppercase text-white">
+                                            <th colspan="2" class="text-center text-uppercase text-white">
                                                 {{ $bulan }}</th>
                                         @endforeach
                                     </tr>
                                     <tr class="bg-dark text-white">
                                         @foreach ($data_lm[$lm->id] ?? [] as $bulan => $items)
-                                            <th class="text-white">TARGET (%)</th>
+                                            <th class="text-white">Task (%)</th>
                                             <th class="text-white">RINCIAN TUGAS</th>
-                                            <th class="text-white">RESULT (%)</th>
-                                            <th class="text-white">EVALUASI</th>
+                                            {{-- <th class="text-white">RESULT (%)</th>
+                                            <th class="text-white">EVALUASI</th> --}}
                                         @endforeach
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         @foreach ($data_lm[$lm->id] ?? [] as $bulan => $items)
-                                            @php $task = $items->first(); @endphp
-                                            <td>100</td>
-                                            <td>{{ $task->nama_tugas }}</td>
-                                            <td>{{ $task->jumlah_realisasi }}</td>
-                                            <td>{{ $task->deskripsi }}</td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="flexCheckDefault">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                    </label>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <ul>
+
+                                                </ul>
+                                                @foreach ($items as $task)
+                                                    <li> {{ $task->nama_tugas }}</li>
+                                                @endforeach
+                                            </td>
                                         @endforeach
                                     </tr>
                                 </tbody>
@@ -212,6 +232,11 @@
     <!-- Optional: Place to the bottom of scripts -->
 @endsection
 @push('scripts')
+    <script src="{{ asset('dashboard-admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('dashboard-admin/assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('dashboard-admin/assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('dashboard-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+
     <script>
         $('#btnSimpanWig').click(function(e) {
             e.preventDefault();
@@ -266,10 +291,17 @@
                 }],
                 chart: {
                     type: 'bar',
-                    stacked: false,
                     height: 500,
                     toolbar: {
                         show: true
+                    },
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    toolbar: {
+                        autoSelected: 'zoom'
                     }
                 },
                 dataLabels: {

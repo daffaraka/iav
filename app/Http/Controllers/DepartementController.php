@@ -46,7 +46,7 @@ class DepartementController extends Controller
 
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -61,10 +61,10 @@ class DepartementController extends Controller
         $chartPerWig = [];
 
         foreach ((clone $departement)->wigs as $index => $wig) {
-           
 
-            $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
+            $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) use ($wig) {
                 return [
+                    'judul_wig' => $wig->judul_wig,
                     'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
                     'progress' => $progress->sum('progress_wig')
                 ];
@@ -72,7 +72,7 @@ class DepartementController extends Controller
 
             // dd($chartWig);
             $chartPerWig[$index] =  $chartWig;
-           
+
         }
 
         // dd($chartPerWig);
@@ -84,6 +84,7 @@ class DepartementController extends Controller
             'wig_aktif' => $departement->wigs()->where('status_wig', 1)->count(),
             'wig_selesai' => $departement->wigs()->where('status_wig', 2)->count(),
             'wig_tidak_aktif' => $departement->wigs()->where('status_wig', 0)->count(),
+            'chartPerWig' => $chartPerWig
         ];
 
         // dd($data);
@@ -121,6 +122,11 @@ class DepartementController extends Controller
         $progressTerbaru = TaskProcess::with('lead_measure')->orderBy('created_at', 'desc')->take(5)->get();
 
 
+
+        // $dataLeadMeasure = $wig->lead_measures()->with('tasks')->get();
+
+
+        // dd($dataLeadMeasure);
         // dd($progressTerbaru);
         $tasks = DB::table('task_processes')
             ->select(
@@ -138,13 +144,14 @@ class DepartementController extends Controller
             ->groupBy(['lead_measure_id', 'bulan']); // 👈 group by 2 level
 
 
+    //  dd($tasks);
         $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
             return [
                 'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
                 'progress' => $progress->sum('progress_wig')
             ];
         })->sortKeys()->toArray();
-        // dd($chartWig);
+
 
 
         $data = [
