@@ -136,7 +136,8 @@ class DepartementController extends Controller
                 'deskripsi',
                 'jumlah_realisasi',
                 'dokumen',
-                'tanggal_realisasi'
+                'tanggal_realisasi',
+                'status_tugas'
             )
             ->whereIn('lead_measure_id', (clone $wig)->lead_measures->pluck('id'))
             ->orderBy(DB::raw("MONTH(tanggal_realisasi)"))
@@ -144,7 +145,7 @@ class DepartementController extends Controller
             ->groupBy(['lead_measure_id', 'bulan']); // 👈 group by 2 level
 
 
-    //  dd($tasks);
+
         $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
             return [
                 'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),

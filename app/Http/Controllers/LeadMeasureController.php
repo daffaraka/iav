@@ -62,4 +62,20 @@ class LeadMeasureController extends Controller
     {
         //
     }
+
+
+    public function getLmTasks(Request $request)
+    {
+
+
+        $leadMeasure = LeadMeasure::find($request->id);
+
+
+
+        $tasks = $leadMeasure->tasks()->get();
+
+          dd($tasks);
+        return response()->json($tasks);
+    }
+
 }

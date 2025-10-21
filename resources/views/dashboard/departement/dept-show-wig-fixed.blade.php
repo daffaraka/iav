@@ -157,8 +157,9 @@
                                                 <div class="d-flex gap-2">
                                                     <!-- Button triggers -->
                                                     <button data-lm="{{ $lm->id }}" data-bulan="{{ $bulan }}"
-                                                         data-bs-target="#taskModal"
-                                                        data-bs-toggle="modal" class="btnViewTask btn btn-warning">Task</button>
+                                                        id="btnViewTask{{ $lm->id }}}}" data-bs-target="#taskModal"
+                                                        data-bs-toggle="modal"
+                                                        class="btn btn-warning">Task</button>
                                                     {{-- <button data-lm="{{ $lm->id }}" data-bulan="{{ $bulan }}"
                                                         id="btnViewTask" class="btn btn-primary">View</button> --}}
 
@@ -373,33 +374,22 @@
 
     <script>
         $(document).ready(function() {
+            // Task button click handler
+
             // View button click handler
-            $(document).on('click', '.btnViewTask', function() {
+            $(document).on('click', '#btnViewTask', function() {
                 const id = $(this).data('lm');
                 const bulan = $(this).data('bulan');
                 // $('#viewModal').modal('show');
                 $.ajax({
                     type: "post",
-                    url: "{{ route('getLmTasks', ':id') }}".replace(':id', id),
-                    dataType: "json",
+                    url: "{{ route('getLmTasks', ['id' => ':id', 'bulan' => ':bulan']) }}".replace(':id', id).replace(':bulan', bulan),
                     data: {
-                        _token: "{{ csrf_token() }}",
-                        bulan: bulan,
-                        id : id,
+                        _token: "{{ csrf_token() }}"
                     },
+                    dataType: "json",
                     success: function(response) {
-                        console.log(response);
-                        $('#taskTableBody').html('');
-                        $.each(response.tasks, function(index, task) {
-                            $('#taskTableBody').append(`
-                                <tr>
-                                    <td>${task.checklist}</td>
-                                    <td>${task.task_name}</td>
-                                    <td>${task.status}</td>
-                                    <td>${task.action}</td>
-                                </tr>
-                            `);
-                        });
+
                     }
                 });
                 // Add AJAX call here to load view data

@@ -37,6 +37,10 @@ Route::post('departement/store-wig',[WigController::class,'storeByDept'])->name(
 // Routing json
 Route::post('get-wig-by-id/{id}', [WigProgressController::class,'getWigById'])->name('getWigId');
 Route::post('wig-chart/{id}', [WigController::class,'wigChart'])->name('wig.chart');
+Route::post('get-lm-tasks/{id}', [LeadMeasureController::class,'getLmTasks'])->name('getLmTasks');
+
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
