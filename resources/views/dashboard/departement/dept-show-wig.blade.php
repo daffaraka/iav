@@ -56,10 +56,12 @@
             <div class="col-8">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="" class="btn btn-outline-dark"><i class="bx  bx-list-ul"></i> Riwayat Progress
+                                WIG</a>
                             <button class="btn btn-primary" id="btnModalWig" type="button" data-bs-toggle="modal"
-                                data-bs-target="#wigProgressModal">Tambah Progress WIG</button>
-
+                                data-bs-target="#wigProgressModal"><i class="bx bx-plus-circle"></i> Tambah Progress
+                                WIG</button>
                         </div>
                         <div id="chart" class="mt-3"></div>
 
@@ -105,6 +107,10 @@
         </div>
 
 
+        <div class="col-12 my-3">
+            <a href="{{ route('wig.lead-measure.create', $wig->id) }}" class="btn btn-dark">Tambah Lead Measure Baru</a>
+        </div>
+
         @foreach ($wig->lead_measures as $lm)
             <div class="col-12 mb-3">
                 <div class="card shadow border border-secondary">
@@ -115,7 +121,10 @@
                                 <p class="card-text">{{ $lm->deskripsi_lead }}</p>
                             </div>
                             <div class="">
-                                <h3>{{ count($data_lm) }}</h3>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#addNewTaskModal"
+                                    data-id="{{ $lm->id }}" class="btn btn-info  border-1 border-dark shadow">Tambah
+                                    Task Baru</button>
+                                {{-- <h3>{{ count($data_lm) }}</h3> --}}
                             </div>
                         </div>
 
@@ -131,13 +140,7 @@
                                         @endforeach
                                     </tr>
                                     <tr class="bg-dark text-white">
-                                        {{-- <tr>Lead Measure</tr> --}}
-                                        {{-- @foreach ($data_lm[$lm->id] ?? [] as $bulan => $items)
-                                            <th class="text-white">Task (%)</th>
-                                            <th class="text-white">RINCIAN TUGAS</th>
 
-                                        @endforeach --}}
-                                    </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -154,21 +157,11 @@
 
 
                                                 </h6>
-                                                <div class="d-flex gap-2">
+                                                <div class="d-flex justify-content-center gap-2">
                                                     <!-- Button triggers -->
                                                     <button data-lm="{{ $lm->id }}" data-bulan="{{ $bulan }}"
-                                                         data-bs-target="#taskModal"
-                                                        data-bs-toggle="modal" class="btnViewTask btn btn-warning">Task</button>
-                                                    {{-- <button data-lm="{{ $lm->id }}" data-bulan="{{ $bulan }}"
-                                                        id="btnViewTask" class="btn btn-primary">View</button> --}}
-
-
-
-
-
-
-
-
+                                                        data-bs-target="#taskModal" data-bs-toggle="modal"
+                                                        class="btnViewTask btn btn-warning">Task</button>
 
 
                                                 </div>
@@ -189,12 +182,8 @@
     </div>
 
 
+    <!-- Progress WIG Modal -->
 
-    <!-- Modal trigger button -->
-
-
-    <!-- Modal Body -->
-    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
     <div class="modal fade" id="wigProgressModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
@@ -249,7 +238,7 @@
 
 
 
-    <!-- Task Modal -->
+    <!-- Task Detail Modal -->
     <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
@@ -265,8 +254,8 @@
 
                     <div class="accordion" id="taskAccordion">
                         <!-- Form Accordion -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="formHeading">
+                        <div class="accordion-item border my-2">
+                            <h2 class="accordion-header " id="formHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#formCollapse" aria-expanded="false" aria-controls="formCollapse">
                                     Add New Task
@@ -321,7 +310,7 @@
                         </div>
 
                         <!-- Table Accordion -->
-                        <div class="accordion-item">
+                        <div class="accordion-item  border my-2">
                             <h2 class="accordion-header" id="tableHeading">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#tableCollapse" aria-expanded="true" aria-controls="tableCollapse">
@@ -357,9 +346,101 @@
         </div>
     </div>
 
-    <!-- View Modal -->
+    {{-- New Task Modal --}}
+    <div class="modal fade" id="addNewTaskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNewTaskModalTitle">Tambah Task Baru
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-    <!-- Optional: Place to the bottom of scripts -->
+
+                <div class="modal-body">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="nama_tugas" class="form-label">Nama Tugas</label>
+                            <input type="text" class="form-control @error('nama_tugas') is-invalid @enderror"
+                                id="nama_tugas" name="nama_tugas" value="{{ old('nama_tugas') }}">
+                            @error('nama_tugas')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi"
+                                rows="3">{{ old('deskripsi') }}</textarea>
+                            @error('deskripsi')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah_realisasi" class="form-label">Jumlah Realisasi</label>
+                            <input type="number" class="form-control @error('jumlah_realisasi') is-invalid @enderror"
+                                id="jumlah_realisasi" name="jumlah_realisasi" value="{{ old('jumlah_realisasi') }}">
+                            @error('jumlah_realisasi')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dokumen" class="form-label">Dokumen</label>
+                            <input type="file" class="form-control @error('dokumen') is-invalid @enderror"
+                                id="dokumen" name="dokumen">
+                            @error('dokumen')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tanggal_realisasi" class="form-label">Tanggal Realisasi</label>
+                            <input type="date" class="form-control @error('tanggal_realisasi') is-invalid @enderror"
+                                id="tanggal_realisasi" name="tanggal_realisasi" value="{{ old('tanggal_realisasi') }}">
+                            @error('tanggal_realisasi')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status_tugas" class="form-label">Status Tugas</label>
+                            <select class="form-select @error('status_tugas') is-invalid @enderror" id="status_tugas"
+                                name="status_tugas">
+                                <option value="">Pilih Status</option>
+                                <option value="0" {{ old('status_tugas') == '0' ? 'selected' : '' }}>Belum Selesai
+                                </option>
+                                <option value="1" {{ old('status_tugas') == '1' ? 'selected' : '' }}>Selesai</option>
+                            </select>
+                            @error('status_tugas')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -373,6 +454,10 @@
 
     <script>
         $(document).ready(function() {
+
+            // Initial Data
+            const initialData = @json($chartWig);
+            initChart(initialData);
             // View button click handler
             $(document).on('click', '.btnViewTask', function() {
                 const id = $(this).data('lm');
@@ -385,26 +470,64 @@
                     data: {
                         _token: "{{ csrf_token() }}",
                         bulan: bulan,
-                        id : id,
+                        id: id,
                     },
                     success: function(response) {
-                        console.log(response);
+                        // console.log(response);
                         $('#taskTableBody').html('');
-                        $.each(response.tasks, function(index, task) {
+                        $.each(response, function(index, task) {
                             $('#taskTableBody').append(`
                                 <tr>
-                                    <td>${task.checklist}</td>
-                                    <td>${task.task_name}</td>
-                                    <td>${task.status}</td>
-                                    <td>${task.action}</td>
+                                    <td>
+                                        <input type="checkbox" class="task-checkbox" name="tasks" data-id="${task.id}" ${task.status_tugas == 1 ? 'checked' : ''}>
+                                    </td>
+                                    <td>${task.nama_tugas}</td>
+                                    <td>${task.status_tugas}</td>
+                                    <td>${task.tanggal_realisasi}</td>
                                 </tr>
                             `);
                         });
                     }
                 });
-                // Add AJAX call here to load view data
+
+            });
+
+
+            $(document).on('change', '.task-checkbox', function() {
+                const taskId = $(this).data('id');
+                const status = $(this).is(':checked') ? 1 : 0; // 1 = selesai, 0 = belum
+
+                $.ajax({
+                    url: "{{ route('tasks.toggleStatus') }}", // ubah sesuai route kamu
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: taskId,
+                        status_tugas: status
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message ??
+                                'Status tugas berhasil diperbarui',
+                            timer: 1200,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: 'Terjadi kesalahan saat memperbarui status',
+                        });
+                        // Balikkan checkbox ke posisi semula
+                        $(this).prop('checked', !status);
+                    }.bind(this)
+                });
             });
         });
+
 
         $('#btnSimpanWig').click(function(e) {
             e.preventDefault();
@@ -559,8 +682,7 @@
 
         // Initialize chart on page load
         $(document).ready(function() {
-            const initialData = @json($chartWig);
-            initChart(initialData);
+
         });
     </script>
 @endpush

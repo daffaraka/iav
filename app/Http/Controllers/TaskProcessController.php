@@ -62,4 +62,12 @@ class TaskProcessController extends Controller
     {
         //
     }
+
+    public function toggleStatus(Request $request)
+    {
+        $taskProcess = TaskProcess::find($request->id);
+        $taskProcess->status = $request->status;
+        $taskProcess->save();
+        return response()->json(['message' => 'Status berhasil diubah']);
+    }
 }

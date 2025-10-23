@@ -29,8 +29,8 @@ Route::get('departement/{departement}/{wig}',[DepartementController::class,'show
 Route::get('departement/{departement}/{wig}/edit',[WigController::class,'editByDept'])->name('dept.edit.wig');
 
 Route::resource('wig', WigController::class);
-Route::resource('lead-measure', LeadMeasureController::class);
-Route::resource('task-process', TaskProcessController::class);
+Route::resource('wig.lead-measure', LeadMeasureController::class);
+Route::resource('wig.lead-measure.task-process', TaskProcessController::class);
 Route::resource('departement.wig.progress-wig',WigProgressController::class);
 Route::post('departement/store-wig',[WigController::class,'storeByDept'])->name('wig.storeByDept');
 
@@ -38,7 +38,7 @@ Route::post('departement/store-wig',[WigController::class,'storeByDept'])->name(
 Route::post('get-wig-by-id/{id}', [WigProgressController::class,'getWigById'])->name('getWigId');
 Route::post('wig-chart/{id}', [WigController::class,'wigChart'])->name('wig.chart');
 Route::post('get-lm-tasks/{id}', [LeadMeasureController::class,'getLmTasks'])->name('getLmTasks');
-
+Route::post('tasks.toggleStatus', [TaskProcessController::class,'toggleStatus'])->name('tasks.toggleStatus');
 
 
 Route::middleware('auth')->group(function () {

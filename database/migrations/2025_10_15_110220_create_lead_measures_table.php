@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('wig_id')->constrained('wigs')->onDelete('cascade')->onUpdate('cascade');
             $table->string('judul_lead', 150);
             $table->text('deskripsi_lead')->nullable();
-            $table->integer('target')->nullable();
+            $table->date('tanggal_mulai')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+            // $table->integer('target')->nullable();
             $table->string('satuan', 50)->nullable();
             $table->tinyInteger('status')->comment('0 = tidak aktif, 1 = aktif, 2 = selesai,3 = review')->default(1);
             $table->timestamps();

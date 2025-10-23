@@ -14,7 +14,7 @@ class LeadMeasureSeeder extends Seeder
     {
 
         $wig = Wig::all()->pluck('id')->toArray();
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
             LeadMeasure::create([
                 'wig_id' => $wig[array_rand($wig)],
                 'judul_lead' => 'Lead Measure ' . $i,
@@ -22,6 +22,8 @@ class LeadMeasureSeeder extends Seeder
                 'target' => rand(1, 100),
                 'satuan' => ['Persen', 'Unit', 'Orang'][array_rand(['Persen', 'Unit', 'Orang'])],
                 'status' => rand(0, 3),
+                'tanggal_mulai' => now()->subDays(rand(0, 365)),
+                'tanggal_selesai' => now()->addDays(rand(30, 730)),
             ]);
         }
     }

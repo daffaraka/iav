@@ -11,9 +11,11 @@ class LeadMeasure extends Model
         'wig_id',
         'judul_lead',
         'deskripsi_lead',
-        'target',
+        // 'target',
         'satuan',
-        'status'
+        'status',
+        'tanggal_mulai',
+        'tanggal_selesai'
     ];
 
     public function wig()
