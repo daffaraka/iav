@@ -61,8 +61,26 @@ class WigController extends Controller
             'tanggal_mulai_wig' => 'required|date',
             'tanggal_berakhir_wig' => 'required|date|after:tanggal_mulai_wig',
             'from_x' => 'required|numeric',
-            'from_y' => 'required|numeric|gt:from_x',
+            'to_y' => 'required|numeric|gt:from_x',
             'satuan' => 'required|in:%,Angka'
+        ], [
+            'nama_wig.required' => 'Nama WIG harus diisi',
+            'nama_wig.string' => 'Nama WIG harus berupa teks',
+            'nama_wig.max' => 'Nama WIG maksimal 255 karakter',
+            'deskripsi_wig.required' => 'Deskripsi WIG harus diisi',
+            'deskripsi_wig.string' => 'Deskripsi WIG harus berupa teks',
+            'tanggal_mulai_wig.required' => 'Tanggal mulai harus diisi',
+            'tanggal_mulai_wig.date' => 'Format tanggal mulai tidak valid',
+            'tanggal_berakhir_wig.required' => 'Tanggal berakhir harus diisi',
+            'tanggal_berakhir_wig.date' => 'Format tanggal berakhir tidak valid',
+            'tanggal_berakhir_wig.after' => 'Tanggal berakhir harus setelah tanggal mulai',
+            'from_x.required' => 'Nilai awal harus diisi',
+            'from_x.numeric' => 'Nilai awal harus berupa angka',
+            'to_y.required' => 'Nilai akhir harus diisi',
+            'to_y.numeric' => 'Nilai akhir harus berupa angka',
+            'to_y.gt' => 'Nilai akhir harus lebih besar dari nilai awal',
+            'satuan.required' => 'Satuan harus diisi',
+            'satuan.in' => 'Satuan harus berupa % atau Angka'
         ]);
 
         try {
@@ -107,6 +125,24 @@ class WigController extends Controller
             'from_x' => 'required|numeric',
             'to_y' => 'required|numeric',
             'satuan' => 'required|in:%,Angka'
+        ], [
+            'nama_wig.required' => 'Nama WIG harus diisi',
+            'nama_wig.string' => 'Nama WIG harus berupa teks',
+            'nama_wig.max' => 'Nama WIG maksimal 255 karakter',
+            'deskripsi_wig.required' => 'Deskripsi WIG harus diisi',
+            'deskripsi_wig.string' => 'Deskripsi WIG harus berupa teks',
+            'tanggal_mulai_wig.required' => 'Tanggal mulai harus diisi',
+            'tanggal_mulai_wig.date' => 'Format tanggal mulai tidak valid',
+            'tanggal_berakhir_wig.required' => 'Tanggal berakhir harus diisi',
+            'tanggal_berakhir_wig.date' => 'Format tanggal berakhir tidak valid',
+            'tanggal_berakhir_wig.after' => 'Tanggal berakhir harus setelah tanggal mulai',
+            'from_x.required' => 'Nilai awal harus diisi',
+            'from_x.numeric' => 'Nilai awal harus berupa angka',
+            'to_y.required' => 'Nilai akhir harus diisi',
+            'to_y.numeric' => 'Nilai akhir harus berupa angka',
+            'to_y.gt' => 'Nilai akhir harus lebih besar dari nilai awal',
+            'satuan.required' => 'Satuan harus diisi',
+            'satuan.in' => 'Satuan harus berupa % atau Angka'
         ]);
 
         try {
@@ -144,33 +180,40 @@ class WigController extends Controller
      */
     public function show(Wig $wig)
     {
-        //
+        $title = 'Detail';
+        $wig->load('wig_progresses');
+
+        $data =
+        [
+            'title' => $title,
+            'wig' => $wig
+        ];
+        return view('dashboard.wig.wig-show', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Departement $departement, Wig $wig)
-    {
-        $title = 'Edit WIG';
-        $wig = Sekolah::all()->unique('unit');
+    // public function edit(Departement $departement, Wig $wig)
+    // {
+    //     $title = 'Edit';
 
-        $data = [
-            'title' => $title,
-            'wig' => $wig,
-            'modul' => Str::lower($title)
-        ];
-        return view('dashboard.wig.wig-edit', $data);
-    }
+    //     $data = [
+    //         'title' => $title.' '.$wig->judul_wig,
+    //         'wig' => $wig,
+    //         'modul' => Str::lower($title)
+    //     ];
+    //     return view('dashboard.wig.wig-edit', $data);
+    // }
 
 
     public function editByDept(Departement $departement, Wig $wig)
     {
-        $title = 'Edit WIG';
+        $title = 'Edit';
 
         // dd()
         $data = [
-            'title' => $title,
+            'title' => $title.' '.$wig->judul_wig,
             'dept' => $departement,
             'wig' => $wig,
             'modul' => Str::lower($title)
@@ -192,22 +235,28 @@ class WigController extends Controller
             'tanggal_mulai_wig' => 'required|date',
             'tanggal_berakhir_wig' => 'required|date|after:tanggal_mulai_wig',
             'from_x' => 'required|numeric',
-            'to-y' => 'required|numeric',
-            'satuan' => 'required|in:%,Angka'
+            'to_y' => 'required|numeric',
+            'satuan' => 'required'
+        ],[
+            'nama_wig.required' => 'Nama WIG harus diisi',
+            'nama_wig.string' => 'Nama WIG harus berupa teks',
+            'nama_wig.max' => 'Nama WIG maksimal 255 karakter',
+            'deskripsi_wig.required' => 'Deskripsi WIG harus diisi',
+            'deskripsi_wig.string' => 'Deskripsi WIG harus berupa teks',
+            'tanggal_mulai_wig.required' => 'Tanggal mulai harus diisi',
+            'tanggal_mulai_wig.date' => 'Format tanggal mulai tidak valid',
+            'tanggal_berakhir_wig.required' => 'Tanggal berakhir harus diisi',
+            'tanggal_berakhir_wig.date' => 'Format tanggal berakhir tidak valid',
+            'tanggal_berakhir_wig.after' => 'Tanggal berakhir harus setelah tanggal mulai',
+            'from_x.required' => 'Nilai awal harus diisi',
+            'from_x.numeric' => 'Nilai awal harus berupa angka',
+            'to_y.required' => 'Nilai akhir harus diisi',
+            'to_y.numeric' => 'Nilai akhir harus berupa angka',
+            'to_y.gt' => 'Nilai akhir harus lebih besar dari nilai awal',
+            'satuan.required' => 'Satuan harus diisi',
+            'satuan.in' => 'Satuan harus berupa % atau Angka'
         ]);
 
-
-        //   $wig->update([
-        //         'judul_wig' => $request->nama_wig,
-        //         'deskripsi_wig' => $request->deskripsi_wig,
-        //         'tanggal_mulai_wig' => $request->tanggal_mulai_wig,
-        //         'tanggal_berakhir_wig' => $request->tanggal_berakhir_wig,
-        //         'from_x' => $request->from_x,
-        //         'to_y' => $request->from_y,
-        //         'satuan' => $request->satuan,
-        //         'status_wig' => 1, // Set as active
-        //         'departement_id' => $wig->departement_id
-        //     ]);
 
 
 
@@ -219,14 +268,13 @@ class WigController extends Controller
                 'tanggal_mulai_wig' => $request->tanggal_mulai_wig,
                 'tanggal_berakhir_wig' => $request->tanggal_berakhir_wig,
                 'from_x' => $request->from_x,
-                'to_y' => $request->from_y,
+                'to_y' => $request->to_y,
                 'satuan' => $request->satuan,
                 'status_wig' => 1, // Set as active
                 // 'departement_id' => $request->departement_id
             ]);
 
 
-            //  dd($wig);
 
             return redirect()->back()->with('success', 'WIG berhasil diupdate');
         } catch (Exception $e) {

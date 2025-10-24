@@ -1,6 +1,6 @@
 @extends('dashboard.layout')
 @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container-xxl flex-grow-1 ">
         <div class="row">
 
 
@@ -9,7 +9,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title mb-0">Tambah WIG Baru</h4>
+                            <h4 class="card-title mb-0">{{ $title }}</h4>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('wig.update', $wig->id) }}" method="POST">
@@ -80,16 +80,18 @@
 
 
                                 <div class="form-group my-3">
-                                    <label class="fw-bold"for="">Unit</label>
-                                    <select name="unit" id="" class="form-control">
-                                        <option value="%" {{ ($wig->unit ?? old('unit')) == '%' ? 'selected' : '' }}>
+                                    <label class="fw-bold"for="">Satuan/Unit</label>
+                                    <select name="satuan" id="" class="form-control">
+                                        <option value="%"
+                                            {{ ($wig->satuan ?? old('satuan')) == '%' ? 'selected' : '' }}>
                                             Persen (%)</option>
                                         <option value="Angka"
-                                            {{ ($wig->unit ?? old('unit')) == 'Angka' ? 'selected' : '' }}> Angka </option>
+                                            {{ ($wig->unit ?? old('satuan')) == 'Angka' ? 'selected' : '' }}> Angka
+                                        </option>
 
 
                                     </select>
-                                    @error('unit')
+                                    @error('satuan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

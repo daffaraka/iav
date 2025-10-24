@@ -57,7 +57,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="" class="btn btn-outline-dark"><i class="bx  bx-list-ul"></i> Riwayat Progress
+                            <a href="{{route('wig.show',$wig->id)}}" class="btn btn-outline-dark"><i class="bx  bx-list-ul"></i> Riwayat Progress
                                 WIG</a>
                             <button class="btn btn-primary" id="btnModalWig" type="button" data-bs-toggle="modal"
                                 data-bs-target="#wigProgressModal"><i class="bx bx-plus-circle"></i> Tambah Progress
@@ -117,7 +117,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-4">
                             <div class="">
-                                <h5 class="card-title">{{ $lm->judul_lead }}</h5>
+                                <h4 class="card-title fw-bold">{{ $lm->judul_lead }}</h4>
                                 <p class="card-text">{{ $lm->deskripsi_lead }}</p>
                             </div>
                             <div class="">
@@ -324,7 +324,7 @@
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>Checklist</th>
+                                                    <th class="w-20">#</th>
                                                     <th>Task Name</th>
                                                     <th>Status</th>
                                                     <th>Action</th>

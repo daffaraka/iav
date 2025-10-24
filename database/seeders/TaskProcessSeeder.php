@@ -292,7 +292,7 @@ class TaskProcessSeeder extends Seeder
         $leadIds = LeadMeasure::pluck('id')->toArray();
         $data = [];
 
-        for ($i = 0; $i < 300; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             $data[] = [
                 'lead_measure_id' => $leadIds[array_rand($leadIds)],
                 'nama_tugas' => 'Tugas ke-' . ($i + 1),

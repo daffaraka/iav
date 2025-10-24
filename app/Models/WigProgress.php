@@ -18,7 +18,7 @@ class WigProgress extends Model
         return $this->belongsTo(Wig::class);
     }
 
-   
+
 
     public function user()
     {

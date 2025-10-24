@@ -166,7 +166,13 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     @include('dashboard.flash')
+
+                    <div class="d-flex px-4">
+
+                        <button onclick="history.back()" class="btn btn-dark"> <i class="bx bx-left-arrow-circle"></i> Kembali</button>
+                    </div>
                     @yield('content')
+
 
 
                     <!-- / Content -->

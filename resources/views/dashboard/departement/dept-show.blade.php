@@ -211,7 +211,8 @@
                                                                 method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="button" class="dropdown-item text-danger fw-bold"
+                                                                <button type="button"
+                                                                    class="dropdown-item text-danger fw-bold"
                                                                     id="deleteWig" data-id="{{ $wig->id }}">
                                                                     <i class="bi bi-trash"></i> Hapus WIG
                                                                 </button>
@@ -348,7 +349,10 @@
                             title: 'Berhasil!',
                             text: 'WIG berhasil ditambahkan',
                             icon: 'success',
-                            confirmButtonText: 'Ok'
+                            confirmButtonText: 'Ok',
+                            didOpen: () => {
+                                $('.swal2-container').css('z-index', 20000);
+                            }
                         }).then((result) => {
                             $('#wigProgressModal').modal('hide');
 
@@ -363,12 +367,20 @@
                         });
                     },
                     error: function(xhr) {
+                        let errorMessage = 'Terjadi kesalahan validasi';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
                         Swal.fire({
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan, silahkan coba lagi',
+                            title: 'Error Validasi!',
+                            text: errorMessage,
                             icon: 'error',
                             confirmButtonText: 'Ok',
-                            position: 'absolute'
+                            didOpen: () => {
+                                $('.swal2-container').css('z-index', 20000);
+                            }
+
                         });
 
                         if (xhr.responseJSON && xhr.responseJSON.errors) {
