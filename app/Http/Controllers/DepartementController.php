@@ -44,10 +44,7 @@ class DepartementController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
-    {
-
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
@@ -72,7 +69,6 @@ class DepartementController extends Controller
 
             // dd($chartWig);
             $chartPerWig[$index] =  $chartWig;
-
         }
 
         // dd($chartPerWig);
@@ -164,6 +160,56 @@ class DepartementController extends Controller
             'chartWig' => $chartWig
         ];
 
-        return view('dashboard.departement.dept-show-wig', $data);
+        if (request()->ajax()) {
+            return response()->json([
+                'data_lm' => $tasks,
+                'progressTerbaru' => $progressTerbaru,
+                'chartWig' => $chartWig
+            ]);
+        } else {
+
+            return view('dashboard.departement.dept-show-wig', $data);
+        }
+    }
+
+
+    public function addNewTask(Request $request)
+    {
+        try {
+            $request->validate([
+                'lm_id' => 'required',
+                'nama_tugas' => 'required',
+                'deskripsi' => 'required',
+                'jumlah_realisasi' => 'required',
+                'tanggal_realisasi' => 'required',
+                'status_tugas' => 'required',
+            ], [
+                'lm_id.required' => 'Lead Measure harus diisi',
+                'nama_tugas.required' => 'Nama Tugas harus diisi',
+                'deskripsi.required' => 'Deskripsi harus diisi',
+                'jumlah_realisasi.required' => 'Jumlah Realisasi harus diisi',
+                'tanggal_realisasi.required' => 'Tanggal Realisasi harus diisi',
+                'status_tugas.required' => 'Status Tugas harus diisi',
+            ]);
+
+            $task = new TaskProcess();
+            $task->lead_measure_id = $request->lm_id;
+            $task->nama_tugas = $request->nama_tugas;
+            $task->deskripsi = $request->deskripsi;
+            $task->jumlah_realisasi = $request->jumlah_realisasi;
+            $task->tanggal_realisasi = $request->tanggal_realisasi;
+            $task->status_tugas = $request->status_tugas;
+            $task->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Task Baru berhasil ditambahkan',
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+        // return dd($request->all());
     }
 }

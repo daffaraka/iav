@@ -113,4 +113,11 @@ class LeadMeasureController extends Controller
         //   dd($tasks);
         return response()->json($tasks);
     }
+
+
+    public function getLm(Request $request)
+    {
+        $leadMeasure = LeadMeasure::find($request->id);
+        return response()->json($leadMeasure);
+    }
 }

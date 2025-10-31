@@ -184,7 +184,6 @@
                                 <div class="">
 
                                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                        <div class="me-2">
 
                                             <div class="demo-inline-spacing">
                                                 <div class="btn-group">
@@ -221,11 +220,6 @@
                                                     </ul>
                                                 </div>
                                             </div>
-
-                                        </div>
-
-
-
 
                                     </div>
 

@@ -6,8 +6,8 @@
 
             <div class="card-body p-3">
 
-                <div class="table-responsive">
-                    <table class="table table-light table-striped">
+                <div class="table-responsive ">
+                    <table class="table table-light table-striped dataTable w-100 table-bordered">
                         <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
@@ -54,5 +54,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script></script>
+
 @endpush

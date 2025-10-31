@@ -17,7 +17,7 @@ class WigProgressSeeder extends Seeder
     {
         $wig = Wig::all()->pluck('id')->toArray();
         $user = User::all()->pluck('id')->toArray();
-        for ($i = 1; $i <= 500; $i++) {
+        for ($i = 1; $i <= 1000; $i++) {
             WigProgress::create([
                 'wig_id' => $wig[array_rand($wig)],
                 'progress_wig' => rand(1, 100),

@@ -39,6 +39,9 @@ Route::post('get-wig-by-id/{id}', [WigProgressController::class,'getWigById'])->
 Route::post('wig-chart/{id}', [WigController::class,'wigChart'])->name('wig.chart');
 Route::post('get-lm-tasks/{id}', [LeadMeasureController::class,'getLmTasks'])->name('getLmTasks');
 Route::post('tasks.toggleStatus', [TaskProcessController::class,'toggleStatus'])->name('tasks.toggleStatus');
+Route::post('get-lm/{id}', [LeadMeasureController::class,'getLm'])->name('getLm');
+Route::post('add-new-task/{id}', [DepartementController::class,'addNewTask'])->name('addNewTask');
+
 
 
 Route::middleware('auth')->group(function () {

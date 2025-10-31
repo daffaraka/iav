@@ -57,7 +57,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{route('wig.show',$wig->id)}}" class="btn btn-outline-dark"><i class="bx  bx-list-ul"></i> Riwayat Progress
+                            <a href="{{ route('wig.show', $wig->id) }}" class="btn btn-outline-dark"><i
+                                    class="bx  bx-list-ul"></i> Riwayat Progress
                                 WIG</a>
                             <button class="btn btn-primary" id="btnModalWig" type="button" data-bs-toggle="modal"
                                 data-bs-target="#wigProgressModal"><i class="bx bx-plus-circle"></i> Tambah Progress
@@ -122,7 +123,8 @@
                             </div>
                             <div class="">
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#addNewTaskModal"
-                                    data-id="{{ $lm->id }}" class="btn btn-info  border-1 border-dark shadow">Tambah
+                                    data-id="{{ $lm->id }}"
+                                    class="addNewTaskButton btn btn-info  border-1 border-dark shadow">Tambah
                                     Task Baru</button>
                                 {{-- <h3>{{ count($data_lm) }}</h3> --}}
                             </div>
@@ -229,7 +231,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Tutup
                     </button>
-                    <button type="button" class="btn btn-primary" id="btnSimpanWig">Simpan</button>
+                    <button type="button" class="btn btn-primary" id="btnSimpanProgressWig">Simpan</button>
                 </div>
             </div>
         </div>
@@ -359,12 +361,14 @@
 
 
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form method="POST" id="newTaskForm" enctype="multipart/form-data">
                         @csrf
+
+                        <input type="text" name="lm_id" id="lm_id" value="" hidden>
                         <div class="mb-3">
-                            <label for="nama_tugas" class="form-label">Nama Tugas</label>
+                            <label for="nama_tugas" class="form-label">Nama Tugas/Task</label>
                             <input type="text" class="form-control @error('nama_tugas') is-invalid @enderror"
-                                id="nama_tugas" name="nama_tugas" value="{{ old('nama_tugas') }}">
+                                id="nama_tugas" name="nama_tugas" value="{{ old('nama_tugas') }}" required>
                             @error('nama_tugas')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -394,7 +398,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="dokumen" class="form-label">Dokumen</label>
                             <input type="file" class="form-control @error('dokumen') is-invalid @enderror"
                                 id="dokumen" name="dokumen">
@@ -403,12 +407,13 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="mb-3">
                             <label for="tanggal_realisasi" class="form-label">Tanggal Realisasi</label>
                             <input type="date" class="form-control @error('tanggal_realisasi') is-invalid @enderror"
-                                id="tanggal_realisasi" name="tanggal_realisasi" value="{{ old('tanggal_realisasi') }}">
+                                id="tanggal_realisasi" name="tanggal_realisasi" value="{{ old('tanggal_realisasi') }}"
+                                required>
                             @error('tanggal_realisasi')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -432,12 +437,16 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+
+
+                        <div class="modal-footer d-flex justify-content-between p-0 mx-0 mb-3">
+                            <button type="submit" class="btnSubmitNewTask btn btn-primary">Submit</button>
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -455,10 +464,19 @@
     <script>
         $(document).ready(function() {
 
-            // Initial Data
+
+
+
+
+
+            // Inisialisasi chart WIG
             const initialData = @json($chartWig);
             initChart(initialData);
-            // View button click handler
+
+
+
+
+            // Button lihat Task
             $(document).on('click', '.btnViewTask', function() {
                 const id = $(this).data('lm');
                 const bulan = $(this).data('bulan');
@@ -477,13 +495,15 @@
                         $('#taskTableBody').html('');
                         $.each(response, function(index, task) {
                             $('#taskTableBody').append(`
-                                <tr>
+                                <tr class="${task.status_tugas == 1 ? 'bg-success' : 'bg-secondary text-dark'}" >
                                     <td>
                                         <input type="checkbox" class="task-checkbox" name="tasks" data-id="${task.id}" ${task.status_tugas == 1 ? 'checked' : ''}>
                                     </td>
                                     <td>${task.nama_tugas}</td>
-                                    <td>${task.status_tugas}</td>
+                                    <td>${task.status_tugas == 1 ? 'Selesai' : 'Belum Selesai'}</td>
                                     <td>${task.tanggal_realisasi}</td>
+
+                                    </tr>
                                 </tr>
                             `);
                         });
@@ -493,6 +513,105 @@
             });
 
 
+            // Button Tambah Task Baru yang WARNA BIRU
+            $('.addNewTaskButton').click(function(e) {
+                id = $(this).data('id');
+                e.preventDefault();
+
+
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('getLm', ':id') }}".replace(':id'),
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        $('#addNewTaskModalTitle').text('Tambah Task Baru Untuk ' +
+                            response.judul_lead);
+                        $('#lm_id').val(response.id);
+
+                        console.log(response);
+                    }
+                });
+            });
+
+            // Button Submit Task Baru via addNewTaskButton yang WARNA BIRU
+            $('.btnSubmitNewTask').click(function(e) {
+                e.preventDefault();
+
+
+                // dokumen: $('#dokumen')[0].files[0],
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('addNewTask', ':id') }}".replace(':id', id),
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        lm_id: $('#lm_id').val(),
+                        nama_tugas: $('#nama_tugas').val(),
+                        deskripsi: $('#deskripsi').val(),
+                        jumlah_realisasi: $('#jumlah_realisasi').val(),
+                        tanggal_realisasi: $('#tanggal_realisasi').val(),
+                        status_tugas: $('#status_tugas').val()
+                    },
+                    processData: true,
+                    dataType: "json",
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Tugas berhasil ditambahkan',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                $('.swal2-container').css('z-index', 20000);
+                            }
+                        });
+                        $('#addNewTaskModal').modal('hide');
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                        $('body').css('overflow', 'auto');
+                        // Reload lead measure cards
+                        setTimeout(() => {
+                            loadLeadMeasureCards();
+                        }, 1500);
+                    },
+                    error: function(xhr) {
+
+                        let errorMessage = 'Terjadi kesalahan validasi';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: errorMessage,
+                            customClass: {
+                                container: 'swal2-top-modal'
+                            },
+                            didOpen: () => {
+                                $('.swal2-container').css('z-index', 20000);
+                            }
+                        });
+
+                        // Tampilkan error validasi (jika ada)
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $(`[name="${key}"]`).addClass('is-invalid');
+                                $(`[name="${key}"]`).next('.invalid-feedback').text(
+                                    value[0]);
+                            });
+                        }
+                    }
+                });
+            });
+
+
+            // Save Task dari toggle checklist
             $(document).on('change', '.task-checkbox', function() {
                 const taskId = $(this).data('id');
                 const status = $(this).is(':checked') ? 1 : 0; // 1 = selesai, 0 = belum
@@ -520,6 +639,9 @@
                             icon: 'error',
                             title: 'Gagal!',
                             text: 'Terjadi kesalahan saat memperbarui status',
+                            didOpen: () => {
+                                $('.swal2-container').css('z-index', 20000);
+                            }
                         });
                         // Balikkan checkbox ke posisi semula
                         $(this).prop('checked', !status);
@@ -529,7 +651,8 @@
         });
 
 
-        $('#btnSimpanWig').click(function(e) {
+        // Simpan Progress WIG
+        $('#btnSimpanProgressWig').click(function(e) {
             e.preventDefault();
 
             url =
@@ -562,13 +685,18 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
-                        text: 'Terjadi kesalahan saat menambahkan progress WIG'
+                        text: 'Terjadi kesalahan saat menambahkan progress WIG',
+                        didOpen: () => {
+                            $('.swal2-container').css('z-index', 20000);
+                        }
                     });
                 }
             });
 
         });
 
+
+        // Inisiasi format chart
         let chart;
 
         function initChart(data) {
@@ -647,6 +775,7 @@
             chart.render();
         }
 
+        // Update Chart
         function updateChart(data) {
             const progressData = Object.values(data).map(item => item.progress);
             const bulanData = Object.values(data).map(item => item.bulan);
@@ -662,6 +791,7 @@
             });
         }
 
+        // Load Chart
         function loadChartData() {
             $.ajax({
                 type: "POST",
@@ -669,7 +799,7 @@
                     _token: "{{ csrf_token() }}",
                 },
                 dataType: "json",
-                url: "{{ route('wig.chart', $wig->id) }}",
+                url: "{{ route('dept.show.wig', ['departement' => $wig->departement_id, 'wig' => $wig->id])}}",
                 success: function(response) {
                     if (chart) {
                         updateChart(response.chartWig);
@@ -680,9 +810,34 @@
             });
         }
 
-        // Initialize chart on page load
-        $(document).ready(function() {
 
-        });
+
+        function loadLeadMeasureCards() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('dept.show.wig', ['departement' => $wig->departement_id, 'wig' => $wig->id]) }}",
+                success: function(response) {
+                    // Extract lead measure cards from response
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(response, 'text/html');
+                    const newCards = doc.querySelectorAll('.col-12.mb-3');
+
+                    // Remove existing lead measure cards
+                    $('.col-12.mb-3').each(function() {
+                        if ($(this).find('.card.shadow.border.border-secondary').length > 0) {
+                            $(this).remove();
+                        }
+                    });
+
+                    // Add new cards
+                    newCards.forEach(card => {
+                        if (card.querySelector('.card.shadow.border.border-secondary')) {
+                            $('.container.my-3').append(card.outerHTML);
+                        }
+                    });
+                }
+            });
+        }
+
     </script>
 @endpush

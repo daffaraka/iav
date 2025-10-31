@@ -39,6 +39,7 @@
 
     <link rel="stylesheet" href="{{ asset('dashboard-admin/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
 
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -50,9 +51,17 @@
 
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <script src="{{ asset('dashboard-admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+
+
 </head>
 
-<body>
+<body class="overflow-auto">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -169,7 +178,8 @@
 
                     <div class="d-flex px-4">
 
-                        <button onclick="history.back()" class="btn btn-dark"> <i class="bx bx-left-arrow-circle"></i> Kembali</button>
+                        <button onclick="history.back()" class="btn btn-dark"> <i
+                                class="bx bx-left-arrow-circle"></i> Kembali</button>
                     </div>
                     @yield('content')
 
@@ -194,10 +204,6 @@
     </div>
     <!-- / Layout wrapper -->
 
-    {{-- <div class="buy-now">
-        <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/" target="_blank"
-            class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div> --}}
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -206,11 +212,19 @@
     </script>
 
 
+
     {{-- <script src="{{ asset('dashboard-admin/libs/jquery/jquery.js') }}"></script> --}}
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
     {{-- <script src="{{ asset('dashboard-admin/assets/vendor/libs/popper/popper.js') }}"></script> --}}
     {{-- <script src="{{ asset('dashboard-admin/assets/vendor/js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
 
     <script src="{{ asset('dashboard-admin/assets/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
@@ -230,6 +244,14 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
+
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable({
+                responsive: true
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 
