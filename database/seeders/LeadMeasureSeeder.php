@@ -14,7 +14,7 @@ class LeadMeasureSeeder extends Seeder
     {
 
         $wig = Wig::all()->pluck('id')->toArray();
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             LeadMeasure::create([
                 'wig_id' => $wig[array_rand($wig)],
                 'judul_lead' => 'Lead Measure ' . $i,

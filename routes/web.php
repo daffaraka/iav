@@ -1,24 +1,23 @@
 <?php
 
+use App\Models\Wig;
 use App\Models\TaskProcess;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WigController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\LeadMeasureController;
 use App\Http\Controllers\TaskProcessController;
 use App\Http\Controllers\WigProgressController;
 use App\Http\Controllers\DataPrestasiController;
-use App\Models\Wig;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-})->name('dashboard');
+Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
 Route::resource('sekolah', SekolahController::class);
 Route::resource('data-prestasi', DataPrestasiController::class);

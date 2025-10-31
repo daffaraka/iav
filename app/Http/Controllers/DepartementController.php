@@ -152,7 +152,7 @@ class DepartementController extends Controller
 
 
         $data = [
-            'title' => $departement->nama_dept . ' | ' . $wig->judul_wig,
+            'title' => $departement->nama_dept . ' > ' . $wig->judul_wig,
             'departement' => $departement,
             'wig' => $wig,
             'data_lm' => $tasks,

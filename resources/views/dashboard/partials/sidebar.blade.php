@@ -63,7 +63,7 @@
                      <div data-i18n="Analytics">Dashboard</div>
                  </a>
              </li>
-{{--
+             {{--
               <li class="menu-item {{ request()->is('wig*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -71,14 +71,14 @@
                  </a>
              </li> --}}
 
-                <li class="menu-item {{ request()->is('departement*') ? 'active' : '' }}">
+             <li class="menu-item {{ request()->is('departement*') ? 'active' : '' }}">
                  <a href="{{ route('departement.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Departemen</div>
                  </a>
              </li>
 
-              <li class="menu-item ">
+             <li class="menu-item ">
                  <a href="{{ asset('dashboard-admin/html/index.html') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-home-circle"></i>
                      <div data-i18n="Analytics">Base Layout</div>
@@ -164,7 +164,7 @@
                  </a>
              </li>
              <li class="menu-item">
-                 <a href="{{route('data-prestasi.index')}}" class="menu-link">
+                 <a href="{{ route('data-prestasi.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Data Prestasi</div>
                  </a>
@@ -185,7 +185,13 @@
 
 
 
-                <li class="menu-item {{ request()->is('sdm/lead-measure*') ? 'active' : '' }}">
+             <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
+                 <a href="{{ route('wig.index') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-collection"></i>
+                     <div data-i18n="Basic">WIG</div>
+                 </a>
+             </li>
+             <li class="menu-item {{ request()->is('sdm/lead-measure*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Lead Measure</div>
