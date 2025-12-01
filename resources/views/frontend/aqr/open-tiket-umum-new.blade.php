@@ -14,7 +14,7 @@
         </div>
 
         <!-- Form -->
-        <form method="POST" enctype="multipart/form-data" action="{{ route('home.tiket-store') }}" class="space-y-6">
+        <form method="POST" enctype="multipart/form-data" action="{{ route('helpdesk.home.tiket-store') }}" class="space-y-6">
             @csrf
             <input type="hidden" name="pengirim" value="Masyarakat Umum">
 
@@ -98,7 +98,7 @@
 
         <!-- Back Button -->
         <div class="mt-6 text-center animate-slide-in-right" style="animation-delay: 0.8s">
-            <a href="{{ route('home.cek-pengirim') }}"
+            <a href="{{ route('helpdesk.home.cek-pengirim') }}"
                class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors duration-300">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali ke pilihan pengirim

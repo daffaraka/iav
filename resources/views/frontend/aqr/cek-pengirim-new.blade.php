@@ -13,7 +13,7 @@
         <!-- Pilihan Pengirim -->
         <div class="space-y-4">
             <!-- Masyarakat Umum -->
-            <a href="{{ route('home.open-tiket', ['pengirim' => 'Masyarakat Umum']) }}"
+            <a href="{{ route('helpdesk.home.open-tiket', ['pengirim' => 'Masyarakat Umum']) }}"
                class="group relative w-full flex justify-center py-4 px-6 border border-transparent text-sm font-medium rounded-xl text-white gradient-bg hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
                 <span class="absolute left-0 inset-y-0 flex items-center pl-4">
                     <i class="fas fa-users text-white group-hover:text-yellow-200 transition-colors duration-300"></i>
@@ -25,7 +25,7 @@
             </a>
 
             <!-- Warga Sekolah -->
-            <a href="{{ route('home.open-tiket', ['pengirim' => 'Warga Sekolah']) }}"
+            <a href="{{ route('helpdesk.home.open-tiket', ['pengirim' => 'Warga Sekolah']) }}"
                class="group relative w-full flex justify-center py-4 px-6 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
                 <span class="absolute left-0 inset-y-0 flex items-center pl-4">
                     <i class="fas fa-graduation-cap text-white group-hover:text-yellow-200 transition-colors duration-300"></i>
@@ -50,7 +50,7 @@
         </div>
 
         <!-- Cek Proses -->
-        <a href="{{ route('home.tiket-tracking') }}"
+        <a href="{{ route('helpdesk.home.tiket-tracking') }}"
            class="group relative w-full flex justify-center py-4 px-6 border-2 border-gray-300 text-sm font-medium rounded-xl hover:text-white bg-gray-900 text-white hover:bg-gray-700 hover:border-gray-400 hover:shadow-md transform hover:scale-105 transition-all duration-300 ease-in-out">
             <span class="absolute left-0 inset-y-0 flex items-center pl-4">
                 <i class="fas fa-search text-gray-500 group-hover:text-white transition-colors duration-300"></i>

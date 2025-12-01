@@ -1,4 +1,4 @@
-@extends('home.layout')
+@extends('helpdesk.home.layout')
 
 @section('content')
     <div class="row justify-content-center">
@@ -37,7 +37,7 @@
                                 <!-- Step 2: Form Kritik dan Saran -->
                                 <div id="step-form" style="display: none;">
                                     <form method="POST" enctype="multipart/form-data"
-                                        action="{{ route('home.tiket-store') }}">
+                                        action="{{ route('helpdesk.home.tiket-store') }}">
                                         @csrf
                                         <input type="hidden" name="pengirim" value="Warga Sekolah">
                                         <input type="hidden" name="nisn" id="nisn-hidden">
@@ -250,7 +250,7 @@
                 }
 
                 $.ajax({
-                    url: '{{ route('home.get-siswa') }}',
+                    url: '{{ route('helpdesk.home.get-siswa') }}',
                     method: 'POST',
                     data: {
                         nisn: nisn,

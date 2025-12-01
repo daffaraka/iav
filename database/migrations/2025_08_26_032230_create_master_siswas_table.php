@@ -27,8 +27,6 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('email')->unique();
             $table->string('tahun_ajaran')->nullable();
-            $table->string('nisn')->unique()->nullable();
-            $table->string('nis')->unique()->nullable();
 
             // Identitas Di Sekolah
             $table->string('jenjang');

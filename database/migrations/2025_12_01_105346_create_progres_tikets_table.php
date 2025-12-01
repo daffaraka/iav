@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('progres_tikets', function (Blueprint $table) {
             $table->id();
+            // $table->string('progres');
+            $table->string('penanganan')->nullable();
+            $table->string('status');
+            $table->string('fotopengerjaan')->nullable();
+            // $table->dateTime('direspon_at')->nullable();
+
+            $table->foreignId('tiket_id')->constrained('tikets')->onDelete('cascade'); //
             $table->timestamps();
         });
     }

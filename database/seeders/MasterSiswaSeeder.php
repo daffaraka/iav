@@ -46,6 +46,7 @@ class MasterSiswaSeeder extends Seeder
             MasterSiswa::create([
                 'nama'          => $faker->name,
                 'nik'           => $faker->unique()->numerify('################'), // 16 digit
+                'nama_orang_tua' => 'Orang Tua '.$faker->name,
                 'tempat_lahir'  => 'Bandung',
                 'tanggal_lahir' => $faker->date('Y-m-d', '2010-12-31'), // tanggal random sampai 2010
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),

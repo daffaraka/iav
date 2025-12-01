@@ -197,6 +197,38 @@
 
 
 
+             <li class="menu-header small text-uppercase"><span class="menu-header-text">AQR</span></li>
+             <!-- Cards -->
+
+             <li class="menu-item {{ request()->is('aqr*') ? 'active open' : '' }}">
+                 <a href="javascript:void(0);" class="menu-link menu-toggle">
+                     <i class="menu-icon tf-icons bx bx-support"></i>
+                     <div data-i18n="Basic">Tiket Aduan</div>
+                 </a>
+                 <ul class="menu-sub">
+                     <li class="menu-item {{ request()->is('aqr') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
+                             <div data-i18n="Basic">Dashboard AQR</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('aqr/tiket*') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.tiket.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Data Tiket</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('aqr/aduan*') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.aduan.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Data Aduan</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('aqr/progres-tiket*') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.progres-tiket.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Progress Tiket</div>
+                         </a>
+                     </li>
+                 </ul>
+             </li>
+
              <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
              <!-- Cards -->
 

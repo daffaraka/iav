@@ -23,7 +23,7 @@
         @endif
 
         <!-- Form -->
-        <form action="{{ route('home.pencarianTiket') }}" method="POST" class="space-y-6">
+        <form action="{{ route('helpdesk.home.pencarianTiket') }}" method="POST" class="space-y-6">
             @csrf
 
             <!-- Nomor Tiket -->
@@ -58,7 +58,7 @@
 
         <!-- Back Button -->
         <div class="mt-6 text-center animate-slide-in-right" style="animation-delay: 0.4s">
-            <a href="{{ route('home.cek-pengirim') }}"
+            <a href="{{ route('helpdesk.home.cek-pengirim') }}"
                class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors duration-300">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali ke beranda

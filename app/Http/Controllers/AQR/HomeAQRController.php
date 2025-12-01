@@ -18,15 +18,15 @@ class HomeAQRController extends Controller
         $pengirim = $request->get('pengirim');
 
         if ($pengirim === 'Masyarakat Umum') {
-            return view('home.open-tiket-umum-new', compact('pengirim'));
+            return view('frontend.aqr.open-tiket-umum-new', compact('pengirim'));
         } else {
-            return view('home.open-tiket-warga-new', compact('pengirim'));
+            return view('frontend.aqr.open-tiket-warga-new', compact('pengirim'));
         }
     }
 
     public function cekPengirim()
     {
-        return view('home.cek-pengirim-new');
+        return view('frontend.aqr.cek-pengirim-new');
     }
 
 
@@ -59,6 +59,9 @@ class HomeAQRController extends Controller
             $siswa = Siswa::where('nisn', $request->nisn)->first();
             $siswaId = $siswa ? $siswa->id : null;
         }
+
+
+        // dd($siswaId);
 
         $tiket = Tiket::create([
             'no_tiket' => $noTiket,
@@ -97,13 +100,13 @@ class HomeAQRController extends Controller
 
 
 
-        return redirect()->route('home.tiket-show', ['tiket' => $tiket->no_tiket]);
+        return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket]);
     }
 
 
     public function tracking()
     {
-        return view('home.tracking-tiket-new');
+        return view('frontend.aqr.tracking-tiket-new');
     }
 
     public function pencarianTiket(Request $request)
@@ -118,9 +121,9 @@ class HomeAQRController extends Controller
         // dd($tiket);
 
         if ($tiket == null) {
-            return redirect()->route('home.tiket-tracking')->with('error', 'Tiket Tidak Ditemukan. Pastikan nomor tiket dan email anda benar');
+            return redirect()->route('frontend.aqr.tiket-tracking')->with('error', 'Tiket Tidak Ditemukan. Pastikan nomor tiket dan email anda benar');
         } else {
-            return redirect()->route('home.tiket-show', ['tiket' => $tiket->no_tiket]);
+            return redirect()->route('frontend.aqr.tiket-show', ['tiket' => $tiket->no_tiket]);
         }
     }
 
@@ -130,7 +133,7 @@ class HomeAQRController extends Controller
             ->where('no_tiket', $tiket)
             ->first();
         // dd($tiket);
-        return view('home.detail-tracking-tiket-new', compact('tiket'));
+        return view('frontend.aqr.detail-tracking-tiket-new', compact('tiket'));
     }
 
 
@@ -139,7 +142,7 @@ class HomeAQRController extends Controller
         $tiket = Tiket::find($id);
         $tiket->kepuasan = $request->kepuasan;
         $tiket->save();
-        return redirect()->route('home.tiket-show', $id)->with('success', 'Anda telah mengisikan kepuasan');
+        return redirect()->route('frontend.aqr.tiket-show', $id)->with('success', 'Anda telah mengisikan kepuasan');
     }
 
     public function getSiswaByNisn(Request $request)

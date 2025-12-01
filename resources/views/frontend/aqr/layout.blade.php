@@ -47,11 +47,11 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('home.open-tiket') }}">Tiket
+                        <a class="nav-link active" aria-current="page" href="{{ route('helpdesk.home.open-tiket') }}">Tiket
                             Baru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home.tiket-tracking') }}">Lacak Tiket </a>
+                        <a class="nav-link" href="{{ route('helpdesk.home.tiket-tracking') }}">Lacak Tiket </a>
                     </li>
 
                 </ul>

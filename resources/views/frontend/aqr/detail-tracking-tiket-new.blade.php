@@ -186,7 +186,7 @@
 
     <!-- Back Button -->
     <div class="text-center">
-        <a href="{{ route('home.tiket-tracking') }}"
+        <a href="{{ route('helpdesk.home.tiket-tracking') }}"
            class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-300">
             <i class="fas fa-arrow-left mr-2"></i>
             Kembali ke Pencarian
@@ -207,7 +207,7 @@
                 </button>
             </div>
 
-            <form action="{{ route('home.kepuasan-store', $tiket->id) }}" method="POST" class="space-y-4">
+            <form action="{{ route('helpdesk.home.kepuasan-store', $tiket->id) }}" method="POST" class="space-y-4">
                 @csrf
                 <p class="text-gray-600 mb-4">Bagaimana tingkat kepuasan Anda terhadap penanganan tiket ini?</p>
 

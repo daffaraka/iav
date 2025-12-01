@@ -29,9 +29,12 @@ return new class extends Migration
 
             $table->unsignedBigInteger('humas_id')->nullable();
             $table->unsignedBigInteger('pic_id')->nullable();
+            $table->unsignedBigInteger('siswa_id')->nullable();
 
             $table->foreign('humas_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('pic_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('siswa_id')->references('id')->on('master_siswas')->onDelete('cascade');
+
             $table->enum('kepuasan', ['Puas', 'Tidak Puas'])->nullable();
 
             $table->timestamp('waktu_proses')->nullable();

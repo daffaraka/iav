@@ -66,7 +66,7 @@
 
             <!-- Step 2: Form Kritik dan Saran -->
             <div id="step-form" class="hidden">
-                <form method="POST" enctype="multipart/form-data" action="{{ route('home.tiket-store') }}"
+                <form method="POST" enctype="multipart/form-data" action="{{ route('helpdesk.home.tiket-store') }}"
                     class="space-y-6">
                     @csrf
                     <input type="hidden" name="pengirim" value="Warga Sekolah">
@@ -315,7 +315,7 @@
                     $(this).prop('disabled', true);
 
                     $.ajax({
-                        url: '{{ route('home.get-siswa') }}',
+                        url: '{{ route('helpdesk.home.get-siswa') }}',
                         method: 'POST',
                         data: {
                             nisn: nisn,
@@ -334,7 +334,7 @@
                                 $('#nisn-hidden').val(nisn);
                                 $('#nisn-display').val(nisn);
                                 $('#nama-siswa').val(response.data.nama);
-                                $('#nama-orangtua').val(response.data.nama_orangtua || '');
+                                $('#nama-orangtua').val(response.data.nama_orang_tua || '');
                             } else {
                                 showError(response.message);
                             }

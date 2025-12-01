@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            RolePermissionSeeder::class,
             UserSeeder::class,
             DepartementSeeder::class,
             SekolahSeeder::class,
@@ -31,7 +34,8 @@ class DatabaseSeeder extends Seeder
             LeadMeasureSeeder::class,
             TaskProcessSeeder::class,
             WigProgressSeeder::class,
-            LowonganPekerjaanSeeder::class
+            LowonganPekerjaanSeeder::class,
+            TiketSeeder::class
         ]);
     }
 }

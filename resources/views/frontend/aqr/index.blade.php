@@ -1,4 +1,4 @@
-@extends('home.layout')
+@extends('helpdesk.home.layout')
 @section('content')
     <div class="row d-flex justify-content-center align-items-center h-100">
 
@@ -18,8 +18,8 @@
                 <div class="card-body text-center">
 
                     <div class="d-grid">
-                        <a href="{{route('home.open-tiket')}}" class="btn btn-primary d-block mb-3">Isi Kritik dan Saran</a>
-                        <a href="{{route('home.tiket-tracking')}}" class="btn btn-dark d-block mb-3">
+                        <a href="{{route('helpdesk.home.open-tiket')}}" class="btn btn-primary d-block mb-3">Isi Kritik dan Saran</a>
+                        <a href="{{route('helpdesk.home.tiket-tracking')}}" class="btn btn-dark d-block mb-3">
                             Cek Proses
                         </a>
                     </div>
