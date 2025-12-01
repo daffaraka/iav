@@ -176,8 +176,7 @@
                     <!-- Content -->
                     @include('dashboard.flash')
 
-                    <div class="d-flex px-4">
-
+                    <div class="d-flex px-4 mb-3">
                         <button onclick="history.back()" class="btn btn-dark"> <i
                                 class="bx bx-left-arrow-circle"></i> Kembali</button>
                     </div>

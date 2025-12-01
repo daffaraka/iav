@@ -10,6 +10,7 @@ class MasterSiswa extends Model
     use HasFactory;
     protected $fillable = [
         'nama',
+        'nama_orang_tua',
         'nik',
         'tempat_lahir',
         'tanggal_lahir',

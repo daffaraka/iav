@@ -145,11 +145,28 @@
                      <div data-i18n="Basic">About</div>
                  </a>
              </li>
-             <li class="menu-item">
-                 <a href="cards-basic.html" class="menu-link">
+             <li class="menu-item {{ request()->is('lowongan-pekerjaan*') || request()->is('lowongan-apply*') || request()->is('lowongan-progress*') ? 'active open' : '' }}">
+                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                      <i class="menu-icon tf-icons bx bx-briefcase-alt"></i>
-                     <div data-i18n="Basic">Career</div>
+                     <div data-i18n="Basic">Lowongan Pekerjaan</div>
                  </a>
+                 <ul class="menu-sub">
+                     <li class="menu-item {{ request()->is('lowongan-pekerjaan*') ? 'active' : '' }}">
+                         <a href="{{ route('lowongan-pekerjaan.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Data Lowongan</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('lowongan-apply*') ? 'active' : '' }}">
+                         <a href="{{ route('lowongan-apply.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Data Pelamar</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('lowongan-progress*') ? 'active' : '' }}">
+                         <a href="{{ route('lowongan-progress.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Progress Pelamar</div>
+                         </a>
+                     </li>
+                 </ul>
              </li>
 
 

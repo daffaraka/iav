@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             WigSeeder::class,
             LeadMeasureSeeder::class,
             TaskProcessSeeder::class,
-            WigProgressSeeder::class
+            WigProgressSeeder::class,
+            LowonganPekerjaanSeeder::class
         ]);
     }
 }

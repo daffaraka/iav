@@ -12,6 +12,9 @@ use App\Http\Controllers\LeadMeasureController;
 use App\Http\Controllers\TaskProcessController;
 use App\Http\Controllers\WigProgressController;
 use App\Http\Controllers\DataPrestasiController;
+use App\Http\Controllers\LowonganPekerjaanController;
+use App\Http\Controllers\LowonganApplyController;
+use App\Http\Controllers\LowonganProgressController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -21,6 +24,9 @@ Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard')
 
 Route::resource('sekolah', SekolahController::class);
 Route::resource('data-prestasi', DataPrestasiController::class);
+Route::resource('lowongan-pekerjaan', LowonganPekerjaanController::class);
+Route::resource('lowongan-apply', LowonganApplyController::class);
+Route::resource('lowongan-progress', LowonganProgressController::class);
 
 
 Route::resource('departement',DepartementController::class);
@@ -50,3 +56,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/aqr.php';
