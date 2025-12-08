@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             PermissionSeeder::class,
             RolePermissionSeeder::class,
+            BPSUserSeeder::class,
             UserSeeder::class,
+            SekolahUserSeeder::class,
             DepartementSeeder::class,
             SekolahSeeder::class,
             MasterSiswaSeeder::class,
@@ -35,7 +37,8 @@ class DatabaseSeeder extends Seeder
             TaskProcessSeeder::class,
             WigProgressSeeder::class,
             LowonganPekerjaanSeeder::class,
-            TiketSeeder::class
+            TiketSeeder::class,
+
         ]);
     }
 }

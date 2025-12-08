@@ -55,6 +55,16 @@
 
          <div class="menu-inner-shadow"></div>
 
+         <div class="d-flex justify-content-center mb-3">
+             <span class="role-indicator">
+                 <i class="bx bx-user-circle me-1"></i>
+                 @foreach (Auth::user()->roles as $role)
+                     {{ ucwords(str_replace('-', ' ', $role->name)) }}
+                 @endforeach
+             </span>
+         </div>
+
+
          <ul class="menu-inner py-1">
              <!-- Dashboard -->
              <li class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
@@ -129,6 +139,9 @@
              </li> --}}
 
 
+
+             {{--
+
              <!-- Beranda -->
              <li class="menu-header small text-uppercase"><span class="menu-header-text">Beranda Website</span></li>
              <!-- Cards -->
@@ -167,10 +180,10 @@
                          </a>
                      </li>
                  </ul>
-             </li>
+             </li> --}}
 
 
-             <!-- Sekolah -->
+             {{-- <!-- Sekolah -->
              <li class="menu-header small text-uppercase"><span class="menu-header-text">Sekolah</span></li>
              <!-- Cards -->
 
@@ -192,7 +205,7 @@
                      <div data-i18n="Basic">Data Persebaran PTN-PTS</div>
                  </a>
              </li>
-
+ --}}
 
 
 
@@ -200,13 +213,14 @@
              <li class="menu-header small text-uppercase"><span class="menu-header-text">AQR</span></li>
              <!-- Cards -->
 
-             <li class="menu-item {{ request()->is('aqr*') ? 'active open' : '' }}">
-                 <a href="javascript:void(0);" class="menu-link menu-toggle">
+             <li class="menu-item {{ request()->is('dashboard/aqr*') ? 'active open' : '' }}">
+                 <a href="javascript:void(0);"
+                     class="menu-link menu-toggle {{ request()->is('aqr*') ? 'active' : '' }}">
                      <i class="menu-icon tf-icons bx bx-support"></i>
                      <div data-i18n="Basic">Tiket Aduan</div>
                  </a>
-                 <ul class="menu-sub">
-                     <li class="menu-item {{ request()->is('aqr') ? 'active' : '' }}">
+                 <ul class="menu-sub {{ request()->is('dashboard/aqr') ? 'show' : '' }}">
+                     <li class="menu-item {{ request()->is('dashboard/aqr*') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
                              <div data-i18n="Basic">Dashboard AQR</div>
                          </a>
@@ -216,11 +230,11 @@
                              <div data-i18n="Basic">Data Tiket</div>
                          </a>
                      </li>
-                     <li class="menu-item {{ request()->is('aqr/aduan*') ? 'active' : '' }}">
+                     {{-- <li class="menu-item {{ request()->is('aqr/aduan*') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.aduan.index') }}" class="menu-link">
                              <div data-i18n="Basic">Data Aduan</div>
                          </a>
-                     </li>
+                     </li> --}}
                      <li class="menu-item {{ request()->is('aqr/progres-tiket*') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.progres-tiket.index') }}" class="menu-link">
                              <div data-i18n="Basic">Progress Tiket</div>
@@ -228,7 +242,7 @@
                      </li>
                  </ul>
              </li>
-
+             {{--
              <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
              <!-- Cards -->
 
@@ -246,6 +260,13 @@
                      <div data-i18n="Basic">Lead Measure</div>
                  </a>
              </li>
+
+             <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+                 <a href="{{ route('user.index') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-user"></i>
+                     <div data-i18n="Basic">Manajemen User</div>
+                 </a>
+             </li> --}}
 
              {{-- <li class="menu-item">
                         <a href="cards-basic.html" class="menu-link">

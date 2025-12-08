@@ -1,85 +1,78 @@
 @extends('dashboard.layout')
 @section('content')
     <div class="container-fluid">
-
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Data Aduan</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <h1 class="h3 mb-0 text-gray-800">Dashboard AQR</h1>
+            <a href="#" class="btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50 me-1"></i> Generate Report
+            </a>
         </div>
 
-        <!-- Content Row -->
-        <div class="row">
-            <!-- Earnings (Monthly) Card Example -->
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
 
-            @role('Admin')
+            @hasanyrole('super-admin')
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card border-4 border-primary border-bottom-0 border-top-0 shadow h-100 ">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Tiket Baru</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $tiketNew }}</div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tiket Baru</div>
+                                    <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $tiketNew ?? 0 }}</div>
                                 </div>
-                                <div class="card-action  red darken-2">
-                                    <div id="clients-bar"></div>
+                                <div class="col-auto">
+                                    <i class="fas fa-ticket-alt fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endrole
+            @endhasanyrole
 
-            <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-success shadow h-100 py-2">
+                <div class="card border-4 border-success border-bottom-0 border-top-0 shadow h-100 ">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Ticket Dalam Proses</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $tiketProses }}</div>
-                            </div>
-                            <div class="card-action green darken-2">
-                                <div id="sales-compositebar"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Ticket Selesai
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tiket Dalam proses
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $tiketClosed }}</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $tiketProses ?? 0 }}</div>
                             </div>
-                            <div class="card-action blue darken-2">
-                                <div id="profit-tristate"></div>
+                            <div class="col-auto">
+                                <i class="fas fa-ticket-alt fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Pending Requests Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card border-4 border-info border-bottom-0 border-top-0 shadow h-100">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Tiket Masuk
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalTiket }}</div>
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tiket Selesai</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $tiketClosed ?? 0 }}</div>
                             </div>
-                            <div class="card-action deep-purple darken-2">
-                                <div id="bar-chart-sample"></div>
+                            <div class="col-auto">
+                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-4 border-warning border-bottom-0 border-top-0 shadow h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Tiket</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $totalTiket ?? 0 }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -87,267 +80,245 @@
             </div>
         </div>
 
-
+        <!-- Tiket Lists -->
         <div class="row">
-            {{-- Baru --}}
 
-            @role('Admin')
-                <div class="col">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-dark">Tiket Baru</h6>
+            @hasanyrole('super-admin')
+                <!-- Tiket Baru -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3 bg-primary">
+                            <h6 class="m-0 font-weight-bold text-white">Tiket Baru</h6>
                         </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            @foreach ($latestTiket as $item)
-                                <div class="card mb-3 shadow">
-                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                        <strong class="text-dark">{{ $item->nama }}</strong>
+                        <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+                            @forelse ($latestTiket ?? [] as $item)
+                                <div class="p-3" style="border-left-width: 3px !important;">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
                                         <span
-                                            class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }}">{{ $item->pengirim }}</span>
+                                            class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }} badge-sm">
+                                            {{ $item->pengirim }}
+                                        </span>
                                     </div>
-                                    <div class="card-body">
-                                        <table class="table table-sm">
-                                            <tr>
-                                                <th width="30%"><strong>Pengirim</strong></th>
-                                                <td><span
-                                                        class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }}">{{ $item->pengirim }}</span>
-                                                </td>
-                                            </tr>
-                                            @if ($item->nisn)
-                                                <tr>
-                                                    <th><strong>NISN</strong></th>
-                                                    <td><strong>{{ $item->nisn }}</strong></td>
-                                                </tr>
-                                            @endif
-                                            <tr>
-                                                <th><strong>Departemen</strong></th>
-                                                <td>{{ $item->departemen ?? '-' }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th><strong>Detail kendala</strong></th>
-                                                <td>{{ $item->detail_kendala }}</td>
-                                            </tr>
-                                            @if ($item->lokasi_kendala)
-                                                <tr>
-                                                    <th><strong>Lokasi Kendala</strong></th>
-                                                    <td><strong>{{ $item->lokasi_kendala }}</strong></td>
-                                                </tr>
-                                            @endif
-                                            <tr>
-                                                <th><strong>Waktu</strong></th>
-                                                <td><strong>{{ $item->created_at->isoFormat('D MMMM YYYY, HH:mm:ss') }}</strong>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <div class="d-grid mt-3">
-                                            <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}" class="btn btn-info btn-block">Lihat
-                                                Aduan</a>
-                                            @if ($item->filename == null)
-                                                <button class="btn btn-dark btn-block disabled">Tidak ada lampiran</button>
-                                            @else
-                                                <a href="{{ asset($item->filename) }}"data-toggle="tooltip" title="Edit"
-                                                    class="btn btn-primary btn-block {{ $item->filename = !null ? '' : 'disabled' }}">
-                                                    <i class="fas fa-image"></i>
-                                                </a>
-                                            @endif
 
-                                        </div>
+                                    <div class="mb-2">
+                                        <small class="d-block"><strong>Kendala:</strong>
+                                            {{ Str::limit($item->detail_kendala, 60) }}</small>
+                                        @if ($item->lokasi_kendala)
+                                            <small class="d-block"><strong>Lokasi:</strong> {{ $item->lokasi_kendala }}</small>
+                                        @endif
+                                        <small class="d-block"><strong>Waktu:</strong>
+                                            {{ $item->created_at->diffForHumans() }}</small>
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"
+                                            class="btn btn-info btn-sm flex-fill">Lihat Detail</a>
+                                        @if ($item->filename)
+                                            <a href="{{ asset($item->filename) }}" class="btn btn-outline-primary btn-sm"
+                                                target="_blank">
+                                                <i class="fas fa-paperclip"></i>
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
-                                {{-- <hr style="height:3px;border-width:0;color:gray;background-color:gray"> --}}
-                            @endforeach
+                            @empty
+                                <div class="text-center py-4">
+                                    <i class="fas fa-inbox fa-3x text-gray-300 mb-3"></i>
+                                    <p class="text-muted">Tidak ada tiket baru</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
-            @endrole
-            {{-- Proses --}}
-            <div class="col">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-dark">Tiket Dalam Proses</h6>
+            @endhasanyrole
+
+            <!-- Tiket Dalam Proses -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3 bg-success">
+                        <h6 class="m-0 font-weight-bold text-white">Tiket Dalam Proses</h6>
                     </div>
-                    <!-- Card Body -->
-                    <div class="card-body">
-                        @foreach ($latestProses as $item)
-                            <div class="card mb-3 shadow">
-                                <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                    <strong class="text-dark">{{ $item->nama }}</strong>
+                    <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+                        @forelse ($latestProses ?? [] as $item)
+                            <div class="p-3" style="border-left-width: 3px !important;">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
                                     <span
-                                        class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }}">{{ $item->pengirim }}</span>
+                                        class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }} badge-sm">
+                                        {{ $item->pengirim }}
+                                    </span>
                                 </div>
-                                <div class="card-body">
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <th width="30%"><strong>Pengirim</strong></th>
-                                            <td><span
-                                                    class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }}">{{ $item->pengirim }}</span>
-                                            </td>
-                                        </tr>
-                                        @if ($item->nisn)
-                                            <tr>
-                                                <th><strong>NISN</strong></th>
-                                                <td><strong>{{ $item->nisn }}</strong></td>
-                                            </tr>
-                                        @endif
-                                        <tr>
-                                            <th><strong>Humas</strong></th>
-                                            <td><strong>{{ $item->humas->name ?? '-' }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>PIC</strong></th>
-                                            <td><strong>{{ $item->pic->name ?? '-' }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>Departemen</strong></th>
-                                            <td>{{ $item->departemen ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>Detail kendala</strong></th>
-                                            <td>{{ $item->detail_kendala }}</td>
-                                        </tr>
-                                        @if ($item->lokasi_kendala)
-                                            <tr>
-                                                <th><strong>Lokasi Kendala</strong></th>
-                                                <td><strong>{{ $item->lokasi_kendala }}</strong></td>
-                                            </tr>
-                                        @endif
-                                        <tr>
-                                            <th><strong>Waktu</strong></th>
-                                            <td><strong>{{ $item->created_at->isoFormat('D MMMM YYYY, HH:mm:ss') }}</strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>Waktu Proses</strong></th>
-                                            <td>
-                                                @if ($item->waktu_proses != null)
-                                                    <strong>{{ Carbon\Carbon::parse($item->waktu_proses)->isoFormat('D MMMM YYYY, HH:mm:ss') }}</strong>
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <div class="d-grid mt-3">
-                                        <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"
-                                            class="btn btn-info btn-block">Lihat
-                                            Aduan</a>
-                                        @if ($item->filename == null)
-                                            <button class="btn btn-dark btn-block disabled">Tidak ada lampiran</button>
-                                        @else
-                                            <a href="{{ asset($item->filename) }}"data-toggle="tooltip" title="Edit"
-                                                class="btn btn-primary btn-block {{ $item->filename = !null ? '' : 'disabled' }}">
-                                                <i class="fas fa-image"></i>
-                                            </a>
-                                        @endif
+
+                                <div class="mb-2">
+                                    <small class="d-block"><strong>PIC:</strong> {{ $item->pic->name ?? '-' }}</small>
+                                    <small class="d-block"><strong>Kendala:</strong>
+                                        {{ Str::limit($item->detail_kendala, 60) }}</small>
+                                    <small class="d-block"><strong>Waktu:</strong>
+                                        {{ $item->created_at->diffForHumans() }}</small>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"
+                                        class="btn btn-success btn-sm flex-fill">Lihat Detail</a>
+                                    @if ($item->filename)
+                                        <a href="{{ asset($item->filename) }}" class="btn btn-outline-primary btn-sm"
+                                            target="_blank">
+                                            <i class="fas fa-paperclip"></i>
                                         </a>
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
-                            {{-- <hr style="height:3px;border-width:0;color:gray;background-color:gray"> --}}
-                        @endforeach
+                        @empty
+                            <div class="text-center py-4">
+                                <i class="fas fa-cog fa-3x text-gray-300 mb-3"></i>
+                                <p class="text-muted">Tidak ada tiket dalam proses</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
 
-            {{-- Selesai --}}
-            <div class="col">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-dark">Tiket Selesai</h6>
+            <!-- Tiket Selesai -->
+            <div class="col-lg-4 col-md-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3 bg-info">
+                        <h6 class="m-0 font-weight-bold text-white">Tiket Selesai</h6>
                     </div>
-                    <!-- Card Body -->
-                    <div class="card-body">
-
-                        @foreach ($latestSelesai as $item)
-                            <div class="card mb-3 shadow">
-                                <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                    <strong class="text-dark">{{ $item->nama }}</strong>
-                                    <span
-                                        class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }}">{{ $item->pengirim }}</span>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <th width="30%"><strong>Pengirim</strong></th>
-                                            <td><span
-                                                    class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }}">{{ $item->pengirim }}</span>
-                                            </td>
-                                        </tr>
-                                        @if ($item->nisn)
-                                            <tr>
-                                                <th><strong>NISN</strong></th>
-                                                <td><strong>{{ $item->nisn }}</strong></td>
-                                            </tr>
-                                        @endif
-                                        <tr>
-                                            <th><strong>Departemen</strong></th>
-                                            <td>{{ $item->departemen ?? '-' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>Detail kendala</strong></th>
-                                            <td>{{ $item->detail_kendala }}</td>
-                                        </tr>
-                                        @if ($item->lokasi_kendala)
-                                            <tr>
-                                                <th><strong>Lokasi Kendala</strong></th>
-                                                <td><strong>{{ $item->lokasi_kendala }}</strong></td>
-                                            </tr>
-                                        @endif
-                                        <tr>
-                                            <th><strong>Waktu</strong></th>
-                                            <td><strong>{{ $item->created_at->isoFormat('D MMMM YYYY, HH:mm:ss') }}</strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>Waktu Proses</strong></th>
-                                            <td>
-                                                @if ($item->waktu_proses != null)
-                                                    <strong>{{ Carbon\Carbon::parse($item->waktu_proses)->isoFormat('D MMMM YYYY, HH:mm:ss') }}</strong>
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><strong>Waktu Selesai</strong></th>
-                                            <td>
-                                                @if ($item->waktu_close != null)
-                                                    <strong>{{ Carbon\Carbon::parse($item->waktu_close)->isoFormat('D MMMM YYYY, HH:mm:ss') }}</strong>
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
+                    <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+                        @forelse ($latestSelesai ?? [] as $item)
+                            <div class="p-3" style="border-left-width: 3px !important;">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
+                                    <div class="d-flex flex-column align-items-end">
+                                        <span
+                                            class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }} badge-sm mb-1">
+                                            {{ $item->pengirim }}
+                                        </span>
                                         @if ($item->kepuasan)
-                                            <tr>
-                                                <th><strong>Kepuasan</strong></th>
-                                                <td><span
-                                                        class="badge badge-{{ $item->kepuasan == 'Puas' ? 'success' : 'warning' }}">{{ $item->kepuasan }}</span>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    </table>
-
-                                    <div class="d-grid mt-3">
-                                        <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"
-                                            class="btn btn-info btn-block">Lihat Aduan</a>
-                                        @if ($item->filename == null)
-                                            <button class="btn btn-dark btn-block disabled">Tidak ada lampiran</button>
-                                        @else
-                                            <a href="{{ asset($item->filename) }}"data-toggle="tooltip" title="Edit"
-                                                class="btn btn-primary btn-block {{ $item->filename = !null ? '' : 'disabled' }}">
-                                                <i class="fas fa-image"></i>
-                                            </a>
+                                            <span
+                                                class="badge badge-{{ $item->kepuasan == 'Puas' ? 'success' : 'warning' }} badge-sm">
+                                                {{ $item->kepuasan }}
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
+
+                                <div class="mb-2">
+                                    <small class="d-block"><strong>Kendala:</strong>
+                                        {{ Str::limit($item->detail_kendala, 60) }}</small>
+                                    <small class="d-block"><strong>Selesai:</strong>
+                                        {{ $item->waktu_close ? \Carbon\Carbon::parse($item->waktu_close)->diffForHumans() : '-' }}</small>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"
+                                        class="btn btn-info btn-sm flex-fill">Lihat Detail</a>
+                                    @if ($item->filename)
+                                        <a href="{{ asset($item->filename) }}" class="btn btn-outline-primary btn-sm"
+                                            target="_blank">
+                                            <i class="fas fa-paperclip"></i>
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="text-center py-4">
+                                <i class="fas fa-check-circle fa-3x text-gray-300 mb-3"></i>
+                                <p class="text-muted">Tidak ada tiket selesai</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Charts Section -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Status Tiket</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="pieChart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tiket per Minggu (Lokasi)</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="barChart" style="height: 600px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 @endsection
+
+@push('scripts')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+// Pie Chart
+Highcharts.chart('pieChart', {
+    chart: {
+        type: 'pie'
+    },
+    title: {
+        text: null
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.y}'
+            },
+            showInLegend: true
+        }
+    },
+    colors: ['#ffc107', '#17a2b8', '#28a745'],
+    series: [{
+        name: 'Tiket',
+        colorByPoint: true,
+        data: {!! $pieChartData !!}
+    }]
+});
+
+// Bar Chart
+Highcharts.chart('barChart', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: null
+    },
+    xAxis: {
+        categories: {!! $weekLabels !!},
+        title: {
+            text: 'Minggu'
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Jumlah Tiket'
+        }
+    },
+    plotOptions: {
+        column: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    series: {!! $barChartData !!}
+});
+</script>
+@endpush

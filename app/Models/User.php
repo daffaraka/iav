@@ -7,10 +7,11 @@ use App\Models\Wig;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,11 +19,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'kode_karyawan',
         'name',
         'email',
         'password',
         'username',
         'nip',
+        'unit',
+        'jenjang',
+        'departemen',
+        'no_hp',
         'jabatan'
     ];
 
@@ -46,6 +52,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'unit' => 'string',
+            'jenjang' => 'string',
         ];
     }
 
@@ -53,5 +61,10 @@ class User extends Authenticatable
     public function wigs()
     {
         return $this->hasMany(Wig::class);
+    }
+
+    public function tiket()
+    {
+        return $this->hasMany(Tiket::class);
     }
 }

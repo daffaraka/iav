@@ -2,74 +2,89 @@
 
 namespace App\Http\Controllers\AQR;
 
-use App\Http\Controllers\Controller;
-
-use App\Models\ProgresTiket;
 use App\Models\User;
 use App\Models\Tiket;
+use App\Models\ProgresTiket;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Prompts\Progress;
 
 class TiketController extends Controller
 {
-
-    public function index(Request $request)
+    public function index()
     {
-        $query = Tiket::with(['humas', 'pic']);
-
-        // Filter berdasarkan pengirim jika ada
-        if ($request->has('pengirim') && $request->pengirim != '') {
-            $query->where('pengirim', $request->pengirim);
-        }
-
-        if (Auth::user()->hasRole('Admin')) {
-            $data = $query->get();
-        } else {
-            $data = $query->where('pic_id', Auth::user()->id)->get();
-        }
-
-        return view('admin.tiket.tiket-index', compact('data'));
+        $data['data'] = Tiket::with(['humas', 'pic'])->latest()->paginate(15);
+        return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tiket $tiket)
+    public function tiketDalamprogres()
     {
-        return view('admin.tiket.tiket-detail', compact('tiket'));
+        $data['data'] = Tiket::with(['humas', 'pic'])->where('status','Proses')->latest()->paginate(15);
+        return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tiket $tiket)
+    public function create()
+    {
+        return view('dashboard.aqr.tiket-create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:50',
+            'no_hp' => 'nullable|string|max:250',
+            'email' => 'nullable|email|max:50',
+            'judul_kendala' => 'required|string|max:255',
+            'detail_kendala' => 'required|string',
+            'lokasi_kendala' => 'nullable|string|max:250',
+            'pengirim' => 'required|in:Masyarakat Umum,Warga Sekolah',
+            'lokasi_sekolah' => 'required_if:pengirim,Warga Sekolah|in:Cinere,Jagakarsa,Pamulang',
+            'filename' => 'nullable|file|max:2048'
+        ]);
+
+        $validated['no_tiket'] = 'AQR-' . date('Ymd') . '-' . \Illuminate\Support\Str::random(6);
+        $validated['status'] = 'New';
+
+        if ($request->hasFile('filename')) {
+            $validated['filename'] = $request->file('filename')->store('tiket-files', 'public');
+        }
+
+        $tiket = Tiket::create($validated);
+
+        if ($validated['pengirim'] === 'Warga Sekolah') {
+            $tuAdmin = $tiket->getAutoAssignedTU();
+            if ($tuAdmin) {
+                $tiket->update(['pic_id' => $tuAdmin->id]);
+            }
+        }
+
+        return redirect()->route('dashboard.aqr.tiket.index')
+            ->with('success', 'Tiket berhasil dibuat dengan nomor: ' . $tiket->no_tiket);
+    }
+
+    public function show($id)
+    {
+        $tiket = Tiket::with(['humas', 'pic', 'siswa'])->findOrFail($id);
+        return view('dashboard.aqr.tiket-show', compact('tiket'));
+    }
+
+    public function edit($id)
     {
         $tiket = Tiket::with(['humas', 'pic', 'progres' => function ($query) {
             $query->latest();
-        }])->find($tiket->id);
-        $picSelect = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'Admin');
-        })->get();
+        }])->find($id);
 
+        $picSelect = User::select('id', 'name')->get();
 
-
-        // dd($tiket);
-        return view('admin.tiket.tiket-edit', compact('tiket', 'picSelect'));
+        return view('dashboard.aqr-dashboard.tiket.tiket-edit', compact('tiket', 'picSelect'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Tiket $tiket)
+    public function update(Request $request, $id)
     {
 
-        // dd(Auth::user()->hasRole('Admin'));
-
-
-
-        if (Auth::user()->hasRole('Admin')) {
+        $tiket = Tiket::find($id);
+        if (Auth::user()->hasanyrole('super-admin|admin|humas')) {
             $tiket->update([
                 'status' => 'Proses',
                 'departemen' => $request->departemen,
@@ -81,7 +96,7 @@ class TiketController extends Controller
             if ($request->has('fotopengerjaan')) {
                 $file = $request->file('fotopengerjaan');
                 $fileName = $file->getClientOriginalName();
-                $path = $file->move('tiket/'.now()->year . '/progres/', $fileName);
+                $path = $file->move('tiket/' . now()->year . '/progres/', $fileName);
             }
 
             $progressTiket = new ProgresTiket();
@@ -95,26 +110,56 @@ class TiketController extends Controller
             ]);
         }
 
-
-
-
-        return redirect()->route('tiket.edit', $tiket->id);
+        return redirect()->back()
+            ->with('success', 'Tiket berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tiket $tiket)
+    public function destroy($id)
     {
-        //
+        $tiket = Tiket::findOrFail($id);
+        $tiket->delete();
+
+        return redirect()->route('dashboard.aqr.tiket.index')
+            ->with('success', 'Tiket berhasil dihapus');
     }
 
-
-    public function finish(Tiket $tiket)
+    public function proses($id)
     {
-        $tiket->status = 'Selesai';
-        $tiket->save();
+        $tiket = Tiket::findOrFail($id);
+        $tiket->update([
+            'status' => 'Proses',
+            'waktu_proses' => now()
+        ]);
 
-        return redirect()->route('tiket.edit', $tiket->id);
+        return redirect()->back()->with('success', 'Tiket berhasil diproses');
+    }
+
+    public function finish($id)
+    {
+        $tiket = Tiket::findOrFail($id);
+        $tiket->update([
+            'status' => 'Selesai',
+            'waktu_close' => now()
+        ]);
+
+        return redirect()->back()->with('success', 'Tiket berhasil diselesaikan');
+    }
+
+    public function rating(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'deskripsi_penilaian' => 'nullable|string|max:1000'
+        ]);
+
+        $tiket = Tiket::findOrFail($id);
+
+        if ($tiket->status !== 'Selesai') {
+            return redirect()->back()->with('error', 'Hanya tiket selesai yang bisa diberi rating');
+        }
+
+        $tiket->update($validated);
+
+        return redirect()->back()->with('success', 'Rating berhasil diberikan');
     }
 }

@@ -42,7 +42,7 @@ class RolePermissionSeeder extends Seeder
         $guru->givePermissionTo($guruPermissions);
 
         // TU - Administrative tasks
-        $tu = Role::findByName('tu');
+        $tu = Role::findByName('tata-usaha');
         $tuPermissions = [
             'view-dashboard',
             'view-sekolah', 'create-sekolah', 'edit-sekolah',
@@ -52,8 +52,9 @@ class RolePermissionSeeder extends Seeder
             'view-lowongan-progress', 'create-lowongan-progress', 'edit-lowongan-progress',
             'view-user', 'create-user', 'edit-user',
             'view-aqr-dashboard',
-            'view-tiket', 'create-tiket', 'edit-tiket',
+            'view-tiket', 'create-tiket', 'edit-tiket', 'tiket-finish',
             'view-aduan', 'create-aduan', 'edit-aduan',
+            'view-rating-tiket', 'create-rating-tiket', 'edit-rating-tiket',
             'export-data'
         ];
         $tu->givePermissionTo($tuPermissions);
@@ -80,5 +81,10 @@ class RolePermissionSeeder extends Seeder
             'export-data'
         ];
         $kepalaSekolah->givePermissionTo($kepalaSekolahPermissions);
+
+        // Humas - Full monitoring access
+        $humas = Role::firstOrCreate(['name' => 'humas']);
+        $humasPermissions = Permission::all(); // All permissions for monitoring
+        $humas->givePermissionTo($humasPermissions);
     }
 }

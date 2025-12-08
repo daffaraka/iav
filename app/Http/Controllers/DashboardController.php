@@ -14,6 +14,7 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
 
+
         // Count total records from each table
         $totalDepartemen = Departement::count();
         $totalWig = Wig::count();

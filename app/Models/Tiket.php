@@ -3,58 +3,65 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\MasterSiswa as Siswa;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tiket extends Model
 {
-     protected $fillable = [
-        'nisn',
-        'siswa_id',
-        'no_hp',
-        'nama',
-        'nama_orangtua',
-        'email',
-        'judul_kendala',
-        'departemen',
-
-        'lokasi_kendala',
-        'detail_kendala',
-        'penanganan',
-        'status',
-        'filename',
-        'fotopengerjaan',
-        'pengirim',
-        'humas_id',
-        'pic_id',
-        'waktu_proses',
-        'waktu_close',
-        'kepuasan'
+    protected $fillable = [
+        'nisn', 'no_tiket', 'no_hp', 'nama', 'nama_orangtua', 'email',
+        'judul_kendala', 'departemen', 'lokasi_kendala', 'detail_kendala',
+        'status', 'filename', 'pengirim', 'humas_id', 'pic_id', 'siswa_id',
+        'kepuasan', 'rating', 'deskripsi_penilaian', 'lokasi_sekolah',
+        'waktu_proses', 'waktu_close'
     ];
 
+    protected $casts = [
+        'waktu_proses' => 'datetime',
+        'waktu_close' => 'datetime',
+        'rating' => 'integer'
+    ];
 
-    public function humas()
+    public function humas(): BelongsTo
     {
         return $this->belongsTo(User::class, 'humas_id');
     }
 
-    public function pic()
+    public function pic(): BelongsTo
     {
         return $this->belongsTo(User::class, 'pic_id');
     }
 
+    public function siswa(): BelongsTo
+    {
+        return $this->belongsTo(MasterSiswa::class, 'siswa_id');
+    }
 
     public function progres()
     {
         return $this->hasMany(ProgresTiket::class);
     }
 
-    public function siswa()
+    public function getAutoAssignedTU()
     {
-        return $this->belongsTo(Siswa::class);
+        $tuMapping = [
+            'Cinere' => ['AVI-0052', 'AVI-0085'], // Ahmad Kamal, Atih Rismawati
+            'Jagakarsa' => ['AVI-0054', 'AVI-0291'], // Ahmad Nadir, Rosaulina
+            'Pamulang' => ['AVI-0438', 'AVI-0184'] // Raden Windya, Eni Dwinanti
+        ];
+
+        if (isset($tuMapping[$this->lokasi_sekolah])) {
+            return User::whereIn('employee_code', $tuMapping[$this->lokasi_sekolah])
+                      ->whereHas('roles', function($q) {
+                          $q->where('name', 'tu');
+                      })->first();
+        }
+
+        return null;
     }
 
 
-    protected static function boot()
+
+     protected static function boot()
     {
         parent::boot();
 

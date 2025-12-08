@@ -5,7 +5,7 @@
     <div class="bg-white rounded-2xl shadow-2xl p-8 border-0">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <img src="image/avicenna-helpdesk.png" alt="AQR Logo" class="mx-auto h-20 w-auto mb-4">
+            <img src="{{asset('image/avicenna-helpdesk.png')}}" alt="AQR Logo" class="mx-auto h-20 w-auto mb-4">
             <h2 class="text-3xl font-bold text-gray-900 mb-2">Avicenna Quick Response</h2>
             <p class="text-gray-600">Pilih Jenis Pengirim</p>
         </div>

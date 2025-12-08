@@ -139,10 +139,15 @@ class HomeAQRController extends Controller
 
     public function storeKepuasan($id, Request $request)
     {
+
+        // dd($request->all());
         $tiket = Tiket::find($id);
-        $tiket->kepuasan = $request->kepuasan;
+        // $tiket->kepuasan = $request->kepuasan;
+        $tiket->rating = $request->rating;
+        $tiket->deskripsi_penilaian = $request->deskripsi_penilaian;
+        $tiket->status = 'Selesai';
         $tiket->save();
-        return redirect()->route('frontend.aqr.tiket-show', $id)->with('success', 'Anda telah mengisikan kepuasan');
+        return redirect()->back()->with('success', 'Anda telah mengisikan kepuasan');
     }
 
     public function getSiswaByNisn(Request $request)

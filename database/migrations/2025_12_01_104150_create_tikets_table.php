@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('departemen', 50)->nullable();
             $table->string('lokasi_kendala', 250)->nullable();
             $table->text('detail_kendala')->nullable();
-            $table->enum('status', ['New', 'Proses', 'Selesai'])->nullable();
+            $table->enum('status', ['New', 'Proses', 'Selesai','Spam'])->nullable();
             $table->string('filename', 100)->nullable();
             $table->enum('pengirim', ['Masyarakat Umum', 'Warga Sekolah']);
 
@@ -36,6 +36,9 @@ return new class extends Migration
             $table->foreign('siswa_id')->references('id')->on('master_siswas')->onDelete('cascade');
 
             $table->enum('kepuasan', ['Puas', 'Tidak Puas'])->nullable();
+            $table->integer('rating')->nullable()->comment('Rating 1-5 bintang');
+            $table->text('deskripsi_penilaian')->nullable();
+            $table->string('lokasi_sekolah')->nullable()->comment('Cinere, Jagakarsa, Pamulang');
 
             $table->timestamp('waktu_proses')->nullable();
             $table->timestamp('waktu_close')->nullable();

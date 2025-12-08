@@ -25,6 +25,7 @@ class PermissionSeeder extends Seeder
             'tiket',
             'aduan',
             'progres-tiket',
+            'rating-tiket',
             'user'
         ];
 
@@ -43,7 +44,12 @@ class PermissionSeeder extends Seeder
             'export-data',
             'manage-settings',
             'assign-roles',
-            'view-analytics'
+            'view-analytics',
+            'tiket-finish',
+            'tiket-pilih-pic',
+            'monitor-all-tiket',
+            'reminder-tiket',
+            'view-all-locations'
         ];
 
         foreach ($specificPermissions as $permission) {

@@ -18,35 +18,30 @@ class UserSeeder extends Seeder
 
         $users = [
             [
-                'name' => 'Imam Sukendro',
-                'username' => 'imam_sukendro',
-                'nip' => '1',
-                'jabatan' => 'Koordinator',
-                'email' => 'imam.sukendro@avicenna.sch.id',
+                'name' => 'Admin',
+                'username' => 'admin',
+                'jabatan' => 'Admin',
+                'email' => 'admin@admin.com',
                 'password' => Hash::make('password'),
+                'unit' => 'BPS',
+                'departemen' => 'Admin',
+
             ],
             [
-                'name' => 'Tri Sari Andita',
-                'username' => 'tri_sari',
-                'nip' => '2',
-                'jabatan' => 'Koordinator',
-                'email' => 'tri.sari@avicenna.sch.id',
+                'name' => 'User',
+                'username' => 'user',
+                'jabatan' => 'User',
+                'email' => 'user@admin.com',
                 'password' => Hash::make('password'),
+                'unit' => 'BPS',
+                'departemen' => 'Admin',
             ],
-            [
-                'name' => 'Ajeng',
-                'username' => 'ajeng',
-                'nip' => '3',
-                'jabatan' => 'Koordinator',
-                'email' => 'ajeng@avicenna.sch.id',
-                'password' => Hash::make('password'),
-            ]
         ];
 
 
         foreach ($users as $user) {
-        User::create($user);
-
+            $newUser = User::create($user);
+            $newUser->assignRole('super-admin');
         }
     }
 }

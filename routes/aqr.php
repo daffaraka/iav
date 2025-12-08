@@ -10,7 +10,11 @@ use App\Http\Controllers\AQR\ProgresTiketController;
 Route::prefix('dashboard/aqr')->name('dashboard.aqr.')->group(function () {
     Route::get('/', [AQRController::class, 'index'])->name('dashboard');
 
-    Route::resource('aduan', AduanController::class);
     Route::resource('tiket', TiketController::class);
     Route::resource('progres-tiket', ProgresTiketController::class);
+
+    // Tiket actions
+    Route::patch('tiket/{id}/proses', [TiketController::class, 'proses'])->name('tiket.proses');
+    Route::post('tiket/{id}/rating', [TiketController::class, 'rating'])->name('tiket.rating');
+    Route::get('tiket/selesaikan/{tiket}', [TiketController::class, 'finish'])->name('tiket.finish');
 });

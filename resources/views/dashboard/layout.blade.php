@@ -60,7 +60,36 @@
 
 
 </head>
-
+ <style>
+         .role-indicator {
+             background: linear-gradient(45deg, #696cff, #8b5cf6);
+             color: white;
+             padding: 8px 16px;
+             border-radius: 20px;
+             font-size: 12px;
+             font-weight: 600;
+             text-transform: uppercase;
+             letter-spacing: 0.5px;
+             box-shadow: 0 2px 8px rgba(105, 108, 255, 0.3);
+             animation: pulse-glow 2s infinite;
+             border: 2px solid rgba(255, 255, 255, 0.2);
+         }
+         
+         @keyframes pulse-glow {
+             0% {
+                 box-shadow: 0 2px 8px rgba(105, 108, 255, 0.3);
+                 transform: scale(1);
+             }
+             50% {
+                 box-shadow: 0 4px 16px rgba(105, 108, 255, 0.6);
+                 transform: scale(1.02);
+             }
+             100% {
+                 box-shadow: 0 2px 8px rgba(105, 108, 255, 0.3);
+                 transform: scale(1);
+             }
+         }
+         </style>
 <body class="overflow-auto">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -107,7 +136,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="../assets/img/avatars/1.png" alt
+                                        <img src="{{asset('dashboard-admin/assets/img/avatars/1.png')}}" alt
                                             class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
@@ -117,13 +146,13 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="../assets/img/avatars/1.png" alt
+                                                        <img src="{{asset('dashboard-admin/assets/img/avatars/1.png')}}" alt
                                                             class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">John Doe</span>
-                                                    <small class="text-muted">Admin</small>
+                                                    <span class="fw-semibold d-block">{{Auth::user()->name}} </span>
+                                                    <small class="text-muted">{{Auth::user()->roles ?? '-'}}</small>
                                                 </div>
                                             </div>
                                         </a>

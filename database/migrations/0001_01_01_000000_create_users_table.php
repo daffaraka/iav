@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_karyawan')->nullable();
             $table->string('name');
             $table->string('username')->unique();
-            $table->string('nip')->unique();
+            // $table->string('nip')->unique();
+            $table->enum('unit',['BPS','Cinere','Jagakarsa','Pamulang']);
+            $table->enum('jenjang',['KB-TK','SD','SMP','SMA'])->nullable();
+            $table->string('departemen');
+            $table->string('no_hp')->nullable();
             $table->string('jabatan');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
