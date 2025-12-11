@@ -27,11 +27,11 @@ return new class extends Migration
             $table->string('filename', 100)->nullable();
             $table->enum('pengirim', ['Masyarakat Umum', 'Warga Sekolah']);
 
-            $table->unsignedBigInteger('humas_id')->nullable();
+            $table->unsignedBigInteger('admin_humas_id')->nullable();
             $table->unsignedBigInteger('pic_id')->nullable();
             $table->unsignedBigInteger('siswa_id')->nullable();
 
-            $table->foreign('humas_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('admin_humas_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('pic_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('siswa_id')->references('id')->on('master_siswas')->onDelete('cascade');
 

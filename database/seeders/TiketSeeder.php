@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TiketSeeder extends Seeder
 {
@@ -55,6 +56,8 @@ class TiketSeeder extends Seeder
             'SMA Avicenna Cinere'
         ];
 
+
+
         $detailKendala = [
             'Koneksi internet lambat di ruang kelas',
             'Perundungan antar siswa di area kantin',
@@ -78,9 +81,12 @@ class TiketSeeder extends Seeder
             'Ventilasi ruangan kurang baik'
         ];
 
+
+
+
         for ($i = 0; $i < 200; $i++) {
             $selectedStatus = $status[array_rand($status)];
-            
+
             \App\Models\Tiket::create([
                 'no_tiket' => 'AQR-' . date('Ymd') . '-' . str_pad($i, 3, '0', STR_PAD_LEFT),
                 'waktu_proses' => $selectedStatus != 'New' ? now()->subDays(rand(1, 7))->format('Y-m-d H:i:s') : null,
@@ -89,15 +95,17 @@ class TiketSeeder extends Seeder
                 'nama' => 'User Test ' . ($i + 1),
                 'email' => 'user' . ($i + 1) . '@test.com',
                 'judul_kendala' => $jenisKendala[array_rand($jenisKendala)],
-                'lokasi_kendala' => $lokasiKendala[array_rand($lokasiKendala)],
+                'lokasi_kendala' => $selectedLokasi = $lokasiKendala[array_rand($lokasiKendala)],
                 'detail_kendala' => $detailKendala[array_rand($detailKendala)],
                 'status' => $selectedStatus,
-                'pengirim' => rand(0, 1) ? 'Warga Sekolah' : 'Masyarakat Umum',
+                'pengirim' => $selectedPengirim = ['Masyarakat Umum', 'Warga Sekolah'][array_rand(['Masyarakat Umum', 'Warga Sekolah'])],
                 'departemen' => $departemen[array_rand($departemen)],
-                'lokasi_sekolah' => ['Cinere', 'Jagakarsa', 'Pamulang'][array_rand(['Cinere', 'Jagakarsa', 'Pamulang'])],
+                'lokasi_sekolah' => $lokasiSekolah = explode(' ', $selectedLokasi)[2],
                 'rating' => $selectedStatus == 'Selesai' ? rand(3, 5) : null,
                 'deskripsi_penilaian' => $selectedStatus == 'Selesai' ? 'Pelayanan memuaskan' : null,
-                'created_at' => now()->subDays(rand(0, 28))
+                'created_at' => now()->subDays(rand(0, 28)),
+                'admin_humas_id' => $selectedPengirim == 'Masyarakat Umum' && $selectedStatus == 'Proses' ? User::where('jabatan', 'LIKE', '%Humas%')->inRandomOrder()->first()?->id : null,
+                'pic_id' => $selectedPengirim == 'Warga Sekolah' && $selectedStatus == 'Proses' ? User::where('jabatan', 'LIKE', '%Admin TU%')->where('unit', $lokasiSekolah)->inRandomOrder()->first()?->id : null,
             ]);
         }
     }

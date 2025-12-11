@@ -12,7 +12,7 @@
         <!-- Statistics Cards -->
         <div class="row mb-4">
 
-            @hasanyrole('super-admin')
+            @hasanyrole(['super-admin','tata-usaha','humas','admin'])
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-4 border-primary border-bottom-0 border-top-0 shadow h-100 ">
                         <div class="card-body">
@@ -83,7 +83,7 @@
         <!-- Tiket Lists -->
         <div class="row">
 
-            @hasanyrole('super-admin')
+            @hasanyrole(['super-admin','tata-usaha','humas'])
                 <!-- Tiket Baru -->
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card shadow h-100">
@@ -95,10 +95,10 @@
                                 <div class="p-3" style="border-left-width: 3px !important;">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
-                                        <span
-                                            class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }} badge-sm">
+                                        <button class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
+                                            <i class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                             {{ $item->pengirim }}
-                                        </span>
+                                        </button>
                                     </div>
 
                                     <div class="mb-2">
@@ -144,10 +144,10 @@
                             <div class="p-3" style="border-left-width: 3px !important;">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
-                                    <span
-                                        class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }} badge-sm">
+                                    <button class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
+                                        <i class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                         {{ $item->pengirim }}
-                                    </span>
+                                    </button>
                                 </div>
 
                                 <div class="mb-2">
@@ -191,16 +191,18 @@
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
                                     <div class="d-flex flex-column align-items-end">
-                                        <span
-                                            class="badge badge-{{ $item->pengirim == 'Warga Sekolah' ? 'success' : 'primary' }} badge-sm mb-1">
+                                        <button class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }} mb-1">
+                                            <i class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                             {{ $item->pengirim }}
-                                        </span>
-                                        @if ($item->kepuasan)
-                                            <span
-                                                class="badge badge-{{ $item->kepuasan == 'Puas' ? 'success' : 'warning' }} badge-sm">
-                                                {{ $item->kepuasan }}
-                                            </span>
-                                        @endif
+                                        </button>
+                                        {{-- @if ($item->rating)
+                                            <div class="d-flex align-items-center">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star {{ $i <= $item->rating ? 'text-warning' : 'text-muted' }}" style="font-size: 12px;"></i>
+                                                @endfor
+                                                <small class="ms-1 text-muted">({{ $item->rating }})</small>
+                                            </div>
+                                        @endif --}}
                                     </div>
                                 </div>
 
@@ -245,7 +247,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-12 mb-4">
                 <div class="card shadow">
                     <div class="card-header py-3">

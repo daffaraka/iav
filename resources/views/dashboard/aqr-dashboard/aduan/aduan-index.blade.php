@@ -45,7 +45,7 @@
                                 <td>{{ $item->lokasi_kendala }}</td>
 
 
-                                <td>{{ $item->humas_id ?? '-' }}</td>
+                                <td>{{ $item->admin_humas_id ?? '-' }}</td>
                                 <td>{{ $item->pic_id ?? '-' }}</td>
                                 <td>
                                     <div class="d-flex">

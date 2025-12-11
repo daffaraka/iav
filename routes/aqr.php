@@ -7,7 +7,7 @@ use App\Http\Controllers\AQR\TiketController;
 use App\Http\Controllers\AQR\DashboardAQRController;
 use App\Http\Controllers\AQR\ProgresTiketController;
 
-Route::prefix('dashboard/aqr')->name('dashboard.aqr.')->group(function () {
+Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->group(function () {
     Route::get('/', [AQRController::class, 'index'])->name('dashboard');
 
     Route::resource('tiket', TiketController::class);

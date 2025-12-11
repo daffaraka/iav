@@ -12,7 +12,15 @@ class AQRController extends Controller
     public function index()
     {
 
-        if (Auth::user()->hasAnyRole('super-admin')) {
+        $unit = Auth::user()->unit;
+        $jenjang = Auth::user()->jenjang;
+        $departemen = Auth::user()->departemen;
+
+
+
+
+        // dd($unit);
+        if (Auth::user()->hasAnyRole(['super-admin','humas'])) {
 
             $tiketNew = Tiket::where('status', 'New')->count();
             $tiketProses = Tiket::where('status', 'Proses')->count();
@@ -24,15 +32,29 @@ class AQRController extends Controller
             $latestSelesai = Tiket::where('status', 'Selesai')->latest()->limit(5)->get();
         } else {
 
-            $tiketNew = Tiket::where('status', 'New')->where('pic_id', auth()->user()->id)->count();
-            $tiketProses = Tiket::where('status', 'Proses')->where('pic_id', auth()->user()->id)->count();
-            $tiketClosed = Tiket::where('status', 'Selesai')->where('pic_id', auth()->user()->id)->count();
-            $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+            if (Auth::user()->hasRole('tata-usaha')) {
+                $tiketNew = Tiket::where('status', 'New')->whereNotNull('admin_humas_id')->where('lokasi_sekolah',$unit)->where('admin_humas_id', auth()->user()->id)->count();
+                $tiketProses = Tiket::where('status', 'Proses')->where('lokasi_sekolah',$unit)->where('admin_humas_id', auth()->user()->id)->count();
+                $tiketClosed = Tiket::where('status', 'Selesai')->where('lokasi_sekolah',$unit)->where('admin_humas_id', auth()->user()->id)->count();
+                $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
 
-            $latestTiket = Tiket::where('status', 'New')->latest()->limit(5)->where('pic_id', auth()->user()->id)->get();
-            $latestProses = Tiket::where('status', 'Proses')->where('pic_id', auth()->user()->id)->latest()->limit(5)->get();
-            $latestSelesai = Tiket::where('status', 'Selesai')->where('pic_id', auth()->user()->id)->latest()->limit(5)->get();
+                $latestTiket = Tiket::where('status', 'New')->whereNotNull('admin_humas_id')->where('lokasi_sekolah',$unit)->latest()->limit(5)->where('admin_humas_id', auth()->user()->id)->get();
+                $latestProses = Tiket::where('status', 'Proses')->where('lokasi_sekolah',$unit)->where('admin_humas_id', auth()->user()->id)->latest()->limit(5)->get();
+                $latestSelesai = Tiket::where('status', 'Selesai')->where('lokasi_sekolah',$unit)->where('admin_humas_id', auth()->user()->id)->latest()->limit(5)->get();
+            } else {
+                $tiketNew = Tiket::where('status', 'New')->where('pic_id', auth()->user()->id)->count();
+                $tiketProses = Tiket::where('status', 'Proses')->where('pic_id', auth()->user()->id)->count();
+                $tiketClosed = Tiket::where('status', 'Selesai')->where('pic_id', auth()->user()->id)->count();
+                $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+
+                $latestTiket = Tiket::where('status', 'New')->latest()->limit(5)->where('pic_id', auth()->user()->id)->get();
+                $latestProses = Tiket::where('status', 'Proses')->where('pic_id', auth()->user()->id)->latest()->limit(5)->get();
+                $latestSelesai = Tiket::where('status', 'Selesai')->where('pic_id', auth()->user()->id)->latest()->limit(5)->get();
+            }
         }
+
+
+        // dd(Tiket::where('admin_humas_id',Auth::user()->id)->get());
 
         // Chart Data
         $pieChartData = [
@@ -50,7 +72,7 @@ class AQRController extends Controller
 
         $barChartData = [];
         $locations = $weeklyData->pluck('lokasi_kendala')->unique()->values();
-        
+
         foreach ($locations as $location) {
             $barChartData[] = [
                 'name' => $location ?: 'Tidak Diketahui',

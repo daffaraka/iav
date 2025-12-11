@@ -55,8 +55,8 @@ class MasterSiswaSeeder extends Seeder
                 'no_hp'         => '08' . $faker->numerify('##########'),
                 'email'         => 'siswa_' . $i . '@example.com',
                 'tahun_ajaran'  => $faker->randomElement($tahunAjaran),
-                'nisn'          => $faker->unique()->numerify('##########'), // 10 digit
-                'nis'           => $faker->unique()->numerify('########'),   // 8 digit
+                'nisn'          => $i, // 10 digit
+                'nis'           => $i,   // 8 digit
                 'jenjang'       => $faker->randomElement($jenjang),
                 'kelas'         => $faker->randomElement($kelas),
                 'sub_kelas'     => $faker->randomElement($subKelas),

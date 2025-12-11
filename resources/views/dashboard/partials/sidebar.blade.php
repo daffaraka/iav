@@ -1,4 +1,4 @@
-     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+     <aside id="layout-menu" class="layout-menu menu-vertical menu {{ Auth::user()->hasRole('super-admin') ? 'bg-dark' : 'bg-menu-theme' }}">
          <div class="app-brand demo">
              <a href="{{ route('dashboard') }}" class="app-brand-link">
                  <span class="app-brand-logo demo">
@@ -61,6 +61,8 @@
                  @foreach (Auth::user()->roles as $role)
                      {{ ucwords(str_replace('-', ' ', $role->name)) }}
                  @endforeach
+                <br>
+                 {{Auth::user()->jenjang .'-'. Auth::user()->unit.'-'.Auth::user()->id }}
              </span>
          </div>
 
@@ -242,12 +244,12 @@
                      </li>
                  </ul>
              </li>
-             {{--
+
              <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
              <!-- Cards -->
 
 
-
+{{--
              <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -259,14 +261,16 @@
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Lead Measure</div>
                  </a>
-             </li>
+             </li> --}}
 
              <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
                  <a href="{{ route('user.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-user"></i>
                      <div data-i18n="Basic">Manajemen User</div>
                  </a>
-             </li> --}}
+             </li>
+
+
 
              {{-- <li class="menu-item">
                         <a href="cards-basic.html" class="menu-link">

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\AQR;
 
+use App\Models\User;
 use App\Models\Tiket;
+use App\Mail\OpenTiketMail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MasterSiswa as Siswa;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OpenTiketMail;
 
 class HomeAQRController extends Controller
 {
@@ -15,6 +16,10 @@ class HomeAQRController extends Controller
 
     public function create(Request $request)
     {
+
+        if ($request->get('pengirim') == null) {
+            return redirect()->route('helpdesk.home.cek-pengirim');
+        }
         $pengirim = $request->get('pengirim');
 
         if ($pengirim === 'Masyarakat Umum') {
@@ -32,6 +37,8 @@ class HomeAQRController extends Controller
 
     public function storeTiket(Request $request)
     {
+
+
         // Validasi untuk warga sekolah
         if ($request->pengirim === 'Warga Sekolah') {
             $siswa = Siswa::where('nisn', $request->nisn)->first();
@@ -39,9 +46,6 @@ class HomeAQRController extends Controller
                 return back()->withErrors(['nisn' => 'NISN tidak ditemukan dalam database siswa']);
             }
         }
-
-
-        // dd($request->all());
 
         if ($request->hasFile('choosefile')) {
             $file = $request->file('choosefile');
@@ -60,8 +64,18 @@ class HomeAQRController extends Controller
             $siswaId = $siswa ? $siswa->id : null;
         }
 
+        $adminUnit = null;
+        if ($request->pengirim === 'Warga Sekolah') {
+            $lokasiParts = explode(' ', $request->lokasi_kendala);
+            $jenjang = $lokasiParts[0]; // KB, SD, SMA
+            $unit = end($lokasiParts); // Pamulang, Cinere, Jagakarsa
+            $unitGabungan = $jenjang . ' ' . $unit;
+            $adminUnit = User::where('unit', $unit)->where('jenjang',$jenjang)->where('departemen', 'Tata-Usaha')->first();
+        }
 
-        // dd($siswaId);
+
+        // dd($adminUnit);
+        // dd($unit, $jenjang, $adminUnit);
 
         $tiket = Tiket::create([
             'no_tiket' => $noTiket,
@@ -72,14 +86,17 @@ class HomeAQRController extends Controller
             'nama_orangtua' => $request->nama_orangtua,
             'email' => $request->email,
             'judul_kendala' => $request->judul_kendala,
-
             'lokasi_kendala' => $request->pengirim === 'Warga Sekolah' ? $request->lokasi_kendala : null,
             'detail_kendala' => $request->detail_kendala,
+            'lokasi_sekolah' => $unit ?? '',
             'status' => 'New',
             'pengirim' => $request->pengirim,
             'filename' => $path ?? '',
+            'admin_humas_id' => $adminUnit ? $adminUnit->id : null
         ]);
 
+
+        // dd($tiket);
 
         $data = [
             'id' => $tiket->no_tiket,
@@ -88,7 +105,6 @@ class HomeAQRController extends Controller
             'no_tiket' => $tiket->no_tiket,
             'tanggal' => $tiket->created_at->isoFormat('D MMMM YYYY, HH:mm:ss'),
             'judul_kendala' => $request->judul_kendala,
-
             'lokasi_kendala' => $request->lokasi_kendala,
             'detail_kendala' => $request->detail_kendala,
             'body' => 'Testing Kirim Email di AQR'
@@ -121,9 +137,9 @@ class HomeAQRController extends Controller
         // dd($tiket);
 
         if ($tiket == null) {
-            return redirect()->route('frontend.aqr.tiket-tracking')->with('error', 'Tiket Tidak Ditemukan. Pastikan nomor tiket dan email anda benar');
+            return redirect()->route('helpdesk.home.tiket-tracking')->with('error', 'Tiket Tidak Ditemukan. Pastikan nomor tiket dan email anda benar');
         } else {
-            return redirect()->route('frontend.aqr.tiket-show', ['tiket' => $tiket->no_tiket]);
+            return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket]);
         }
     }
 

@@ -8,11 +8,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Tiket extends Model
 {
     protected $fillable = [
-        'nisn', 'no_tiket', 'no_hp', 'nama', 'nama_orangtua', 'email',
-        'judul_kendala', 'departemen', 'lokasi_kendala', 'detail_kendala',
-        'status', 'filename', 'pengirim', 'humas_id', 'pic_id', 'siswa_id',
-        'kepuasan', 'rating', 'deskripsi_penilaian', 'lokasi_sekolah',
-        'waktu_proses', 'waktu_close'
+        'nisn',
+        'no_tiket',
+        'no_hp',
+        'nama',
+        'nama_orangtua',
+        'email',
+        'judul_kendala',
+        'departemen',
+        'lokasi_kendala',
+        'detail_kendala',
+        'status',
+        'filename',
+        'pengirim',
+        'admin_humas_id',
+        'pic_id',
+        'siswa_id',
+        'kepuasan',
+        'rating',
+        'deskripsi_penilaian',
+        'lokasi_sekolah',
+        'waktu_proses',
+        'waktu_close'
     ];
 
     protected $casts = [
@@ -23,7 +40,7 @@ class Tiket extends Model
 
     public function humas(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'humas_id');
+        return $this->belongsTo(User::class, 'admin_humas_id');
     }
 
     public function pic(): BelongsTo
@@ -51,9 +68,9 @@ class Tiket extends Model
 
         if (isset($tuMapping[$this->lokasi_sekolah])) {
             return User::whereIn('employee_code', $tuMapping[$this->lokasi_sekolah])
-                      ->whereHas('roles', function($q) {
-                          $q->where('name', 'tu');
-                      })->first();
+                ->whereHas('roles', function ($q) {
+                    $q->where('name', 'tu');
+                })->first();
         }
 
         return null;
@@ -61,7 +78,7 @@ class Tiket extends Model
 
 
 
-     protected static function boot()
+    protected static function boot()
     {
         parent::boot();
 

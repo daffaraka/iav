@@ -3,7 +3,7 @@
 @section('content')
     <div class="max-w-4xl w-full space-y-8 animate-fade-in-up">
         <!-- Header Card -->
-        <div class="bg-white rounded-2xl shadow-2xl p-8 border-0">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-200 hover:shadow-3xl transition-shadow duration-300">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Detail Tiket</h1>
@@ -52,34 +52,34 @@
                 <!-- Personal Info -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">
-                        <i class="fas fa-user mr-2 text-blue-500"></i>Informasi Pelapor
+                        <i class="fas fa-user mr-2 text-blue-500"></i>Identitas Pengisi
                     </h3>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                        <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->nama }}</div>
+                        <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->nama }}</div>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->email }}</div>
+                        <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->email }}</div>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
-                        <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->no_hp }}</div>
+                        <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->no_hp }}</div>
                     </div>
 
                     @if ($tiket->pengirim == 'Warga Sekolah')
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
-                            <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->nisn ?? '-' }}</div>
+                            <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->nisn ?? '-' }}</div>
                         </div>
 
                         @if ($tiket->nama_orangtua)
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua</label>
-                                <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->nama_orangtua }}</div>
+                                <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->nama_orangtua }}</div>
                             </div>
                         @endif
                     @endif
@@ -93,10 +93,10 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Pengirim</label>
-                        <div class="px-3 py-2 bg-gray-50 rounded-lg">
+                        <div class="px-3 py-2 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
                             <span
-                                class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
-                            {{ $tiket->pengirim == 'Warga Sekolah' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium shadow-sm
+                            {{ $tiket->pengirim == 'Warga Sekolah' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-blue-100 text-blue-800 border border-blue-200' }}">
                                 <i
                                     class="fas {{ $tiket->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} mr-1"></i>
                                 {{ $tiket->pengirim }}
@@ -107,14 +107,14 @@
                     @if ($tiket->lokasi_kendala)
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
-                            <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->lokasi_kendala }}</div>
+                            <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->lokasi_kendala }}</div>
                         </div>
                     @endif
 
                     @if ($tiket->problem)
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kritik/Saran</label>
-                            <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">{{ $tiket->problem }}</div>
+                            <div class="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200 shadow-sm">{{ $tiket->problem }}</div>
                         </div>
                     @endif
                 </div>
@@ -124,14 +124,13 @@
             <div class="mt-8 space-y-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Judul Aduan</label>
-                    <div class="px-4 py-3 bg-gray-50 rounded-xl text-gray-900 font-medium">{{ $tiket->judul_kendala }}
+                    <div class="px-4 py-3 bg-gray-50 rounded-xl text-gray-900 font-medium border border-gray-200 shadow-md">{{ $tiket->judul_kendala }}
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Detail Kendala</label>
-                    <div class="px-4 py-3 bg-gray-50 rounded-xl text-gray-900 whitespace-pre-wrap">
-                        {{ $tiket->detail_kendala }}</div>
+                    <div class="px-4 py-3 bg-gray-50 rounded-xl text-gray-900 whitespace-pre-wrap border border-gray-200 shadow-md">{{ $tiket->detail_kendala }}</div>
                 </div>
 
                 @if ($tiket->filename)
@@ -157,7 +156,7 @@
                 </h2>
 
                 @foreach ($tiket->progres as $progres)
-                    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500 animate-slide-in-right"
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500 border border-gray-200 hover:shadow-xl transition-shadow duration-300 animate-slide-in-right"
                         style="animation-delay: {{ $loop->index * 0.1 }}s">
                         <div class="flex justify-between items-start mb-4">
                             <div>

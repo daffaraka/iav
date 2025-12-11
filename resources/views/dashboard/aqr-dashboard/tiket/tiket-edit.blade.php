@@ -3,15 +3,21 @@
     <div class="container">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Tiket</h6>
+                <h3 class="m-0 font-weight-bold text-primary">Data Tiket</h3>
             </div>
 
             <div class="container-fluid">
-
                 <div class="py-4">
+                    <div class="h1 text-end">
+                        <h3 class="mx-2 mb-4"> No Tiket : {{ $tiket->no_tiket }} </h3>
+                    </div>
+                    <div class="form-input mb-3">
+                        <strong><label class="cd-label left-text">Type Pengirim</label></strong>
+                        <div class="">
+                            <button
+                                class="btn btn-{{ $tiket->pengirim == 'Masyarakat Umum' ? 'primary' : 'warning' }}">{{ $tiket->pengirim }}</button>
 
-                    <div class="h1 text-gray-800">
-                        <h3 class="mx-2 my-4"> No Tiket : {{ $tiket->no_tiket }} </h3>
+                        </div>
                     </div>
                     <div class="form-input mb-3">
                         <strong><label class="cd-label left-text">Nama</label></strong>
@@ -37,12 +43,13 @@
                         <textarea class="form-control" name="judul_kendala" id="judul_kendala" readonly>{{ $tiket->judul_kendala }}</textarea>
                     </div>
 
+                    @if($tiket->pengirim == 'Warga Sekolah')
                     <div class="form-input mb-3">
-                        <strong><label class="cd-label left-text">Lokasi
-                                Kendala</label></strong>
+                        <strong><label class="cd-label left-text">Lokasi Sekolah</label></strong>
                         <input class="form-control" type="text" name="lokasi_kendala" id="lokasi_kendala"
                             value="{{ $tiket->lokasi_kendala }}" readonly>
                     </div>
+                    @endif
 
                     <div class="input-input mb-3">
                         <strong><label class="cd-label text-left">Detail
@@ -122,54 +129,113 @@
                                 @method('PUT')
                                 <div class="card shadow">
                                     <div class="card-body">
+
+
+
                                         <h5 class="fw-bold text-dark">Beri Tanggapan</h5>
+                                        @if ($tiket->pengirim == 'Warga Sekolah')
+                                            <div class="bg-dark p-3 text-light rounded shadow"><i class="bx bx-info-circle"
+                                                    aria-hidden="true"></i> Jika pengirim adalah warga sekolah, maka akan
+                                                otomatis memilih Admin / Tata Usaha berdasarkan Unit dan Jenjang sekolah.
+                                            </div>
+                                        @endif
                                         <hr>
                                         @switch($tiket->status)
                                             @case('New')
-                                                <h6 class="mt-3 mb-4 text-dark">Pilih PIC Yang Menanggapi</h6>
-
-                                                <input type="hidden" name="menanggapi" value="menanggapi">
-                                                <div class="departement">
-                                                    <div class="form-group mb-3">
-                                                        <label for="Status">Pilih Departemen Terkait</label>
-                                                        <select class="form-control mb-3" name="departemen" id="departemen"
-                                                            required>
-                                                            <option value="BK">BK</option>
-                                                            <option value="Humas">Humas</option>
-                                                            <option value="Kepala Sekolah">Kepala Sekolah</option>
-                                                            <option value="Kesiswaan">Kesiswaan</option>
-                                                            <option value="Koperasi">Koperasi</option>
-                                                            <option value="Kurikulum">Kurikulum</option>
-                                                            <option value="Psikolog & BK">Psikolog & BK</option>
-                                                            <option value="Psikolog">Psikolog</option>
-                                                            <option value="TU">TU</option>
-                                                            <option value="Wali kelas">Wali Kelas</option>
-
-                                                        </select>
+                                                @if ($tiket->pengirim == 'Warga Sekolah')
+                                                    <div class="mb-3">
+                                                        <label class="text-dark">Admin/TU sekolah :</label>
+                                                        <input type="text" class="form-control fw-bold" readonly
+                                                            value="{{ $tiket->humas->name }}">
                                                     </div>
-                                                </div>
-                                                <div class="humas mb-3">
-                                                    <div class="form-group mb-3">
-                                                        <label for="Status">Pilih PIC Yang Menanganani</label>
-                                                        <select class="form-control mb-3" name="pic_menanggapi" id="pic_menanggapi"
-                                                            required>
-                                                            {{-- @foreach ($picSelect as $select)
+
+
+                                                    <div class="departement">
+                                                        <div class="form-group mb-3">
+                                                            <label for="Status">Pilih Departemen Terkait</label>
+                                                            <select class="form-control mb-3" name="departemen" id="departemen"
+                                                                required>
+                                                                <option value="BK">BK</option>
+                                                                <option value="Humas">Humas</option>
+                                                                <option value="Kepala Sekolah">Kepala Sekolah</option>
+                                                                <option value="Kesiswaan">Kesiswaan</option>
+                                                                <option value="Koperasi">Koperasi</option>
+                                                                <option value="Kurikulum">Kurikulum</option>
+                                                                <option value="Psikolog & BK">Psikolog & BK</option>
+                                                                <option value="Psikolog">Psikolog</option>
+                                                                <option value="Tata-Usaha">Tata Usaha</option>
+                                                                <option value="Wali kelas">Wali Kelas</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="humas mb-3">
+                                                        <div class="form-group mb-3">
+                                                            <label for="Status">Pilih PIC Yang Menanganani</label>
+                                                            <select class="form-control mb-3" name="pic_menanggapi"
+                                                                id="pic_menanggapi" required>
+                                                                {{-- @foreach ($picSelect as $select)
                                                                 <option value="{{ $select->id }}"> <span
                                                                         class="text-danger">{{ $select->departemen ?? '-' }}
                                                                     </span>
                                                                     - {{ $select->name }}
                                                                 </option>
                                                             @endforeach --}}
-                                                        </select>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @else
+                                                    <h6 class="mt-3 mb-4 text-dark">Tentukan PIC Yang Menanggapi</h6>
+
+                                                    <input type="hidden" name="menanggapi" value="menanggapi">
+                                                    <div class="departement">
+                                                        <div class="form-group mb-3">
+                                                            <label for="Status">Pilih Departemen Terkait</label>
+                                                            <select class="form-control mb-3" name="departemen" id="departemen"
+                                                                required>
+                                                                <option value="BK">BK</option>
+                                                                <option value="Humas">Humas</option>
+                                                                <option value="Kepala Sekolah">Kepala Sekolah</option>
+                                                                <option value="Kesiswaan">Kesiswaan</option>
+                                                                <option value="Koperasi">Koperasi</option>
+                                                                <option value="Kurikulum">Kurikulum</option>
+                                                                <option value="Psikolog & BK">Psikolog & BK</option>
+                                                                <option value="Psikolog">Psikolog</option>
+                                                                <option value="Tata-Usaha">TU</option>
+                                                                <option value="Wali kelas">Wali Kelas</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="humas mb-3">
+                                                        <div class="form-group mb-3">
+                                                            <label for="Status">Pilih PIC Yang Menanganani</label>
+                                                            <select class="form-control mb-3" name="pic_menanggapi"
+                                                                id="pic_menanggapi" required>
+                                                                {{-- @foreach ($picSelect as $select)
+                                                                <option value="{{ $select->id }}"> <span
+                                                                        class="text-danger">{{ $select->departemen ?? '-' }}
+                                                                    </span>
+                                                                    - {{ $select->name }}
+                                                                </option>
+                                                            @endforeach --}}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             @break
 
                                             @case('Proses')
-                                                @if (Auth::user()->hasRole('super-admin|admin|humas'))
+                                                @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin']]))
                                                     <h6 class="mt-3 mb-4 text-dark">PIC sudah ditentukan</h6>
 
                                                     <input type="hidden" name="menanggapi" value="selesai">
+
+                                                     <div class="mb-3">
+                                                        <strong><label for="">Admin / Humas / TU </label></strong>
+                                                        <input type="text" name="" id=""
+                                                            value="{{ $tiket->humas->name }}" class="form-control" disabled>
+                                                    </div>
                                                     <div class="mb-3">
                                                         <strong><label for="">Departemen</label></strong>
                                                         <input type="text" name="departemen" id=""
@@ -207,7 +273,8 @@
                                                     </div>
 
 
-                                                    <button type="button" class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Ulang</button>
+                                                    <button type="button" class="btn btn-info mt-3" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">Edit Ulang</button>
                                                 @else
                                                     {{-- Ketika proses dan akan mengisi --}}
                                                     <input type="hidden" name="menanggapi" value="selesai">
@@ -240,7 +307,6 @@
 
                                             @default
                                                 <h3 class="font-weight-bold">Selesai</h3>
-
                                         @endswitch
 
 
@@ -250,7 +316,7 @@
                                     </div>
 
 
-                                    @hasanyrole('super-admin|humas')
+                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin'])
                                         @if ($tiket->status == 'New')
                                             <button class="btn btn-primary m-4" type="submit">Update Ticket</button>
                                         @elseif ($tiket->status == 'Proses')
@@ -303,7 +369,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"></h5>
-                        <button type="button" class="badge bg-danger badge-danger close" data-bs-dismiss="modal" aria-label="Close">
+                        <button type="button" class="badge bg-danger badge-danger close" data-bs-dismiss="modal"
+                            aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -326,7 +393,7 @@
                                         <option value="Kurikulum">Kurikulum</option>
                                         <option value="Psikolog & BK">Psikolog & BK</option>
                                         <option value="Psikolog">Psikolog</option>
-                                        <option value="TU">TU</option>
+                                        <option value="Tata-Usaha">Tata Usaha</option>
                                         <option value="Wali kelas">Wali Kelas</option>
 
                                     </select>
@@ -378,10 +445,11 @@
                     },
                     dataType: "json",
                     success: function(response) {
-                        $('#pic_menanggapi').empty().append('<option value="">Pilih PIC</option>');
+                        $('#pic_menanggapi').empty().append(
+                            '<option value="">Pilih PIC</option>');
                         $.each(response, function(index, pic) {
                             $('#pic_menanggapi').append(
-                                `<option value="${pic.id}">${pic.departemen}  -  ${pic.name}</option>`
+                                `<option value="${pic.id}">${pic.unit} - ${pic.departemen}  -  ${pic.name}</option>`
                             );
                         });
                     }

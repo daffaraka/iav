@@ -75,7 +75,7 @@ class TiketController extends Controller
             $query->latest();
         }])->find($id);
 
-        $picSelect = User::select('id', 'name')->get();
+        $picSelect = User::select('id', 'name','unit')->get();
 
         return view('dashboard.aqr-dashboard.tiket.tiket-edit', compact('tiket', 'picSelect'));
     }
@@ -84,11 +84,11 @@ class TiketController extends Controller
     {
 
         $tiket = Tiket::find($id);
-        if (Auth::user()->hasanyrole('super-admin|admin|humas')) {
+        if (Auth::user()->hasanyrole(['super-admin','admin','humas','tata-usaha'])) {
             $tiket->update([
                 'status' => 'Proses',
                 'departemen' => $request->departemen,
-                'humas_id' => Auth::user()->id,
+                'admin_humas_id' => Auth::user()->id,
                 'pic_id' => $request->pic_menanggapi
             ]);
         } else {
