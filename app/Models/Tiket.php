@@ -16,6 +16,7 @@ class Tiket extends Model
         'email',
         'judul_kendala',
         'departemen',
+        'masalah_dept',
         'lokasi_kendala',
         'detail_kendala',
         'status',
@@ -28,6 +29,7 @@ class Tiket extends Model
         'rating',
         'deskripsi_penilaian',
         'lokasi_sekolah',
+        'option_id',
         'waktu_proses',
         'waktu_close'
     ];
@@ -56,6 +58,11 @@ class Tiket extends Model
     public function progres()
     {
         return $this->hasMany(ProgresTiket::class);
+    }
+
+    public function option()
+    {
+        return $this->belongsTo(AqrOption::class,'option_id');
     }
 
     public function getAutoAssignedTU()

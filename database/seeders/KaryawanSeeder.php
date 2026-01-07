@@ -324,7 +324,7 @@ class KaryawanSeeder extends Seeder
         if (str_contains($jabatan, 'Kesiswaan')) return 'Kesiswaan';
         if (str_contains($jabatan, 'Psikolog') || str_contains($jabatan, 'BK')) return 'BK';
         if (str_contains($jabatan, 'Guru')) return 'Guru';
-        if (str_contains($jabatan, 'Admin TU') || str_contains($jabatan, 'Tata Usaha')) return 'Tata-Usaha';
+        if (str_contains($jabatan, 'Admin TU') || str_contains($jabatan, 'Tata Usaha')) return 'Tata Usaha';
         if (str_contains($jabatan, 'Humas')) return 'Humas';
         if (str_contains($jabatan, 'Teknisi') || str_contains($jabatan, 'Pramubakti') || str_contains($jabatan, 'Kurir')) return 'Operasional';
         if (str_contains($jabatan, 'Keuangan')) return 'Keuangan';

@@ -12,7 +12,7 @@
         <!-- Statistics Cards -->
         <div class="row mb-4">
 
-            @hasanyrole(['super-admin','tata-usaha','humas','admin'])
+            @hasanyrole(['super-admin','tata-usaha','humas','admin','kepala-sekolah'])
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-4 border-primary border-bottom-0 border-top-0 shadow h-100 ">
                         <div class="card-body">
@@ -83,7 +83,7 @@
         <!-- Tiket Lists -->
         <div class="row">
 
-            @hasanyrole(['super-admin','tata-usaha','humas'])
+            @hasanyrole(['super-admin','tata-usaha','humas','kepala-sekolah'])
                 <!-- Tiket Baru -->
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card shadow h-100">
