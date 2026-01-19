@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Tiket;
+use App\Models\AqrOption;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -84,10 +86,10 @@ class TiketSeeder extends Seeder
 
 
 
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $selectedStatus = $status[array_rand($status)];
-
-            \App\Models\Tiket::create([
+            $aqrOptions = AqrOption::inRandomOrder()->first();
+            Tiket::create([
                 'no_tiket' => 'AQR-' . date('Ymd') . '-' . str_pad($i, 3, '0', STR_PAD_LEFT),
                 'waktu_proses' => $selectedStatus != 'New' ? now()->subDays(rand(1, 7))->format('Y-m-d H:i:s') : null,
                 'waktu_close' => $selectedStatus == 'Selesai' ? now()->subDays(rand(0, 3))->format('Y-m-d H:i:s') : null,
@@ -105,7 +107,9 @@ class TiketSeeder extends Seeder
                 'deskripsi_penilaian' => $selectedStatus == 'Selesai' ? 'Pelayanan memuaskan' : null,
                 'created_at' => now()->subDays(rand(0, 28)),
                 'admin_humas_id' => $selectedPengirim == 'Masyarakat Umum' && $selectedStatus == 'Proses' ? User::where('jabatan', 'LIKE', '%Humas%')->inRandomOrder()->first()?->id : null,
-                'pic_id' => $selectedPengirim == 'Warga Sekolah' && $selectedStatus == 'Proses' ? User::where('jabatan', 'LIKE', '%Admin TU%')->where('unit', $lokasiSekolah)->inRandomOrder()->first()?->id : null,
+                'pic_id' => null,
+                'masalah_dept' => $aqrOptions->nama_option,
+                'option_id' => $aqrOptions->id
             ]);
         }
     }

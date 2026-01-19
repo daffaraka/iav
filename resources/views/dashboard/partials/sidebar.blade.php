@@ -1,4 +1,6 @@
-     <aside id="layout-menu" class="layout-menu menu-vertical menu {{ Auth::user()->hasRole('super-admin') ? 'bg-dark' : 'bg-menu-theme' }}">
+     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme
+     {{-- {{ Auth::user()->hasRole('super-admin') ? 'bg-dark' : 'bg-menu-theme' }} --}}
+      ">
          <div class="app-brand demo">
              <a href="{{ route('dashboard') }}" class="app-brand-link">
                  <span class="app-brand-logo demo">
@@ -244,12 +246,12 @@
                      <div data-i18n="Basic">Tiket Aduan</div>
                  </a>
                  <ul class="menu-sub {{ request()->is('dashboard/aqr') ? 'show' : '' }}">
-                     <li class="menu-item {{ request()->is('dashboard/aqr*') ? 'active' : '' }}">
+                     <li class="menu-item {{ request()->is('dashboard/aqr') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
                              <div data-i18n="Basic">Dashboard AQR</div>
                          </a>
                      </li>
-                     <li class="menu-item {{ request()->is('aqr/tiket*') ? 'active' : '' }}">
+                     <li class="menu-item {{ request()->is('dashboard/aqr/tiket*') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.tiket.index') }}" class="menu-link">
                              <div data-i18n="Basic">Data Tiket</div>
                          </a>
@@ -259,11 +261,19 @@
                              <div data-i18n="Basic">Data Aduan</div>
                          </a>
                      </li> --}}
-                     <li class="menu-item {{ request()->is('aqr/progres-tiket*') ? 'active' : '' }}">
+                     {{-- <li class="menu-item {{ request()->is('aqr/progres-tiket*') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.progres-tiket.index') }}" class="menu-link">
                              <div data-i18n="Basic">Progress Tiket</div>
                          </a>
+                     </li> --}}
+
+                     @hasrole('super-admin')
+                     <li class="menu-item {{ request()->is('aqr-option*') ? 'active' : '' }}">
+                         <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                             <div data-i18n="Basic">AQR Option</div>
+                         </a>
                      </li>
+                     @endrole
                  </ul>
              </li>
 
@@ -285,12 +295,14 @@
                  </a>
              </li> --}}
 
+             @hasrole('super-admin')
              <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
                  <a href="{{ route('user.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-user"></i>
                      <div data-i18n="Basic">Manajemen User</div>
                  </a>
              </li>
+             @endrole
 
 
 

@@ -14,14 +14,42 @@ class TiketController extends Controller
 
     public function index()
     {
-        $data['data'] = Tiket::with(['humas', 'pic'])->latest()->get();
+
+        $unit = Auth::user()->unit;
+        $jenjang = Auth::user()->jenjang;
+        $departemen = Auth::user()->departemen;
+        // dd($unit);
+        if (Auth::user()->hasAnyRole(['super-admin', 'humas'])) {
+            $data['data'] = Tiket::with(['humas', 'pic'])->latest()->get();
+        } else {
+
+            if (Auth::user()->hasRole('tata-usaha')) {
+
+
+                $data['data'] = Tiket::with(['humas', 'pic'])->where('lokasi_sekolah', $unit)
+                    ->whereHas('option', function ($query) use ($unit) {
+                        $query->where('kategori_pic', 'Tata Usaha');
+                    })->get();
+            } else {
+
+
+                $data['data'] = Tiket::with(['humas', 'pic'])->where('lokasi_sekolah', $unit)
+                    ->whereHas('option', function ($query) {
+                        $query->where('kategori_pic', 'Kepala Sekolah');
+                    })->get();
+            }
+        }
+
+
+        // dd($data);
+
         return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     }
 
 
     public function tiketDalamprogres()
     {
-        $data['data'] = Tiket::with(['humas', 'pic'])->where('status','Proses')->latest()->paginate(15);
+        $data['data'] = Tiket::with(['humas', 'pic'])->where('status', 'Proses')->latest()->paginate(15);
         return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     }
 
@@ -76,7 +104,7 @@ class TiketController extends Controller
             $query->latest();
         }])->find($id);
 
-        $picSelect = User::select('id', 'name','unit')->get();
+        $picSelect = User::select('id', 'name', 'unit')->get();
 
         return view('dashboard.aqr-dashboard.tiket.tiket-edit', compact('tiket', 'picSelect'));
     }
@@ -85,7 +113,7 @@ class TiketController extends Controller
     {
 
         $tiket = Tiket::find($id);
-        if (Auth::user()->hasanyrole(['super-admin','admin','humas','tata-usaha'])) {
+        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha','kepala-sekolah'])) {
             $tiket->update([
                 'status' => 'Proses',
                 'departemen' => $request->departemen,

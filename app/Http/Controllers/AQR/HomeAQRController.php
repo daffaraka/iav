@@ -7,6 +7,7 @@ use App\Models\Tiket;
 use App\Mail\OpenTiketMail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\AqrOption;
 use App\Models\MasterSiswa as Siswa;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,7 +26,11 @@ class HomeAQRController extends Controller
         if ($pengirim === 'Masyarakat Umum') {
             return view('frontend.aqr.open-tiket-umum-new', compact('pengirim'));
         } else {
-            return view('frontend.aqr.open-tiket-warga-new', compact('pengirim'));
+            $options = AqrOption::orderBy('nama_option', 'asc')->get();
+
+
+
+            return view('frontend.aqr.open-tiket-warga-new', compact(['pengirim', 'options']));
         }
     }
 
@@ -38,6 +43,30 @@ class HomeAQRController extends Controller
     public function storeTiket(Request $request)
     {
 
+        // dd($request->all());
+
+        $option = AqrOption::where('id', $request->kendala)->first();
+
+        $request->validate([
+            'pengirim' => 'required',
+            'nama' => 'required_if:pengirim,Masyarakat Umum',
+            'no_hp' => 'required_if:pengirim,Masyarakat Umum',
+            'lokasi_kendala' => 'required_if:pengirim,Masyarakat Umum',
+            // 'choosefile' => 'required_if:pengirim,Masyarakat Umum',
+            'nisn' => 'required_if:pengirim,Warga Sekolah',
+            'nama' => 'required_if:pengirim,Warga Sekolah',
+            'no_hp' => 'required_if:pengirim,Warga Sekolah',
+            'lokasi_kendala' => 'required_if:pengirim,Warga Sekolah',
+        ], [
+            'nama.required_if' => 'Nama harus diisi jika pengirim adalah Masyarakat Umum',
+            'no_hp.required_if' => 'Nomor HP harus diisi jika pengirim adalah Masyarakat Umum',
+            'lokasi_kendala.required_if' => 'Lokasi kendala harus diisi jika pengirim adalah Masyarakat Umum',
+            'choosefile.required_if' => 'Bukti kendala harus diisi jika pengirim adalah Masyarakat Umum',
+            'nisn.required_if' => 'NISN harus diisi jika pengirim adalah Warga Sekolah',
+            'nama.required_if' => 'Nama harus diisi jika pengirim adalah Warga Sekolah',
+            'no_hp.required_if' => 'Nomor HP harus diisi jika pengirim adalah Warga Sekolah',
+            'lokasi_kendala.required_if' => 'Lokasi kendala harus diisi jika pengirim adalah Warga Sekolah',
+        ]);
 
         // Validasi untuk warga sekolah
         if ($request->pengirim === 'Warga Sekolah') {
@@ -69,54 +98,58 @@ class HomeAQRController extends Controller
             $lokasiParts = explode(' ', $request->lokasi_kendala);
             $jenjang = $lokasiParts[0]; // KB, SD, SMA
             $unit = end($lokasiParts); // Pamulang, Cinere, Jagakarsa
-            $unitGabungan = $jenjang . ' ' . $unit;
-            $adminUnit = User::where('unit', $unit)->where('jenjang',$jenjang)->where('departemen', 'Tata-Usaha')->first();
+            $adminUnit = User::where('unit', $unit)->where('jenjang', $jenjang)->where('jabatan', $option->kategori_pic)->first();
         }
 
 
-        // dd($adminUnit);
-        // dd($unit, $jenjang, $adminUnit);
-
-        $tiket = Tiket::create([
-            'no_tiket' => $noTiket,
-            'nisn' => $request->nisn,
-            'siswa_id' => $siswaId,
-            'no_hp' => $request->no_hp,
-            'nama' => $request->nama,
-            'nama_orangtua' => $request->nama_orangtua,
-            'email' => $request->email,
-            'judul_kendala' => $request->judul_kendala,
-            'lokasi_kendala' => $request->pengirim === 'Warga Sekolah' ? $request->lokasi_kendala : null,
-            'detail_kendala' => $request->detail_kendala,
-            'lokasi_sekolah' => $unit ?? '',
-            'status' => 'New',
-            'pengirim' => $request->pengirim,
-            'filename' => $path ?? '',
-            'admin_humas_id' => $adminUnit ? $adminUnit->id : null
-        ]);
 
 
-        // dd($tiket);
+        try {
+            $tiket = Tiket::create([
+                'no_tiket' => $noTiket,
+                'nisn' => $request->nisn,
+                'siswa_id' => $siswaId,
+                'no_hp' => $request->no_hp,
+                'nama' => $request->nama,
+                'nama_orangtua' => $request->nama_orangtua,
+                'email' => $request->email,
+                'judul_kendala' => $request->judul_kendala,
+                'lokasi_kendala' => $request->pengirim === 'Warga Sekolah' ? $request->lokasi_kendala : null,
+                'detail_kendala' => $request->detail_kendala,
+                'lokasi_sekolah' => $unit ?? '',
+                'status' => 'New',
+                'pengirim' => $request->pengirim,
+                'filename' => $path ?? '',
+                'admin_humas_id' => $adminUnit ? $adminUnit->id : null,
+                'masalah_dept' => $option->nama_option ?? null,
+                'option_id' => $option->id ?? null
+            ]);
 
-        $data = [
-            'id' => $tiket->no_tiket,
-            'title' => 'Open Tiket ID ' . $tiket->id,
-            'name' => $request->nama,
-            'no_tiket' => $tiket->no_tiket,
-            'tanggal' => $tiket->created_at->isoFormat('D MMMM YYYY, HH:mm:ss'),
-            'judul_kendala' => $request->judul_kendala,
-            'lokasi_kendala' => $request->lokasi_kendala,
-            'detail_kendala' => $request->detail_kendala,
-            'body' => 'Testing Kirim Email di AQR'
 
-        ];
+            $data = [
+                'id' => $tiket->no_tiket,
+                'title' => 'Open Tiket ID ' . $tiket->id,
+                'name' => $request->nama,
+                'no_tiket' => $tiket->no_tiket,
+                'tanggal' => $tiket->created_at->isoFormat('D MMMM YYYY, HH:mm:ss'),
+                'judul_kendala' => $request->judul_kendala,
+                'lokasi_kendala' => $request->lokasi_kendala,
+                'detail_kendala' => $request->detail_kendala,
+                'body' => 'Testing Kirim Email di AQR'
 
-
-        Mail::to('daffarakals@gmail.com')->send(new OpenTiketMail($data));
+            ];
 
 
+            // Mail::to('daffarakals@gmail.com')->send(new OpenTiketMail($data));
 
-        return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket]);
+
+
+            return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket]);
+        } catch (\Throwable $th) {
+
+            // return dd(json_encode($th->getMessage()));
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
 
@@ -145,7 +178,7 @@ class HomeAQRController extends Controller
 
     public function show($tiket)
     {
-        $tiket = Tiket::with('humas', 'pic', 'progres')
+        $tiket = Tiket::with('humas', 'pic', 'progres', 'option')
             ->where('no_tiket', $tiket)
             ->first();
         // dd($tiket);

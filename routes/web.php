@@ -17,6 +17,7 @@ use App\Http\Controllers\DataPrestasiController;
 use App\Http\Controllers\LowonganApplyController;
 use App\Http\Controllers\LowonganProgressController;
 use App\Http\Controllers\LowonganPekerjaanController;
+use App\Http\Controllers\AqrOptionController;
 
 
 
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('lowongan-apply', LowonganApplyController::class);
     Route::resource('lowongan-progress', LowonganProgressController::class);
     Route::resource('user', UserController::class);
+    Route::resource('aqr-option', AqrOptionController::class);
 
 
     Route::resource('departement', DepartementController::class);

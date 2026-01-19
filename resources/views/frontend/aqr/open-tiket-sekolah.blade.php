@@ -5,6 +5,8 @@
         <div class="col-xl-8 col-lg-12 col-md-9">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
+                    @include('frontend.aqr.flash')
+
                     <div class="row">
                         <div class="col">
                             <div class="p-5">

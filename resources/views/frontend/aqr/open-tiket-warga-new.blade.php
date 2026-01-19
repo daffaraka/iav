@@ -1,7 +1,39 @@
 @extends('frontend.aqr.layout-new')
-
+<style>
+    .select2-container--default .select2-results>.select2-results__options {
+        max-height: 500px !important;
+    }
+</style>
 @section('content')
-    <div class="max-w-2xl w-full space-y-8 animate-fade-in-up">
+    <div class="max-w-3xl w-full space-y-8 animate-fade-in-up">
+        <!-- Flash Messages -->
+        @if ($errors->any())
+            <div class="bg-white border border-red-200 rounded-xl p-4 mb-6">
+                <div class="flex">
+                    <i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">Terjadi Kesalahan</h3>
+                        <ul class="mt-1 text-sm text-red-700 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-white border border-red-200 rounded-xl p-4 mb-6">
+                <div class="flex">
+                    <i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">Error</h3>
+                        <p class="mt-1 text-sm text-red-700">{{ session('error') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="bg-white rounded-2xl shadow-2xl p-8 border-0">
             <!-- Step 1: Validasi NISN -->
             <div id="step-nisn">
@@ -93,12 +125,17 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
                                 <input type="text" id="nisn-display" readonly
-                                    class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600">
+                                    class="w-full px-3 py-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-800 font-medium">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Siswa</label>
                                 <input type="text" name="nama" id="nama-siswa" readonly
-                                    class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-600">
+                                    class="w-full px-3 py-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-800 font-medium">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua</label>
+                                <input type="text" id="nama-orangtua-display" readonly
+                                    class="w-full px-3 py-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-800 font-medium">
                             </div>
                         </div>
                     </div>
@@ -148,83 +185,87 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             <i class="fas fa-tags mr-2 text-green-500"></i>Jenis Kritik dan Saran
                         </label>
-                        <select name="kendala" required
+                        <select name="kendala" id="kendala-select" required
                             class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400">
                             <option value="">Pilih</option>
-                            <option value="BK - Layanan BK (Konseling Karir, Pemilihan Jurusan)">BK - Layanan BK (Konseling
+
+                            @foreach ($options as $opt)
+                                <option value="{{ $opt->id }}">{{ $opt->nama_option }}</option>
+                            @endforeach
+                            {{-- <option value="BK - Layanan BK (Konseling Karir, Pemilihan Jurusan)">BK - Layanan BK (Konseling
                                 Karir, Pemilihan Jurusan)</option>
                             {{-- Mba Ocha & Head RND --}}
-                            <option value="Humas - PPDB">Humas - PPDB</option>
+                            {{-- <option value="Humas - PPDB">Humas - PPDB</option>
                             {{-- IT & Marketing --}}
-                            <option value="Humas - Promosi dan Marketing">Humas - Promosi dan Marketing</option>
+                            {{-- <option value="Humas - Promosi dan Marketing">Humas - Promosi dan Marketing</option>
                             {{-- IT & Marketing --}}
 
-                            <option value="Kepala Sekolah - Kedisiplinan Karakter Sikap, Karakter dan Perilaku Guru">Kepala
+                            {{-- <option value="Kepala Sekolah - Kedisiplinan Karakter Sikap, Karakter dan Perilaku Guru">Kepala
                                 Sekolah - Kedisiplinan Karakter Sikap, Karakter dan Perilaku Guru</option>
                             {{-- Head RND & Head SDM --}}
-                            <option value="Kesiswaan - Kedisiplinan, Karakter, Sikap dan Perilaku">Kesiswaan -
+                            {{-- <option value="Kesiswaan - Kedisiplinan, Karakter, Sikap dan Perilaku">Kesiswaan -
                                 Kedisiplinan, Karakter, Sikap dan Perilaku</option>
                             {{-- Head RND & Head SDM --}}
-                            <option value="Kesiswaan - Kegiatan Ekstrakurikuler dan Club">Kesiswaan - Kegiatan
+                            {{-- <option value="Kesiswaan - Kegiatan Ekstrakurikuler dan Club">Kesiswaan - Kegiatan
                                 Ekstrakurikuler dan Club</option>
                             {{-- Head RND & Head SDM --}}
-                            <option value="Kesiswaan - Kegiatan Organisasi">Kesiswaan - Kegiatan Organisasi</option>
+                            {{-- <option value="Kesiswaan - Kegiatan Organisasi">Kesiswaan - Kegiatan Organisasi</option>
                             {{-- Head RND --}}
-                            <option value="Kesiswaan - Layanan Kesehatan (UKS)">Kesiswaan - Layanan Kesehatan (UKS)
+                            {{-- <option value="Kesiswaan - Layanan Kesehatan (UKS)">Kesiswaan - Layanan Kesehatan (UKS)
 
                             </option>
                             {{-- Head RND & GA --}}
-                            <option value="Kesiswaan - Layanan Perpustakaan">Kesiswaan - Layanan Perpustakaan</option>
+                            {{-- <option value="Kesiswaan - Layanan Perpustakaan">Kesiswaan - Layanan Perpustakaan</option>
                             {{-- Head RND & GA --}}
-                            <option value="Koperasi - Antar Jemput">Koperasi - Antar Jemput</option>
+                            {{-- <option value="Koperasi - Antar Jemput">Koperasi - Antar Jemput</option>
                             {{-- GA & Koperasi --}}
-                            <option value="Koperasi - Pembelian Seragam dan Buku">Koperasi - Pembelian Seragam dan Buku
+                            {{-- <option value="Koperasi - Pembelian Seragam dan Buku">Koperasi - Pembelian Seragam dan Buku
                             </option>
                             {{-- GA & Koperasi --}}
-                            <option value="Kurikulum - Akademik">Kurikulum - Akademik</option>
+                            {{-- <option value="Kurikulum - Akademik">Kurikulum - Akademik</option>
                             {{-- RND --}}
-                            <option value="Kurikulum - Jadwal Belajar">Kurikulum - Jadwal Belajar</option>
+                            {{-- <option value="Kurikulum - Jadwal Belajar">Kurikulum - Jadwal Belajar</option>
                             {{-- RND --}}
-                            <option value="Kurikulum - Kegiatan Belajar Mengajar (Mutu Pembelajaran)">Kurikulum - Kegiatan
+                            {{-- <option value="Kurikulum - Kegiatan Belajar Mengajar (Mutu Pembelajaran)">Kurikulum - Kegiatan
                                 Belajar Mengajar (Mutu Pembelajaran)</option>
                             {{-- RND --}}
-                            <option value="Kurikulum - Kurikulum">Kurikulum - Kurikulum</option>
+                            {{-- <option value="Kurikulum - Kurikulum">Kurikulum - Kurikulum</option>
                             {{-- RND --}}
-                            <option value="Kurikulum - Laboratorium">Kurikulum - Laboratorium</option>
+                            {{-- <option value="Kurikulum - Laboratorium">Kurikulum - Laboratorium</option>
                             {{-- RND --}}
-                            <option value="Psikolog & BK - Motivasi, Kepercayaan Diri & Komunikasi">Psikolog & BK -
+                            {{-- <option value="Psikolog & BK - Motivasi, Kepercayaan Diri & Komunikasi">Psikolog & BK -
                                 Motivasi, Kepercayaan Diri & Komunikasi</option>
                             {{-- Mba Ocha & Head RND --}}
-                            <option value="Psikolog & BK - Perundungan, kekerasan dan pelecehan seksual">Psikolog & BK -
+                            {{-- <option value="Psikolog & BK - Perundungan, kekerasan dan pelecehan seksual">Psikolog & BK -
                                 Perundungan, kekerasan dan pelecehan seksual</option>
                             {{-- Mba Ocha & Head RND --}}
-                            <option
+                            {{-- <option
                                 value="Psikolog - Layanan Psikologi (Tumbuh Kembang Anak & Parenting, Masalah Kepribadian, Permasalah psikologis, kesulitan belajar spesifik dan permasalahan psikologis lainnya)">
                                 Psikolog - Layanan Psikologi (Tumbuh Kembang Anak & Parenting, Masalah Kepribadian,
                                 Permasalah psikologis, kesulitan belajar spesifik dan permasalahan psikologis lainnya)
                             </option>
                             {{-- Mba Ocha & Head RND --}}
 
-                            <option value="Tata Usaha - Keuangan">Tata Usaha - Keuangan</option>
+                            {{-- <option value="Tata Usaha - Keuangan">Tata Usaha - Keuangan</option>
                             {{-- Keuangan --}}
-                            <option value="Tata Usaha - Administrasi (Rapot, Ijazah dan sejenisnya)">Tata Usaha -
+                            {{-- <option value="Tata Usaha - Administrasi (Rapot, Ijazah dan sejenisnya)">Tata Usaha -
                                 Administrasi (Rapot, Ijazah dan sejenisnya)</option>
                             {{-- Mba Yuli --}}
 
-                            <option value="Tata Usaha - Kebersihan">Tata Usaha - Kebersihan</option>
+                            {{-- <option value="Tata Usaha - Kebersihan">Tata Usaha - Kebersihan</option>
                             {{-- GA & Koperasi --}}
-                            <option value="Tata Usaha - Keamanan">Tata Usaha - Keamanan</option>
+                            {{-- <option value="Tata Usaha - Keamanan">Tata Usaha - Keamanan</option>
                             {{-- GA & Koperasi --}}
-                            <option
+                            {{-- <option
                                 value="Tata Usaha - Pemeliharaan Gedung (Maintenance, Internet, Mekanikal, Elektrikal, dan Plumbing (Saluran Air))">
                                 Tata Usaha - Pemeliharaan Gedung (Maintenance, Internet, Mekanikal, Elektrikal, dan Plumbing
                                 (Saluran Air))</option>
                             {{-- GA ,IT & PPG --}}
-                            <option value="Tata Usaha - Sarana dan Prasarana (Fasilitas Umum & Fasilitas Ruangan)">Tata
+                            {{-- <option value="Tata Usaha - Sarana dan Prasarana (Fasilitas Umum & Fasilitas Ruangan)">Tata
                                 Usaha - Sarana dan Prasarana (Fasilitas Umum & Fasilitas Ruangan)</option>
                             {{-- GA & PPG --}}
 
-                            <option
+                            {{-- <option
                                 value="Wali Kelas - Motivasi Belajar, Sikap Guru, Layanan Pembelajaran, Pengawasan Perkembangan Siswa, Kegiatan Kelas dan Pengelolaan Kelas">
                                 Wali Kelas - Motivasi Belajar, Sikap Guru, Layanan Pembelajaran, Pengawasan Perkembangan
                                 Siswa, Kegiatan Kelas dan Pengelolaan Kelas</option>
@@ -334,7 +375,8 @@
                                 $('#nisn-hidden').val(nisn);
                                 $('#nisn-display').val(nisn);
                                 $('#nama-siswa').val(response.data.nama);
-                                $('#nama-orangtua').val(response.data.nama_orang_tua || '');
+                                $('#nama-orangtua-display').val(response.data.nama_orang_tua ||
+                                    'Tidak ada data');
                             } else {
                                 showError(response.message);
                             }
@@ -387,6 +429,58 @@
                     $('#nisn-error').removeClass('hidden');
                     $('#nisn-check').focus();
                 }
+
+                // Initialize Select2 for searchable select
+                $('#kendala-select').select2({
+                    placeholder: 'Ketik untuk mencari jenis kritik/saran...',
+                    allowClear: true,
+                    width: '100%',
+                });
+
+                // Custom styling for Select2 to match Tailwind
+                $('.select2-container--default .select2-selection--single').css({
+                    'height': '48px',
+                    'border': '1px solid #d1d5db',
+                    'border-radius': '12px',
+                    'padding': '12px 16px',
+                    'font-size': '14px'
+                });
+
+                $('.select2-container--default .select2-selection--single .select2-selection__rendered').css({
+                    'line-height': '24px',
+                    'padding-left': '0'
+                });
+
+                $('.select2-container--default .select2-selection--single .select2-selection__arrow').css({
+                    'height': '46px'
+                });
+
+                // Focus styling
+                $('#kendala-select').on('select2:open', function() {
+                    $('.select2-container--default .select2-selection--single').css({
+                        'border-color': '#10b981',
+                        'box-shadow': '0 0 0 2px rgba(16, 185, 129, 0.2)'
+                    });
+                });
+
+                $('#kendala-select').on('select2:close', function() {
+                    $('.select2-container--default .select2-selection--single').css({
+                        'border-color': '#d1d5db',
+                        'box-shadow': 'none'
+                    });
+                });
+
+                // Custom CSS for larger dropdown
+                $('<style>').prop('type', 'text/css').html(`
+                    .select2-results {
+                        max-height: 500px !important;
+                    }
+                    .select2-results__option {
+                        padding: 12px 16px !important;
+                        font-size: 14px !important;
+                        line-height: 1.4 !important;
+                    }
+                `).appendTo('head');
             });
         </script>
     @endpush
