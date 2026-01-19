@@ -84,7 +84,7 @@
                     </div>
 
                     <!-- Data Siswa (Read-only) -->
-                    <div class="bg-gray-50 rounded-xl p-4 space-y-4">
+                    <div class="bg-gray-50 rounded-xl py-4 px-1 space-y-4">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">
                             <i class="fas fa-user-graduate mr-2 text-green-500"></i>Data Siswa
                         </h3>
@@ -109,7 +109,7 @@
                             <i class="fas fa-users mr-2 text-green-500"></i>Nama Orang Tua (Opsional)
                         </label>
                         <input type="text" name="nama_orangtua" id="nama-orangtua"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
+                            class="w-full px-4 py-3 border bg-gray-100  border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400" readonly
                             placeholder="Nama orang tua/wali">
                     </div>
 

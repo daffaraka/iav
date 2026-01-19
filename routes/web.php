@@ -7,6 +7,7 @@ use App\Http\Controllers\WigController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\MasterPtnController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\LeadMeasureController;
@@ -31,7 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('sekolah', SekolahController::class);
+    Route::resource('master-ptn', MasterPtnController::class);
     Route::resource('data-prestasi', DataPrestasiController::class);
+    Route::get('prestasi/jagakarsa', [DataPrestasiController::class, 'jagakarsa'])->name('prestasi.jagakarsa');
+    Route::get('prestasi/cinere', [DataPrestasiController::class, 'cinere'])->name('prestasi.cinere');
+    Route::get('prestasi/pamulang', [DataPrestasiController::class, 'pamulang'])->name('prestasi.pamulang');
     Route::resource('lowongan-pekerjaan', LowonganPekerjaanController::class);
     Route::resource('lowongan-apply', LowonganApplyController::class);
     Route::resource('lowongan-progress', LowonganProgressController::class);

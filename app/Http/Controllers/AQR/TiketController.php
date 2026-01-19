@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class TiketController extends Controller
 {
+
     public function index()
     {
-        $data['data'] = Tiket::with(['humas', 'pic'])->latest()->paginate(15);
+        $data['data'] = Tiket::with(['humas', 'pic'])->latest()->get();
         return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     }
 

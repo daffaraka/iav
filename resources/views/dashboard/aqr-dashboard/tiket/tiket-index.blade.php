@@ -72,7 +72,7 @@
 @endsection
 
 
-@push('script')
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
@@ -80,7 +80,6 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
                 },
                 "pageLength": 10,
-                "responsive": true
             });
         });
     </script>

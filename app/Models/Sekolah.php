@@ -13,4 +13,8 @@ class Sekolah extends Model
         'jenjang',
     ];
 
+    public function siswas()
+    {
+        return $this->hasMany(MasterSiswa::class);
+    }
 }

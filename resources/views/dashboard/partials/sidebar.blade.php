@@ -185,7 +185,7 @@
              </li> --}}
 
 
-             {{-- <!-- Sekolah -->
+             <!-- Sekolah -->
              <li class="menu-header small text-uppercase"><span class="menu-header-text">Sekolah</span></li>
              <!-- Cards -->
 
@@ -195,19 +195,41 @@
                      <div data-i18n="Basic">Master Sekolah</div>
                  </a>
              </li>
-             <li class="menu-item">
-                 <a href="{{ route('data-prestasi.index') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-collection"></i>
+             <li class="menu-item {{ request()->is('master-ptn*') ? 'active' : '' }}">
+                 <a href="{{ route('master-ptn.index') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-building"></i>
+                     <div data-i18n="Basic">Master PTN/PTS</div>
+                 </a>
+             </li>
+             <li class="menu-item {{ request()->is('data-prestasi*') || request()->is('prestasi/*') ? 'active open' : '' }}">
+                 <a href="javascript:void(0);" class="menu-link menu-toggle">
+                     <i class="menu-icon tf-icons bx bx-trophy"></i>
                      <div data-i18n="Basic">Data Prestasi</div>
                  </a>
+                 <ul class="menu-sub">
+                     <li class="menu-item {{ request()->is('data-prestasi') ? 'active' : '' }}">
+                         <a href="{{ route('data-prestasi.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Semua Prestasi</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('prestasi/jagakarsa') ? 'active' : '' }}">
+                         <a href="{{ route('prestasi.jagakarsa') }}" class="menu-link">
+                             <div data-i18n="Basic">Prestasi Jagakarsa</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('prestasi/cinere') ? 'active' : '' }}">
+                         <a href="{{ route('prestasi.cinere') }}" class="menu-link">
+                             <div data-i18n="Basic">Prestasi Cinere</div>
+                         </a>
+                     </li>
+                     <li class="menu-item {{ request()->is('prestasi/pamulang') ? 'active' : '' }}">
+                         <a href="{{ route('prestasi.pamulang') }}" class="menu-link">
+                             <div data-i18n="Basic">Prestasi Pamulang</div>
+                         </a>
+                     </li>
+                 </ul>
              </li>
-             <li class="menu-item">
-                 <a href="cards-basic.html" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                     <div data-i18n="Basic">Data Persebaran PTN-PTS</div>
-                 </a>
-             </li>
- --}}
+
 
 
 

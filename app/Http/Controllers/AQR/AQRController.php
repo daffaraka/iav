@@ -82,15 +82,18 @@ class AQRController extends Controller
 
         $weekLabels = $weeklyData->pluck('week')->unique()->sort()->values()->toArray();
 
-        // $tiketNew = Tiket::where('status', 'New')->count();
-        // $tiketProses = Tiket::where('status', 'Proses')->count();
-        // $tiketClosed = Tiket::where('status', 'Selesai')->count();
-        // $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+        // Grouping by lokasi_kendala
+        $lokasiChartData = Tiket::selectRaw('lokasi_kendala, COUNT(*) as total')
+            ->groupBy('lokasi_kendala')
+            ->get()
+            ->map(fn($item) => ['name' => $item->lokasi_kendala ?: 'Tidak Diketahui', 'y' => $item->total])
+            ->toArray();
 
-        // $latestTiket = Tiket::where('status', 'New')->latest()->limit(5)->get();
-        // $latestProses = Tiket::where('status', 'Proses')->latest()->limit(5)->get();
-        // $latestSelesai = Tiket::where('status', 'Selesai')->latest()->limit(5)->get();
-
+        $typePengirimChart = Tiket::selectRaw('pengirim, COUNT(*) as total_pengirim')
+            ->groupBy('pengirim')
+            ->get()
+            ->map(fn($item) => ['name' => $item->pengirim ?: 'Tidak Diketahui', 'y' => $item->total_pengirim])
+            ->toArray();
 
         $data = [
             'tiketNew' => $tiketNew,
@@ -102,7 +105,9 @@ class AQRController extends Controller
             'latestSelesai' => $latestSelesai,
             'pieChartData' => json_encode($pieChartData),
             'barChartData' => json_encode($barChartData),
-            'weekLabels' => json_encode($weekLabels)
+            'weekLabels' => json_encode($weekLabels),
+            'lokasiChartData' => json_encode($lokasiChartData),
+            'typePengirimChart' => json_encode($typePengirimChart)
         ];
         return view('dashboard.aqr-dashboard.dashboard', $data);
     }

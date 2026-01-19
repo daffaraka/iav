@@ -25,6 +25,11 @@ class DataPrestasi extends Model
         return $this->belongsTo(MasterSiswa::class);
     }
 
+    public function siswa()
+    {
+        return $this->belongsTo(MasterSiswa::class, 'master_siswa_id');
+    }
+
     public function sekolah()
     {
         return $this->belongsTo(Sekolah::class);

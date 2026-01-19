@@ -12,54 +12,45 @@ class MasterPtnController extends Controller
      */
     public function index()
     {
-        //
+        $ptns = MasterPtn::latest()->paginate(10);
+        return view('dashboard.master-ptn.index', compact('ptns'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('dashboard.master-ptn.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_pt' => 'required',
+            'status_pt' => 'required'
+        ]);
+
+        MasterPtn::create($request->all());
+        return redirect()->route('master-ptn.index')->with('success', 'Data berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(MasterPtn $masterPtn)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(MasterPtn $masterPtn)
     {
-        //
+        return view('dashboard.master-ptn.edit', compact('masterPtn'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, MasterPtn $masterPtn)
     {
-        //
+        $request->validate([
+            'nama_pt' => 'required',
+            'status_pt' => 'required'
+        ]);
+
+        $masterPtn->update($request->all());
+        return redirect()->route('master-ptn.index')->with('success', 'Data berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(MasterPtn $masterPtn)
     {
-        //
+        $masterPtn->delete();
+        return redirect()->route('master-ptn.index')->with('success', 'Data berhasil dihapus');
     }
 }

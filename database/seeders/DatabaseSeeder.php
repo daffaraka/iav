@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             WigProgressSeeder::class,
             LowonganPekerjaanSeeder::class,
             TiketSeeder::class,
+            TopUniversitasSeeder::class,
 
         ]);
     }

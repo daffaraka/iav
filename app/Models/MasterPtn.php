@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MasterPtn extends Model
 {
+    protected $table = 'master_pts';
+    
     protected $fillable = [
         'nama_pt',
         'status_pt',

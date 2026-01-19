@@ -12,7 +12,7 @@
         <!-- Statistics Cards -->
         <div class="row mb-4">
 
-            @hasanyrole(['super-admin','tata-usaha','humas','admin'])
+            @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin'])
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-4 border-primary border-bottom-0 border-top-0 shadow h-100 ">
                         <div class="card-body">
@@ -83,7 +83,7 @@
         <!-- Tiket Lists -->
         <div class="row">
 
-            @hasanyrole(['super-admin','tata-usaha','humas'])
+            @hasanyrole(['super-admin', 'tata-usaha', 'humas'])
                 <!-- Tiket Baru -->
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card shadow h-100">
@@ -95,8 +95,10 @@
                                 <div class="p-3" style="border-left-width: 3px !important;">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
-                                        <button class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
-                                            <i class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
+                                        <button
+                                            class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
+                                            <i
+                                                class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                             {{ $item->pengirim }}
                                         </button>
                                     </div>
@@ -144,8 +146,10 @@
                             <div class="p-3" style="border-left-width: 3px !important;">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
-                                    <button class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
-                                        <i class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
+                                    <button
+                                        class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
+                                        <i
+                                            class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                         {{ $item->pengirim }}
                                     </button>
                                 </div>
@@ -191,13 +195,15 @@
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
                                     <div class="d-flex flex-column align-items-end">
-                                        <button class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }} mb-1">
-                                            <i class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
+                                        <button
+                                            class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }} mb-1">
+                                            <i
+                                                class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                             {{ $item->pengirim }}
                                         </button>
                                         {{-- @if ($item->rating)
                                             <div class="d-flex align-items-center">
-                                                @for($i = 1; $i <= 5; $i++)
+                                                @for ($i = 1; $i <= 5; $i++)
                                                     <i class="fas fa-star {{ $i <= $item->rating ? 'text-warning' : 'text-muted' }}" style="font-size: 12px;"></i>
                                                 @endfor
                                                 <small class="ms-1 text-muted">({{ $item->rating }})</small>
@@ -237,7 +243,20 @@
 
         <!-- Charts Section -->
         <div class="row">
-            <div class="col-lg-6 mb-4">
+
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tiket per Lokasi</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="lokasiChart" style="height: 500px;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-5 mb-4">
                 <div class="card shadow">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Status Tiket</h6>
@@ -247,6 +266,20 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="col-7 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Statistik Pengirim</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="pengirimPieChart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+
+
 
             <div class="col-12 mb-4">
                 <div class="card shadow">
@@ -264,63 +297,117 @@
 @endsection
 
 @push('scripts')
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script>
-// Pie Chart
-Highcharts.chart('pieChart', {
-    chart: {
-        type: 'pie'
-    },
-    title: {
-        text: null
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.y}'
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        // Pie Chart
+        Highcharts.chart('pieChart', {
+            chart: {
+                type: 'pie'
             },
-            showInLegend: true
-        }
-    },
-    colors: ['#ffc107', '#17a2b8', '#28a745'],
-    series: [{
-        name: 'Tiket',
-        colorByPoint: true,
-        data: {!! $pieChartData !!}
-    }]
-});
+            title: {
+                text: null
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}'
+                    },
+                    showInLegend: true
+                }
+            },
+            colors: ['#ffc107', '#17a2b8', '#28a745'],
+            series: [{
+                name: 'Tiket',
+                colorByPoint: true,
+                data: {!! $pieChartData !!}
+            }]
+        });
 
-// Bar Chart
-Highcharts.chart('barChart', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: null
-    },
-    xAxis: {
-        categories: {!! $weekLabels !!},
-        title: {
-            text: 'Minggu'
-        }
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: 'Jumlah Tiket'
-        }
-    },
-    plotOptions: {
-        column: {
-            dataLabels: {
-                enabled: true
-            }
-        }
-    },
-    series: {!! $barChartData !!}
-});
-</script>
+        // Bar Chart
+        Highcharts.chart('barChart', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: null
+            },
+            xAxis: {
+                categories: {!! $weekLabels !!},
+                title: {
+                    text: 'Minggu'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Jumlah Tiket'
+                }
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: {!! $barChartData !!}
+        });
+
+        // Lokasi Pie Chart
+        Highcharts.chart('lokasiChart', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: null
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y} '
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Jumlah Tiket',
+                colorByPoint: true,
+                data: {!! $lokasiChartData !!}
+            }]
+        });
+
+
+        // Status Pengirim Chart
+        Highcharts.chart('pengirimPieChart', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: null
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}'
+                    },
+                    showInLegend: true
+                }
+            },
+            colors: ['#ffa707', '#63a2b8'],
+            series: [{
+                name: 'Tipe Pengirim',
+                colorByPoint: true,
+                data: {!! $typePengirimChart !!}
+            }]
+        });
+    </script>
 @endpush
