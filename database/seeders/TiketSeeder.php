@@ -86,7 +86,7 @@ class TiketSeeder extends Seeder
 
 
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $selectedStatus = $status[array_rand($status)];
             $aqrOptions = AqrOption::inRandomOrder()->first();
             Tiket::create([
@@ -102,6 +102,7 @@ class TiketSeeder extends Seeder
                 'status' => $selectedStatus,
                 'pengirim' => $selectedPengirim = ['Masyarakat Umum', 'Warga Sekolah'][array_rand(['Masyarakat Umum', 'Warga Sekolah'])],
                 'departemen' => $departemen[array_rand($departemen)],
+                'jenjang' => explode(' ', $selectedLokasi)[0],
                 'lokasi_sekolah' => $lokasiSekolah = explode(' ', $selectedLokasi)[2],
                 'rating' => $selectedStatus == 'Selesai' ? rand(3, 5) : null,
                 'deskripsi_penilaian' => $selectedStatus == 'Selesai' ? 'Pelayanan memuaskan' : null,
@@ -109,7 +110,7 @@ class TiketSeeder extends Seeder
                 'admin_humas_id' => $selectedPengirim == 'Masyarakat Umum' && $selectedStatus == 'Proses' ? User::where('jabatan', 'LIKE', '%Humas%')->inRandomOrder()->first()?->id : null,
                 'pic_id' => null,
                 'masalah_dept' => $aqrOptions->nama_option,
-                'option_id' => $aqrOptions->id
+                'option_id' => $selectedPengirim == 'Warga Sekolah' ? $aqrOptions->id : null,
             ]);
         }
     }

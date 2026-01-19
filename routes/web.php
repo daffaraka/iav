@@ -21,7 +21,7 @@ use App\Http\Controllers\AqrOptionController;
 
 
 
-Route::get('/',function() {
+Route::get('/', function () {
     return redirect()->to('dashboard');
 });
 
@@ -32,28 +32,31 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('sekolah', SekolahController::class);
-    Route::resource('master-ptn', MasterPtnController::class);
-    Route::resource('data-prestasi', DataPrestasiController::class);
-    Route::get('prestasi/jagakarsa', [DataPrestasiController::class, 'jagakarsa'])->name('prestasi.jagakarsa');
-    Route::get('prestasi/cinere', [DataPrestasiController::class, 'cinere'])->name('prestasi.cinere');
-    Route::get('prestasi/pamulang', [DataPrestasiController::class, 'pamulang'])->name('prestasi.pamulang');
-    Route::resource('lowongan-pekerjaan', LowonganPekerjaanController::class);
-    Route::resource('lowongan-apply', LowonganApplyController::class);
-    Route::resource('lowongan-progress', LowonganProgressController::class);
-    Route::resource('user', UserController::class);
-    Route::resource('aqr-option', AqrOptionController::class);
+
+    Route::middleware(['role:super-admin|humas|direktur|koordinator'])->group(function () {
+        Route::resource('sekolah', SekolahController::class);
+        Route::resource('master-ptn', MasterPtnController::class);
+        Route::resource('data-prestasi', DataPrestasiController::class);
+        Route::get('prestasi/jagakarsa', [DataPrestasiController::class, 'jagakarsa'])->name('prestasi.jagakarsa');
+        Route::get('prestasi/cinere', [DataPrestasiController::class, 'cinere'])->name('prestasi.cinere');
+        Route::get('prestasi/pamulang', [DataPrestasiController::class, 'pamulang'])->name('prestasi.pamulang');
+        Route::resource('lowongan-pekerjaan', LowonganPekerjaanController::class);
+        Route::resource('lowongan-apply', LowonganApplyController::class);
+        Route::resource('lowongan-progress', LowonganProgressController::class);
+        Route::resource('user', UserController::class);
+        Route::resource('aqr-option', AqrOptionController::class);
 
 
-    Route::resource('departement', DepartementController::class);
-    Route::get('departement/{departement}/{wig}', [DepartementController::class, 'showWig'])->name('dept.show.wig');
-    Route::get('departement/{departement}/{wig}/edit', [WigController::class, 'editByDept'])->name('dept.edit.wig');
+        Route::resource('departement', DepartementController::class);
+        Route::get('departement/{departement}/{wig}', [DepartementController::class, 'showWig'])->name('dept.show.wig');
+        Route::get('departement/{departement}/{wig}/edit', [WigController::class, 'editByDept'])->name('dept.edit.wig');
 
-    Route::resource('wig', WigController::class);
-    Route::resource('wig.lead-measure', LeadMeasureController::class);
-    Route::resource('wig.lead-measure.task-process', TaskProcessController::class);
-    Route::resource('departement.wig.progress-wig', WigProgressController::class);
-    Route::post('departement/store-wig', [WigController::class, 'storeByDept'])->name('wig.storeByDept');
+        Route::resource('wig', WigController::class);
+        Route::resource('wig.lead-measure', LeadMeasureController::class);
+        Route::resource('wig.lead-measure.task-process', TaskProcessController::class);
+        Route::resource('departement.wig.progress-wig', WigProgressController::class);
+        Route::post('departement/store-wig', [WigController::class, 'storeByDept'])->name('wig.storeByDept');
+    });
 
     // Routing json
     Route::post('get-wig-by-id/{id}', [WigProgressController::class, 'getWigById'])->name('getWigId');

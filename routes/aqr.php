@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AQR\AduanController;
 use App\Http\Controllers\AQR\AQRController;
+use App\Http\Controllers\AQR\AduanController;
 use App\Http\Controllers\AQR\TiketController;
+use App\Http\Controllers\AqrOptionController;
 use App\Http\Controllers\AQR\DashboardAQRController;
 use App\Http\Controllers\AQR\ProgresTiketController;
 
@@ -13,6 +14,7 @@ Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->grou
     Route::resource('tiket', TiketController::class);
     Route::resource('progres-tiket', ProgresTiketController::class);
 
+    Route::resource('aqr-option', AqrOptionController::class);
     // Tiket actions
     Route::patch('tiket/{id}/proses', [TiketController::class, 'proses'])->name('tiket.proses');
     Route::post('tiket/{id}/rating', [TiketController::class, 'rating'])->name('tiket.rating');

@@ -16,6 +16,7 @@ class RoleSeeder extends Seeder
             'super-admin',
             'staff',
             'guru',
+            'kepala-tata-usaha',
             'tata-usaha',
             'kepala-sekolah',
             'admin-unit',

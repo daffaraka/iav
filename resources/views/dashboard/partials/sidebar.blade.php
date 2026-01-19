@@ -63,8 +63,8 @@
                  @foreach (Auth::user()->roles as $role)
                      {{ ucwords(str_replace('-', ' ', $role->name)) }}
                  @endforeach
-                <br>
-                 {{Auth::user()->jenjang .'-'. Auth::user()->unit.'-'.Auth::user()->id }}
+                 <br>
+                 {{ Auth::user()->jenjang . '-' . Auth::user()->unit . '-' . Auth::user()->id }}
              </span>
          </div>
 
@@ -203,7 +203,8 @@
                      <div data-i18n="Basic">Master PTN/PTS</div>
                  </a>
              </li>
-             <li class="menu-item {{ request()->is('data-prestasi*') || request()->is('prestasi/*') ? 'active open' : '' }}">
+             <li
+                 class="menu-item {{ request()->is('data-prestasi*') || request()->is('prestasi/*') ? 'active open' : '' }}">
                  <a href="javascript:void(0);" class="menu-link menu-toggle">
                      <i class="menu-icon tf-icons bx bx-trophy"></i>
                      <div data-i18n="Basic">Data Prestasi</div>
@@ -239,18 +240,27 @@
              <li class="menu-header small text-uppercase"><span class="menu-header-text">AQR</span></li>
              <!-- Cards -->
 
-             <li class="menu-item {{ request()->is('dashboard/aqr*') ? 'active open' : '' }}">
+             <li class="menu-item {{ request()->is('dashboard/aqr') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                             <div data-i18n="Basic">Dashboard AQR</div>
+                 </a>
+             </li>
+
+              <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
+                         <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-area"></i>
+                             <div data-i18n="Basic">Opsi AQR</div>
+                 </a>
+             </li>
+
+             <li class="menu-item {{ request()->is('dashboard/aqr/*') ? 'active open' : '' }}">
                  <a href="javascript:void(0);"
                      class="menu-link menu-toggle {{ request()->is('aqr*') ? 'active' : '' }}">
                      <i class="menu-icon tf-icons bx bx-support"></i>
                      <div data-i18n="Basic">Tiket Aduan</div>
                  </a>
                  <ul class="menu-sub {{ request()->is('dashboard/aqr') ? 'show' : '' }}">
-                     <li class="menu-item {{ request()->is('dashboard/aqr') ? 'active' : '' }}">
-                         <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
-                             <div data-i18n="Basic">Dashboard AQR</div>
-                         </a>
-                     </li>
                      <li class="menu-item {{ request()->is('dashboard/aqr/tiket*') ? 'active' : '' }}">
                          <a href="{{ route('dashboard.aqr.tiket.index') }}" class="menu-link">
                              <div data-i18n="Basic">Data Tiket</div>
@@ -268,20 +278,22 @@
                      </li> --}}
 
                      @hasrole('super-admin')
-                     <li class="menu-item {{ request()->is('aqr-option*') ? 'active' : '' }}">
-                         <a href="{{ route('aqr-option.index') }}" class="menu-link">
-                             <div data-i18n="Basic">AQR Option</div>
-                         </a>
-                     </li>
+                         <li class="menu-item {{ request()->is('aqr-option*') ? 'active' : '' }}">
+                             <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                                 <div data-i18n="Basic">AQR Option</div>
+                             </a>
+                         </li>
                      @endrole
                  </ul>
              </li>
 
+
+             @hasrole('super-admin')
              <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
              <!-- Cards -->
 
 
-{{--
+             {{--
              <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -295,13 +307,13 @@
                  </a>
              </li> --}}
 
-             @hasrole('super-admin')
-             <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
-                 <a href="{{ route('user.index') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-user"></i>
-                     <div data-i18n="Basic">Manajemen User</div>
-                 </a>
-             </li>
+
+                 <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+                     <a href="{{ route('user.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-user"></i>
+                         <div data-i18n="Basic">Manajemen User</div>
+                     </a>
+                 </li>
              @endrole
 
 

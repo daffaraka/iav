@@ -11,8 +11,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles')->latest()->get();
-        return view('dashboard.user.user-index', compact('users'));
+        $data['users'] = User::with('roles')->latest()->get();
+        $data['title'] = 'Manajemen User';
+        return view('dashboard.user.user-index', $data);
     }
 
     public function create()

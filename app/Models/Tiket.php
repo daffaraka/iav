@@ -28,6 +28,7 @@ class Tiket extends Model
         'kepuasan',
         'rating',
         'deskripsi_penilaian',
+        'jenjang',
         'lokasi_sekolah',
         'option_id',
         'waktu_proses',

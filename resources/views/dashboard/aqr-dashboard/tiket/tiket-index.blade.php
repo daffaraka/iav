@@ -42,7 +42,7 @@
                                     <td>{{ $item->lokasi_kendala }}</td>
 
 
-                                    <td>{{ $item->pic->name ?? '-' }}</td>
+                                    <td>{{ $item->option->kategori_pic ?? '-' }}</td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"

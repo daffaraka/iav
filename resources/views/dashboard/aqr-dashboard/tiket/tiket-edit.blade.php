@@ -8,6 +8,7 @@
 
             <div class="container-fluid">
                 <div class="py-4">
+
                     <div class="h1 text-end">
                         <h3 class="mx-2 mb-4"> No Tiket : {{ $tiket->no_tiket }} </h3>
                     </div>
@@ -19,6 +20,19 @@
 
                         </div>
                     </div>
+
+                    @if ($tiket->pengirim == 'Warga Sekolah')
+    <div class="form-input mb-3">
+                        <strong><label class="cd-label left-text">Kategori Permasalahan</label></strong>
+                        <div class="">
+                                                        <button
+                                class="btn btn-{{ $tiket->kategori_pic == 'Kepala Sekolah' ? 'warning' : 'danger' }}">{{ $tiket->option->kategori_pic }}</button>
+                            <button
+                                class="btn btn-{{ $tiket->kategori_pic == 'Kepala Sekolah' ? 'info' : 'secondary' }}">{{ $tiket->option->nama_option }}</button>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="form-input mb-3">
                         <strong><label class="cd-label left-text">Nama</label></strong>
                         <input class="form-control" type="text" name="nama" id="nama" value="{{ $tiket->nama }}"
@@ -136,7 +150,8 @@
                                         @if ($tiket->pengirim == 'Warga Sekolah')
                                             <div class="bg-dark p-3 text-light rounded shadow"><i class="bx bx-info-circle"
                                                     aria-hidden="true"></i> Jika pengirim adalah warga sekolah, maka akan
-                                                otomatis memilih Kepala Sekolah / Kepala Tata Usaha berdasarkan Unit dan Jenjang sekolah sebagai gerbang pertama.
+                                                otomatis memilih Kepala Sekolah / Kepala Tata Usaha berdasarkan Unit dan
+                                                Jenjang sekolah sebagai gerbang pertama.
                                             </div>
                                         @endif
                                         <hr>
@@ -226,7 +241,7 @@
                                             @break
 
                                             @case('Proses')
-                                                @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin','kepala-sekolah']]))
+                                                @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah']]))
                                                     <h6 class="mt-3 mb-4 text-dark">PIC sudah ditentukan</h6>
 
                                                     <input type="hidden" name="menanggapi" value="selesai">
@@ -316,7 +331,7 @@
                                     </div>
 
 
-                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin','kepala-sekolah'])
+                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah'])
                                         @if ($tiket->status == 'New')
                                             <button class="btn btn-primary m-4" type="submit">Update Ticket</button>
                                         @elseif ($tiket->status == 'Proses')

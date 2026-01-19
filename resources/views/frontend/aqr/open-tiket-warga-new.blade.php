@@ -140,15 +140,6 @@
                         </div>
                     </div>
 
-                    <!-- Nama Orang Tua -->
-                    <div class="animate-slide-in-right" style="animation-delay: 0.1s">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-users mr-2 text-green-500"></i>Nama Orang Tua (Opsional)
-                        </label>
-                        <input type="text" name="nama_orangtua" id="nama-orangtua"
-                            class="w-full px-4 py-3 border bg-gray-100  border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400" readonly
-                            placeholder="Nama orang tua/wali">
-                    </div>
 
                     <!-- Email -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.2s">

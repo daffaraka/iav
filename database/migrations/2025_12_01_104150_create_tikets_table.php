@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('judul_kendala', 255);
             $table->string('departemen', 50)->nullable();
             $table->text('masalah_dept' )->nullable();
+            $table->text('jenjang')->nullable();
             $table->string('lokasi_kendala', 250)->nullable();
             $table->text('detail_kendala')->nullable();
             $table->enum('status', ['New', 'Proses', 'Selesai', 'Spam'])->nullable();

@@ -114,6 +114,7 @@ class HomeAQRController extends Controller
                 'nama_orangtua' => $request->nama_orangtua,
                 'email' => $request->email,
                 'judul_kendala' => $request->judul_kendala,
+                'jenjang' => $request->pengirim === 'Warga Sekolah' ? explode(' ', $request->lokasi_kendala)[0] : null,
                 'lokasi_kendala' => $request->pengirim === 'Warga Sekolah' ? $request->lokasi_kendala : null,
                 'detail_kendala' => $request->detail_kendala,
                 'lokasi_sekolah' => $unit ?? '',

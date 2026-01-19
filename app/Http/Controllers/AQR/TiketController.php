@@ -16,29 +16,33 @@ class TiketController extends Controller
     {
 
         $unit = Auth::user()->unit;
+        $data['title'] = 'Manajemen Tiket AQR';
         $jenjang = Auth::user()->jenjang;
         $departemen = Auth::user()->departemen;
         // dd($unit);
         if (Auth::user()->hasAnyRole(['super-admin', 'humas'])) {
-            $data['data'] = Tiket::with(['humas', 'pic'])->latest()->get();
+            $data['data'] = Tiket::with(['humas', 'pic','option'])->latest()->get();
         } else {
 
-            if (Auth::user()->hasRole('tata-usaha')) {
+            if (Auth::user()->hasRole('kepala-tata-usaha')) {
 
 
-                $data['data'] = Tiket::with(['humas', 'pic'])->where('lokasi_sekolah', $unit)
+                $data['data'] = Tiket::with(['humas', 'pic','option'])->where('lokasi_sekolah', $unit)
                     ->whereHas('option', function ($query) use ($unit) {
-                        $query->where('kategori_pic', 'Tata Usaha');
+                        $query->where('kategori_pic', 'Kepala TU');
                     })->get();
             } else {
 
 
-                $data['data'] = Tiket::with(['humas', 'pic'])->where('lokasi_sekolah', $unit)
+                $data['data'] = Tiket::with(['humas', 'pic','option'])->where('lokasi_sekolah', $unit)
                     ->whereHas('option', function ($query) {
                         $query->where('kategori_pic', 'Kepala Sekolah');
                     })->get();
             }
         }
+
+
+        // dd($data['data']);
 
 
         // dd($data);
@@ -100,7 +104,7 @@ class TiketController extends Controller
 
     public function edit($id)
     {
-        $tiket = Tiket::with(['humas', 'pic', 'progres' => function ($query) {
+        $tiket = Tiket::with(['humas', 'pic', 'option','progres' => function ($query) {
             $query->latest();
         }])->find($id);
 
