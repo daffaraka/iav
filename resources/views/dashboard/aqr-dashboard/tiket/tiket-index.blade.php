@@ -7,17 +7,17 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable">
+                    <table class="table table-striped table-bordered" id="dataTable">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Status</th>
                                 <th>Tanggal</th>
                                 <th>Nama</th>
-                                <th>Departemen</th>
+                                <th>Kategori Masalah</th>
                                 <th>Judul Kendala</th>
                                 <th>Lokasi Kendala</th>
-                                <th>Humas</th>
+
                                 <th>PIC</th>
                                 <th>Action</th>
                             </tr>
@@ -37,12 +37,11 @@
                                     </td>
                                     <td>{{ $item->created_at->isoFormat('D MMMM YYYY') }}</td>
                                     <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->departemen ?? '-' }}</td>
+                                    <td>{{ $item->masalah_dept ?? '-' }}</td>
                                     <td>{{ $item->judul_kendala }}</td>
                                     <td>{{ $item->lokasi_kendala }}</td>
 
 
-                                    <td>{{ $item->humas->name ?? '-' }}</td>
                                     <td>{{ $item->pic->name ?? '-' }}</td>
                                     <td>
                                         <div class="d-flex">
@@ -72,16 +71,11 @@
 @endsection
 
 
-@push('script')
+@push('scripts')
     <script>
         $(document).ready(function() {
-            $('#dataTable').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
-                },
-                "pageLength": 10,
-                "responsive": true
-            });
+            $('#dataTable').DataTable();
+
         });
     </script>
 @endpush

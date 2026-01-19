@@ -43,12 +43,12 @@
                         <textarea class="form-control" name="judul_kendala" id="judul_kendala" readonly>{{ $tiket->judul_kendala }}</textarea>
                     </div>
 
-                    @if($tiket->pengirim == 'Warga Sekolah')
-                    <div class="form-input mb-3">
-                        <strong><label class="cd-label left-text">Lokasi Sekolah</label></strong>
-                        <input class="form-control" type="text" name="lokasi_kendala" id="lokasi_kendala"
-                            value="{{ $tiket->lokasi_kendala }}" readonly>
-                    </div>
+                    @if ($tiket->pengirim == 'Warga Sekolah')
+                        <div class="form-input mb-3">
+                            <strong><label class="cd-label left-text">Lokasi Sekolah</label></strong>
+                            <input class="form-control" type="text" name="lokasi_kendala" id="lokasi_kendala"
+                                value="{{ $tiket->lokasi_kendala }}" readonly>
+                        </div>
                     @endif
 
                     <div class="input-input mb-3">
@@ -136,17 +136,18 @@
                                         @if ($tiket->pengirim == 'Warga Sekolah')
                                             <div class="bg-dark p-3 text-light rounded shadow"><i class="bx bx-info-circle"
                                                     aria-hidden="true"></i> Jika pengirim adalah warga sekolah, maka akan
-                                                otomatis memilih Admin / Tata Usaha berdasarkan Unit dan Jenjang sekolah.
+                                                otomatis memilih Kepala Sekolah / Kepala Tata Usaha berdasarkan Unit dan Jenjang sekolah sebagai gerbang pertama.
                                             </div>
                                         @endif
                                         <hr>
+
                                         @switch($tiket->status)
                                             @case('New')
                                                 @if ($tiket->pengirim == 'Warga Sekolah')
                                                     <div class="mb-3">
-                                                        <label class="text-dark">Admin/TU sekolah :</label>
+                                                        <label class="text-dark">Kepala Sekolah/Kepala TU :</label>
                                                         <input type="text" class="form-control fw-bold" readonly
-                                                            value="{{ $tiket->humas->name }}">
+                                                            value="{{ $tiket->humas->name ?? 'Belum ditentukan' }}">
                                                     </div>
 
 
@@ -155,15 +156,14 @@
                                                             <label for="Status">Pilih Departemen Terkait</label>
                                                             <select class="form-control mb-3" name="departemen" id="departemen"
                                                                 required>
-                                                                <option value="BK">BK</option>
-                                                                <option value="Humas">Humas</option>
+                                                                <option value="Guru BK">BK</option>
+                                                                <option value="Public Relation & Digital Marketing">Humas</option>
                                                                 <option value="Kepala Sekolah">Kepala Sekolah</option>
-                                                                <option value="Kesiswaan">Kesiswaan</option>
+                                                                <option value="Wakil Kesiswaan">Wakil Kesiswaan</option>
                                                                 <option value="Koperasi">Koperasi</option>
-                                                                <option value="Kurikulum">Kurikulum</option>
-                                                                <option value="Psikolog & BK">Psikolog & BK</option>
+                                                                <option value="Wakil Kurikulum">Kurikulum</option>
                                                                 <option value="Psikolog">Psikolog</option>
-                                                                <option value="Tata-Usaha">Tata Usaha</option>
+                                                                <option value="Tata Usaha">Tata Usaha</option>
                                                                 <option value="Wali kelas">Wali Kelas</option>
 
                                                             </select>
@@ -226,13 +226,13 @@
                                             @break
 
                                             @case('Proses')
-                                                @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin']]))
+                                                @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin','kepala-sekolah']]))
                                                     <h6 class="mt-3 mb-4 text-dark">PIC sudah ditentukan</h6>
 
                                                     <input type="hidden" name="menanggapi" value="selesai">
 
-                                                     <div class="mb-3">
-                                                        <strong><label for="">Admin / Humas / TU </label></strong>
+                                                    <div class="mb-3">
+                                                        <strong><label for="">Kepsek / Kepala TU </label></strong>
                                                         <input type="text" name="" id=""
                                                             value="{{ $tiket->humas->name }}" class="form-control" disabled>
                                                     </div>
@@ -316,7 +316,7 @@
                                     </div>
 
 
-                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin'])
+                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin','kepala-sekolah'])
                                         @if ($tiket->status == 'New')
                                             <button class="btn btn-primary m-4" type="submit">Update Ticket</button>
                                         @elseif ($tiket->status == 'Proses')
@@ -385,14 +385,14 @@
                                 <div class="form-group mb-3">
                                     <label for="Status">Pilih Departemen Terkait</label>
                                     <select class="form-control mb-3" name="departemen" id="departemen" required>
-                                        <option value="BK">BK</option>
-                                        <option value="Humas">Humas</option>
+                                        <option value="Guru BK">Guru BK</option>
+                                        <option value="Staff Humas">Humas</option>
                                         <option value="Kepala Sekolah">Kepala Sekolah</option>
                                         <option value="Kesiswaan">Kesiswaan</option>
                                         <option value="Koperasi">Koperasi</option>
                                         <option value="Kurikulum">Kurikulum</option>
                                         <option value="Psikolog & BK">Psikolog & BK</option>
-                                        <option value="Psikolog">Psikolog</option>
+                                        <option value="Psikolog Sekolah">Psikolog</option>
                                         <option value="Tata-Usaha">Tata Usaha</option>
                                         <option value="Wali kelas">Wali Kelas</option>
 
@@ -449,7 +449,7 @@
                             '<option value="">Pilih PIC</option>');
                         $.each(response, function(index, pic) {
                             $('#pic_menanggapi').append(
-                                `<option value="${pic.id}">${pic.unit} - ${pic.departemen}  -  ${pic.name}</option>`
+                                `<option value="${pic.id}">${pic.unit} - ${pic.jabatan}  -  ${pic.name}</option>`
                             );
                         });
                     }

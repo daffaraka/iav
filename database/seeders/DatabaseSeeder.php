@@ -38,8 +38,8 @@ class DatabaseSeeder extends Seeder
             TaskProcessSeeder::class,
             WigProgressSeeder::class,
             LowonganPekerjaanSeeder::class,
+            AqrOptionSeeder::class,
             TiketSeeder::class,
-
         ]);
     }
 }

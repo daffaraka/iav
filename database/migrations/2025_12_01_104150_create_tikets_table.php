@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tikets', function (Blueprint $table) {
-             $table->id();
+            $table->id();
             $table->string('nisn')->nullable();
             $table->string('no_tiket', 250)->unique();
             $table->string('no_hp', 250)->nullable();
@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('email', 50)->nullable();
             $table->string('judul_kendala', 255);
             $table->string('departemen', 50)->nullable();
+            $table->text('masalah_dept' )->nullable();
             $table->string('lokasi_kendala', 250)->nullable();
             $table->text('detail_kendala')->nullable();
-            $table->enum('status', ['New', 'Proses', 'Selesai','Spam'])->nullable();
+            $table->enum('status', ['New', 'Proses', 'Selesai', 'Spam'])->nullable();
             $table->string('filename', 100)->nullable();
             $table->enum('pengirim', ['Masyarakat Umum', 'Warga Sekolah']);
 
