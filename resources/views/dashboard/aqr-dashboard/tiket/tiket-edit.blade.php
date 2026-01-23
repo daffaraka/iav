@@ -22,15 +22,15 @@
                     </div>
 
                     @if ($tiket->pengirim == 'Warga Sekolah')
-    <div class="form-input mb-3">
-                        <strong><label class="cd-label left-text">Kategori Permasalahan</label></strong>
-                        <div class="">
-                                                        <button
-                                class="btn btn-{{ $tiket->kategori_pic == 'Kepala Sekolah' ? 'warning' : 'danger' }}">{{ $tiket->option->kategori_pic }}</button>
-                            <button
-                                class="btn btn-{{ $tiket->kategori_pic == 'Kepala Sekolah' ? 'info' : 'secondary' }}">{{ $tiket->option->nama_option }}</button>
+                        <div class="form-input mb-3">
+                            <strong><label class="cd-label left-text">Kategori Permasalahan</label></strong>
+                            <div class="">
+                                <button
+                                    class="btn btn-{{ $tiket->kategori_pic == 'Kepala Sekolah' ? 'warning' : 'danger' }}">{{ $tiket->option->kategori_pic }}</button>
+                                <button
+                                    class="btn btn-{{ $tiket->kategori_pic == 'Kepala Sekolah' ? 'info' : 'secondary' }}">{{ $tiket->option->nama_option }}</button>
+                            </div>
                         </div>
-                    </div>
                     @endif
 
                     <div class="form-input mb-3">
@@ -171,15 +171,19 @@
                                                             <label for="Status">Pilih Departemen Terkait</label>
                                                             <select class="form-control mb-3" name="departemen" id="departemen"
                                                                 required>
-                                                                <option value="Guru BK">BK</option>
-                                                                <option value="Public Relation & Digital Marketing">Humas</option>
-                                                                <option value="Kepala Sekolah">Kepala Sekolah</option>
+                                                                <option value="Wakil Kurikulum">Wakil Kurikulum</option>
                                                                 <option value="Wakil Kesiswaan">Wakil Kesiswaan</option>
-                                                                <option value="Koperasi">Koperasi</option>
-                                                                <option value="Wakil Kurikulum">Kurikulum</option>
+                                                                <option value="Guru Kelas">Wali Kelas</option>
                                                                 <option value="Psikolog">Psikolog</option>
+                                                                <option value="Guru BK">BK</option>
+                                                                <option value="Staf Tax Acounting">Keuangan</option>
+                                                                <option value="Staf Sarpra">Sarana dan Prasarana</option>
                                                                 <option value="Tata Usaha">Tata Usaha</option>
-                                                                <option value="Wali kelas">Wali Kelas</option>
+                                                                <option value="Teknisi">Teknisi</option>
+                                                                <option value="Public Relation & Digital Marketing">Humas</option>
+                                                                <option value="Koperasi">Koperasi</option>
+                                                                {{-- <option value="Kepala Sekolah">Kepala Sekolah</option> --}}
+
 
                                                             </select>
                                                         </div>
@@ -208,16 +212,19 @@
                                                             <label for="Status">Pilih Departemen Terkait</label>
                                                             <select class="form-control mb-3" name="departemen" id="departemen"
                                                                 required>
-                                                                <option value="BK">BK</option>
-                                                                <option value="Humas">Humas</option>
-                                                                <option value="Kepala Sekolah">Kepala Sekolah</option>
-                                                                <option value="Kesiswaan">Kesiswaan</option>
-                                                                <option value="Koperasi">Koperasi</option>
-                                                                <option value="Kurikulum">Kurikulum</option>
-                                                                <option value="Psikolog & BK">Psikolog & BK</option>
+                                                                <option value="Wakil Kurikulum">Wakil Kurikulum</option>
+                                                                <option value="Wakil Kesiswaan">Wakil Kesiswaan</option>
+                                                                <option value="Guru Kelas">Wali Kelas</option>
                                                                 <option value="Psikolog">Psikolog</option>
-                                                                <option value="Tata-Usaha">TU</option>
-                                                                <option value="Wali kelas">Wali Kelas</option>
+                                                                <option value="Guru BK">BK</option>
+                                                                <option value="Staf Tax Acounting">Keuangan</option>
+                                                                <option value="Staf Sarpra">Sarana dan Prasarana</option>
+                                                                <option value="Tata Usaha">Tata Usaha</option>
+                                                                <option value="Teknisi">Teknisi</option>
+                                                                <option value="Public Relation & Digital Marketing">Humas</option>
+                                                                <option value="Koperasi">Koperasi</option>
+                                                                {{-- <option value="Kepala Sekolah">Kepala Sekolah</option> --}}
+
 
                                                             </select>
                                                         </div>
@@ -400,16 +407,21 @@
                                 <div class="form-group mb-3">
                                     <label for="Status">Pilih Departemen Terkait</label>
                                     <select class="form-control mb-3" name="departemen" id="departemen" required>
-                                        <option value="Guru BK">Guru BK</option>
-                                        <option value="Staff Humas">Humas</option>
-                                        <option value="Kepala Sekolah">Kepala Sekolah</option>
-                                        <option value="Kesiswaan">Kesiswaan</option>
+                                        <option value="Wakil Kurikulum">Wakil Kurikulum</option>
+                                        <option value="Wakil Kesiswaan">Wakil Kesiswaan</option>
+                                        <option value="Guru Kelas">Wali Kelas</option>
+                                        <option value="Psikolog">Psikolog</option>
+                                        <option value="Guru BK">BK</option>
+                                        <option value="Staf Tax Acounting">Keuangan</option>
+                                        <option value="Staf Sarpra">Sarana dan Prasarana</option>
+                                        <option value="Tata Usaha">Tata Usaha</option>
+                                        <option value="Teknisi">Teknisi</option>
+                                        <option value="Public Relation & Digital Marketing">Humas</option>
                                         <option value="Koperasi">Koperasi</option>
-                                        <option value="Kurikulum">Kurikulum</option>
-                                        <option value="Psikolog & BK">Psikolog & BK</option>
-                                        <option value="Psikolog Sekolah">Psikolog</option>
-                                        <option value="Tata-Usaha">Tata Usaha</option>
-                                        <option value="Wali kelas">Wali Kelas</option>
+
+                                        {{-- <option value="Kepala Sekolah">Kepala Sekolah</option> --}}
+
+
 
                                     </select>
                                 </div>

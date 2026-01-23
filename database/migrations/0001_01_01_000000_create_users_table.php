@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             // $table->string('nip')->unique();
-            $table->enum('unit',['BPS','Cinere','Jagakarsa','Pamulang']);
-            $table->enum('jenjang',['KB','TK','SD','SMP','SMA','BPS'])->nullable();
+            $table->enum('unit', ['BPS', 'Cinere', 'Jagakarsa', 'Pamulang']);
+            $table->enum('jenjang', ['KB', 'TK', 'SD', 'SMP', 'SMA', 'BPS'])->nullable();
+            $table->string('kelas')->nullable();
+            $table->string('sub_kelas')->nullable();
+
             $table->string('departemen');
             $table->string('no_hp')->nullable();
             $table->string('jabatan');

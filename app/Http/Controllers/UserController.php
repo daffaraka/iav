@@ -41,7 +41,7 @@ class UserController extends Controller
         $user->assignRole($validated['role']);
 
         return redirect()->route('dashboard.user.index')
-                        ->with('success', 'User berhasil dibuat');
+            ->with('success', 'User berhasil dibuat');
     }
 
     public function show($id)
@@ -54,19 +54,23 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        return view('dashboard.user.user-edit', compact('user', 'roles'));
+        $jabatans = User::whereNotIn('unit', ['BPS'])->pluck('jabatan')->unique()->values();
+        $departemens = User::whereNotIn('unit', ['BPS'])->pluck('departemen')->unique()->values();
+        $title = 'Edit User '.$user->name;
+        // dd($jabatans);
+        return view('dashboard.user.user-edit', compact('user', 'roles','jabatans','departemens','title'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
+        dd($request->all());
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'employee_code' => 'nullable|string|max:50',
-            'position' => 'nullable|string|max:100',
+            'password' => 'nullable|string|min:8',
             'department' => 'nullable|string|max:100',
             'location' => 'nullable|string|max:100',
             'role' => 'required|exists:roles,name'
@@ -82,7 +86,7 @@ class UserController extends Controller
         $user->syncRoles([$validated['role']]);
 
         return redirect()->route('dashboard.user.index')
-                        ->with('success', 'User berhasil diupdate');
+            ->with('success', 'User berhasil diupdate');
     }
 
     public function destroy($id)
@@ -91,6 +95,6 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('dashboard.user.index')
-                        ->with('success', 'User berhasil dihapus');
+            ->with('success', 'User berhasil dihapus');
     }
 }

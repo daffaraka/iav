@@ -29,7 +29,9 @@ class User extends Authenticatable
         'jenjang',
         'departemen',
         'no_hp',
-        'jabatan'
+        'jabatan',
+        'kelas',
+        'sub_kelas',
     ];
 
     /**

@@ -1,6 +1,8 @@
      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme
      {{-- {{ Auth::user()->hasRole('super-admin') ? 'bg-dark' : 'bg-menu-theme' }} --}}
       ">
+
+
          <div class="app-brand demo">
              <a href="{{ route('dashboard') }}" class="app-brand-link">
                  <span class="app-brand-logo demo">
@@ -70,6 +72,9 @@
 
 
          <ul class="menu-inner py-1">
+
+             <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
+
              <!-- Dashboard -->
              <li class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
                  <a href="{{ route('dashboard') }}" class="menu-link">
@@ -98,6 +103,15 @@
                      <div data-i18n="Analytics">Base Layout</div>
                  </a>
              </li>
+
+             @role('super-admin')
+                 <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+                     <a href="{{ route('user.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-user"></i>
+                         <div data-i18n="Basic">Manajemen User</div>
+                     </a>
+                 </li>
+             @endrole
 
              {{-- <li class="menu-item ">
                  <a href="{{ asset('dashboard-admin/html/index.html') }}" class="menu-link">
@@ -241,16 +255,16 @@
              <!-- Cards -->
 
              <li class="menu-item {{ request()->is('dashboard/aqr') ? 'active' : '' }}">
-                         <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
+                 <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                             <div data-i18n="Basic">Dashboard AQR</div>
+                     <div data-i18n="Basic">Dashboard AQR</div>
                  </a>
              </li>
 
-              <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
-                         <a href="{{ route('aqr-option.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-area"></i>
-                             <div data-i18n="Basic">Opsi AQR</div>
+             <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
+                 <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-area"></i>
+                     <div data-i18n="Basic">Opsi AQR</div>
                  </a>
              </li>
 
@@ -289,11 +303,11 @@
 
 
              @hasrole('super-admin')
-             <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
-             <!-- Cards -->
+                 <li class="menu-header small text-uppercase"><span class="menu-header-text">SDM</span></li>
+                 <!-- Cards -->
 
 
-             {{--
+                 {{--
              <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -308,12 +322,12 @@
              </li> --}}
 
 
-                 <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+                 {{-- <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
                      <a href="{{ route('user.index') }}" class="menu-link">
                          <i class="menu-icon tf-icons bx bx-user"></i>
                          <div data-i18n="Basic">Manajemen User</div>
                      </a>
-                 </li>
+                 </li> --}}
              @endrole
 
 

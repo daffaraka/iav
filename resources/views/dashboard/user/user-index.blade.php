@@ -28,6 +28,7 @@
                                         <th>Departemen</th>
                                         <th>Unit</th>
                                         <th>Role</th>
+                                        <th>Wali Kelas</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -57,6 +58,17 @@
                                                     @endphp
                                                     <span class="{{ $badgeClass }}">{{ $role->name }}</span>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if ($user->hasRole('guru'))
+                                                    @hasanyrole(['guru', 'wali-kelas'])
+                                                        <span class="btn btn-outline-danger">
+                                                            {{ $user->kelas . $user->sub_kelas }} </span>
+                                                    @endhasanyrole
+                                                @else
+                                                    -
+                                                @endif
+
                                             </td>
                                             <td>
                                                 <div class="d-flex gap-2">
