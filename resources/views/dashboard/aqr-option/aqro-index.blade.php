@@ -23,6 +23,7 @@
                                         <th>No</th>
                                         <th>Nama Option</th>
                                         <th>Kategori PIC</th>
+                                        <th>Aktif</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -33,10 +34,24 @@
                                             </td>
                                             <td>{{ $option->nama_option }}</td>
                                             <td>
-                                                <span
-                                                    class="badge bg-{{ $option->kategori_pic == 'Kepala Sekolah' ? 'primary' : 'success' }}">
+                                                @php
+                                                    $badgeClass = match ($option->kategori_pic) {
+                                                        'Kepala Sekolah' => 'badge bg-primary',
+                                                        'Kepala TU' => 'badge bg-success',
+                                                        'Psikolog' => 'badge bg-info',
+                                                        default => 'badge bg-secondary',
+                                                    }
+                                                @endphp
+                                                <span class="{{ $badgeClass }}">
                                                     {{ $option->kategori_pic }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                @if ($option->is_aktif)
+                                                    <span class="badge bg-dark">Aktif</span>
+                                                @else
+                                                    <span class="badge bg-danger">Tidak Aktif</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <a href="{{ route('aqr-option.edit', $option) }}"
@@ -74,7 +89,9 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-          $('#dataTable').DataTable();
+          $('#dataTable').DataTable({
+            "pageLength": 25
+          });
         });
     </script>
 @endpush

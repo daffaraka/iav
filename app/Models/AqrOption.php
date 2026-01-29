@@ -9,7 +9,8 @@ class AqrOption extends Model
     protected $fillable =
     [
         'nama_option',
-        'kategori_pic'
+        'kategori_pic',
+        'is_aktif'
     ];
 
 

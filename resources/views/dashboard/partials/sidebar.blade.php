@@ -111,6 +111,20 @@
                          <div data-i18n="Basic">Manajemen User</div>
                      </a>
                  </li>
+
+                 <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+                     <a href="{{ route('user.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-check-shield"></i>
+                         <div data-i18n="Basic">Manajemen Roles</div>
+                     </a>
+                 </li>
+
+                 <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+                     <a href="{{ route('user.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-key"></i>
+                         <div data-i18n="Basic">Manajemen Permission</div>
+                     </a>
+                 </li>
              @endrole
 
              {{-- <li class="menu-item ">
@@ -261,12 +275,14 @@
                  </a>
              </li>
 
-             <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
-                 <a href="{{ route('aqr-option.index') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-area"></i>
-                     <div data-i18n="Basic">Opsi AQR</div>
-                 </a>
-             </li>
+             @role('super-admin')
+                 <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
+                     <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-area"></i>
+                         <div data-i18n="Basic">Opsi AQR</div>
+                     </a>
+                 </li>
+             @endrole
 
              <li class="menu-item {{ request()->is('dashboard/aqr/*') ? 'active open' : '' }}">
                  <a href="javascript:void(0);"

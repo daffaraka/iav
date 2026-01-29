@@ -65,18 +65,20 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        dd($request->all());
+        // dd($request->all());
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'name' => 'string|max:255',
+            'email' => 'email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8',
             'department' => 'nullable|string|max:100',
             'location' => 'nullable|string|max:100',
             'role' => 'required|exists:roles,name'
         ]);
 
-        if ($validated['password']) {
+
+
+        if ($request->has('password') && $validated['password']) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
             unset($validated['password']);
@@ -85,7 +87,7 @@ class UserController extends Controller
         $user->update($validated);
         $user->syncRoles([$validated['role']]);
 
-        return redirect()->route('dashboard.user.index')
+        return redirect()->route('user.index')
             ->with('success', 'User berhasil diupdate');
     }
 

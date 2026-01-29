@@ -95,10 +95,23 @@ class HomeAQRController extends Controller
 
         $adminUnit = null;
         if ($request->pengirim === 'Warga Sekolah') {
-            $lokasiParts = explode(' ', $request->lokasi_kendala);
-            $jenjang = $lokasiParts[0]; // KB, SD, SMA
-            $unit = end($lokasiParts); // Pamulang, Cinere, Jagakarsa
-            $adminUnit = User::where('unit', $unit)->where('jenjang', $jenjang)->where('jabatan', $option->kategori_pic)->first();
+
+            if ($option->kategori_pic == 'Psikolog') {
+                $lokasiParts = explode(' ', $request->lokasi_kendala);
+                $jenjang = $lokasiParts[0]; // KB, SD, SMA
+                $unit = end($lokasiParts); // Pamulang, Cinere, Jagakar
+                $adminUnit = User::where('unit', $unit)
+                    ->where('jenjang', $jenjang)
+                    ->whereHas('roles', function ($q) {
+                        $q->where('name', 'kepala-psikolog');
+                    })
+                    ->first();
+            } else {
+                $lokasiParts = explode(' ', $request->lokasi_kendala);
+                $jenjang = $lokasiParts[0]; // KB, SD, SMA
+                $unit = end($lokasiParts); // Pamulang, Cinere, Jagakarsa
+                $adminUnit = User::where('unit', $unit)->where('jenjang', $jenjang)->where('jabatan', $option->kategori_pic)->first();
+            }
         }
 
 
@@ -163,7 +176,7 @@ class HomeAQRController extends Controller
     {
         $noTiket = $request->no_tiket ?? $request->no_tiket;
         $email = $request->email ?? $request->email;
-        $tiket = Tiket::with('humas', 'pic', 'progres')
+        $tiket = Tiket::with('first_pic', 'pic', 'progres')
             ->where('no_tiket', $noTiket)
             ->first();
 
@@ -179,7 +192,7 @@ class HomeAQRController extends Controller
 
     public function show($tiket)
     {
-        $tiket = Tiket::with('humas', 'pic', 'progres', 'option')
+        $tiket = Tiket::with('first_pic', 'pic', 'progres', 'option')
             ->where('no_tiket', $tiket)
             ->first();
         // dd($tiket);

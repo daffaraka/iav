@@ -12,7 +12,7 @@ class AduanController extends Controller
 {
     public function index()
     {
-        $tikets = Tiket::with(['humas', 'pic'])->latest()->paginate(10);
+        $tikets = Tiket::with(['first_pic', 'pic'])->latest()->paginate(10);
         return view('dashboard.aqr.aduan-index', compact('tikets'));
     }
 
@@ -58,7 +58,7 @@ class AduanController extends Controller
 
     public function show(string $id)
     {
-        $tiket = Tiket::with(['humas', 'pic', 'siswa'])->findOrFail($id);
+        $tiket = Tiket::with(['first_pic', 'pic', 'siswa'])->findOrFail($id);
         return view('dashboard.aqr.aduan-show', compact('tiket'));
     }
 

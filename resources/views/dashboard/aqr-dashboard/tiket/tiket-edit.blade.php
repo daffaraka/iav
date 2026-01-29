@@ -160,9 +160,9 @@
                                             @case('New')
                                                 @if ($tiket->pengirim == 'Warga Sekolah')
                                                     <div class="mb-3">
-                                                        <label class="text-dark">Kepala Sekolah/Kepala TU :</label>
+                                                        <label class="text-dark">Kepala Sekolah/Kepala TU/Kepala Psikolog :</label>
                                                         <input type="text" class="form-control fw-bold" readonly
-                                                            value="{{ $tiket->humas->name ?? 'Belum ditentukan' }}">
+                                                            value="{{ $tiket->first_pic->name ?? 'Belum ditentukan' }}">
                                                     </div>
 
 
@@ -256,7 +256,7 @@
                                                     <div class="mb-3">
                                                         <strong><label for="">Kepsek / Kepala TU </label></strong>
                                                         <input type="text" name="" id=""
-                                                            value="{{ $tiket->humas->name }}" class="form-control" disabled>
+                                                            value="{{ $tiket->first_pic->name }}" class="form-control" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <strong><label for="">Departemen</label></strong>

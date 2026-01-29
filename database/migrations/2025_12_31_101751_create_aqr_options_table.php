@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('aqr_options', function (Blueprint $table) {
             $table->id();
             $table->string('nama_option');
-            $table->enum('kategori_pic',['Kepala Sekolah','Kepala TU','BK']);
+            $table->string('kategori_pic');
+            $table->boolean('is_aktif')->default(true);
             $table->timestamps();
         });
     }

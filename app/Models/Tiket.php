@@ -41,7 +41,7 @@ class Tiket extends Model
         'rating' => 'integer'
     ];
 
-    public function humas(): BelongsTo
+    public function first_pic(): BelongsTo
     {
         return $this->belongsTo(User::class, 'admin_humas_id');
     }

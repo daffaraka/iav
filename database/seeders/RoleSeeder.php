@@ -22,7 +22,10 @@ class RoleSeeder extends Seeder
             'admin-unit',
             'humas',
             'wali-kelas',
-
+            'wakakur',
+            'wakasis',
+            'psikolog',
+            'kepala-psikolog',
         ];
 
         foreach ($roles as $role) {
