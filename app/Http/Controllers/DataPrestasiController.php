@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterSiswa;
 use App\Models\DataPrestasi;
 use Illuminate\Http\Request;
 
@@ -67,8 +68,8 @@ class DataPrestasiController extends Controller
      */
     public function create()
     {
-        $siswa = \App\Models\MasterSiswa::with('sekolah')->get();
-        return view('dashboard.prestasi.create', compact('siswa'));
+        $siswa = MasterSiswa::with('sekolah')->get();
+        return view('dashboard.prestasi.prestasi-create', compact('siswa'));
     }
 
     public function store(Request $request)
@@ -80,9 +81,9 @@ class DataPrestasiController extends Controller
             'status_lomba' => 'required'
         ]);
 
-        $siswa = \App\Models\MasterSiswa::find($request->master_siswa_id);
+        $siswa = MasterSiswa::find($request->master_siswa_id);
         DataPrestasi::create(array_merge($request->all(), ['sekolah_id' => $siswa->sekolah_id]));
-        
+
         return redirect()->route('data-prestasi.index')->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -95,8 +96,8 @@ class DataPrestasiController extends Controller
     public function edit($id)
     {
         $prestasi = DataPrestasi::findOrFail($id);
-        $siswa = \App\Models\MasterSiswa::with('sekolah')->get();
-        return view('dashboard.prestasi.edit', compact('prestasi', 'siswa'));
+        $siswa = MasterSiswa::with('sekolah')->get();
+        return view('dashboard.prestasi.prestasi-edit', compact('prestasi', 'siswa'));
     }
 
     public function update(Request $request, $id)
@@ -111,7 +112,7 @@ class DataPrestasiController extends Controller
         $prestasi = DataPrestasi::findOrFail($id);
         $siswa = \App\Models\MasterSiswa::find($request->master_siswa_id);
         $prestasi->update(array_merge($request->all(), ['sekolah_id' => $siswa->sekolah_id]));
-        
+
         return redirect()->route('data-prestasi.index')->with('success', 'Data berhasil diupdate');
     }
 

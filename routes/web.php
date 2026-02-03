@@ -7,19 +7,19 @@ use App\Http\Controllers\WigController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
-use App\Http\Controllers\MasterPtnController;
+use App\Http\Controllers\AqrOptionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MasterPtnController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\LeadMeasureController;
 use App\Http\Controllers\TaskProcessController;
 use App\Http\Controllers\WigProgressController;
 use App\Http\Controllers\DataPrestasiController;
+use App\Http\Controllers\PersebaranPtController;
 use App\Http\Controllers\LowonganApplyController;
+use App\Http\Controllers\PersebaranPtnController;
 use App\Http\Controllers\LowonganProgressController;
 use App\Http\Controllers\LowonganPekerjaanController;
-use App\Http\Controllers\AqrOptionController;
-
-
 
 Route::get('/', function () {
     return redirect()->to('dashboard');
@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('wig.lead-measure.task-process', TaskProcessController::class);
         Route::resource('departement.wig.progress-wig', WigProgressController::class);
         Route::post('departement/store-wig', [WigController::class, 'storeByDept'])->name('wig.storeByDept');
+        Route::resource('persebaran-ptn', PersebaranPtController::class);
     });
 
     // Routing json

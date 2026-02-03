@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sekolah;
 use App\Models\MasterSiswa;
+use App\Models\DataPrestasi;
 use Illuminate\Http\Request;
 
 class SekolahController extends Controller
@@ -37,9 +38,45 @@ class SekolahController extends Controller
             ['name' => 'Unpad', 'y' => 6]
         ];
 
-        $prestasiJagakarsa = \App\Models\DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Jagakarsa'))->count();
-        $prestasiCinere = \App\Models\DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Cinere'))->count();
-        $prestasiPamulang = \App\Models\DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Pamulang'))->count();
+        $prestasiJagakarsa = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Jagakarsa'))->count();
+        $prestasiCinere = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Cinere'))->count();
+        $prestasiPamulang = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Pamulang'))->count();
+
+        // Chart Tingkat Lomba
+        $tingkatJagakarsa = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Jagakarsa'))
+            ->selectRaw('tingkat_lomba, COUNT(*) as total')
+            ->groupBy('tingkat_lomba')
+            ->get()
+            ->map(fn($item) => ['name' => $item->tingkat_lomba, 'y' => $item->total])
+            ->toArray();
+
+        $tingkatCinere = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Cinere'))
+            ->selectRaw('tingkat_lomba, COUNT(*) as total')
+            ->groupBy('tingkat_lomba')
+            ->get()
+            ->map(fn($item) => ['name' => $item->tingkat_lomba, 'y' => $item->total])
+            ->toArray();
+
+        $tingkatPamulang = [['name' => 'Nasional', 'y' => 8], ['name' => 'Provinsi', 'y' => 5], ['name' => 'Kota', 'y' => 3]];
+
+        // Chart Prestasi per Tahun
+        $tahunJagakarsa = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Jagakarsa'))
+            ->selectRaw('tahun_pelajaran, COUNT(*) as total')
+            ->groupBy('tahun_pelajaran')
+            ->orderBy('tahun_pelajaran')
+            ->get()
+            ->pluck('total', 'tahun_pelajaran')
+            ->toArray();
+
+        $tahunCinere = DataPrestasi::whereHas('siswa.sekolah', fn($q) => $q->where('unit', 'Cinere'))
+            ->selectRaw('tahun_pelajaran, COUNT(*) as total')
+            ->groupBy('tahun_pelajaran')
+            ->orderBy('tahun_pelajaran')
+            ->get()
+            ->pluck('total', 'tahun_pelajaran')
+            ->toArray();
+
+        $tahunPamulang = ['2022/2023' => 4, '2023/2024' => 7, '2024/2025' => 5];
 
         return view('dashboard.sekolah.sekolah-index', [
             'jagakarsa' => json_encode($jagakarsa),
@@ -47,7 +84,14 @@ class SekolahController extends Controller
             'pamulang' => json_encode($pamulang),
             'prestasiJagakarsa' => $prestasiJagakarsa,
             'prestasiCinere' => $prestasiCinere,
-            'prestasiPamulang' => $prestasiPamulang
+            'prestasiPamulang' => $prestasiPamulang,
+            'tingkatJagakarsa' => json_encode($tingkatJagakarsa),
+            'tingkatCinere' => json_encode($tingkatCinere),
+            'tingkatPamulang' => json_encode($tingkatPamulang),
+            'tahunJagakarsa' => json_encode(array_values($tahunJagakarsa)),
+            'tahunCinere' => json_encode(array_values($tahunCinere)),
+            'tahunPamulang' => json_encode(array_values($tahunPamulang)),
+            'tahunLabels' => json_encode(array_keys($tahunJagakarsa + $tahunCinere + $tahunPamulang))
         ]);
     }
 

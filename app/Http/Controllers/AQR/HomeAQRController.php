@@ -103,7 +103,7 @@ class HomeAQRController extends Controller
                 $adminUnit = User::where('unit', $unit)
                     ->where('jenjang', $jenjang)
                     ->whereHas('roles', function ($q) {
-                        $q->where('name', 'kepala-psikolog');
+                        $q->where('name', 'psikolog');
                     })
                     ->first();
             } else {
@@ -113,6 +113,9 @@ class HomeAQRController extends Controller
                 $adminUnit = User::where('unit', $unit)->where('jenjang', $jenjang)->where('jabatan', $option->kategori_pic)->first();
             }
         }
+
+
+        // dd($adminUnit);
 
 
 

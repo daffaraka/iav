@@ -13,12 +13,12 @@ class MasterPtnController extends Controller
     public function index()
     {
         $ptns = MasterPtn::latest()->paginate(10);
-        return view('dashboard.master-ptn.index', compact('ptns'));
+        return view('dashboard.master-ptn.ptn-index', compact('ptns'));
     }
 
     public function create()
     {
-        return view('dashboard.master-ptn.create');
+        return view('dashboard.master-ptn.ptn-create');
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class MasterPtnController extends Controller
 
     public function edit(MasterPtn $masterPtn)
     {
-        return view('dashboard.master-ptn.edit', compact('masterPtn'));
+        return view('dashboard.master-ptn.ptn-edit', compact('masterPtn'));
     }
 
     public function update(Request $request, MasterPtn $masterPtn)

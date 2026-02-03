@@ -132,7 +132,8 @@
                                 <a class="github-button"
                                     href="https://github.com/themeselection/sneat-html-admin-template-free"
                                     data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
+                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">{{Auth::user()->name}}</a>
+                            </a>
                             </li>
 
                             <!-- User -->
@@ -291,6 +292,9 @@
                 responsive: true
             });
         });
+
+
+
     </script>
     @stack('scripts')
 </body>

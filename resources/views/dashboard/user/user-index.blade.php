@@ -27,6 +27,7 @@
                                         <th>Jabatan</th>
                                         <th>Departemen</th>
                                         <th>Unit</th>
+                                        <th>Jenjang</th>
                                         <th>Role</th>
                                         <th>Wali Kelas</th>
                                         <th>Aksi</th>
@@ -41,6 +42,7 @@
                                             <td>{{ $user->jabatan ?? '-' }}</td>
                                             <td>{{ $user->departemen ?? '-' }}</td>
                                             <td>{{ $user->unit ?? '-' }}</td>
+                                            <td>{{ $user->jenjang ?? '-' }}</td>
                                             <td>
                                                 @foreach ($user->roles as $role)
                                                     @php
