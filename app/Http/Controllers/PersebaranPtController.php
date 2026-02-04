@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MasterPtn;
+use App\Models\MasterPt;
 use App\Models\PersebaranPt;
 use Illuminate\Http\Request;
 class PersebaranPtController extends Controller
@@ -21,7 +21,7 @@ class PersebaranPtController extends Controller
      */
     public function create()
     {
-        $ptns = MasterPtn::orderBy('nama_pt')->get();
+        $ptns = MasterPt::orderBy('nama_pt')->get();
         return view('dashboard.persebaran-pt.create', compact('ptns'));
     }
 
@@ -59,7 +59,7 @@ class PersebaranPtController extends Controller
      */
     public function edit(PersebaranPt $persebaranPt)
     {
-        $ptns = MasterPtn::orderBy('nama_pt')->get();
+        $ptns = MasterPt::orderBy('nama_pt')->get();
         return view('dashboard.persebaran-pt.edit', compact('persebaranPt', 'ptns'));
     }
 

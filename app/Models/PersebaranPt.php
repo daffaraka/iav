@@ -19,6 +19,6 @@ class PersebaranPt extends Model
 
     public function ptn()
     {
-        return $this->belongsTo(MasterPtn::class, 'master_ptn_id');
+        return $this->belongsTo(MasterPt::class, 'master_ptn_id');
     }
 }

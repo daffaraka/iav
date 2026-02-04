@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MasterPtn extends Model
+class MasterPt extends Model
 {
     protected $table = 'master_pts';
-    
+
     protected $fillable = [
         'nama_pt',
         'status_pt',

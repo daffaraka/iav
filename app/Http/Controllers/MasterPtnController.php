@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MasterPtn;
+use App\Models\MasterPt;
 use Illuminate\Http\Request;
 
-class MasterPtnController extends Controller
+class MasterPtController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $ptns = MasterPtn::latest()->paginate(10);
+        $ptns = MasterPt::latest()->paginate(10);
         return view('dashboard.master-ptn.ptn-index', compact('ptns'));
     }
 
@@ -28,29 +28,29 @@ class MasterPtnController extends Controller
             'status_pt' => 'required'
         ]);
 
-        MasterPtn::create($request->all());
+        MasterPt::create($request->all());
         return redirect()->route('master-ptn.index')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function edit(MasterPtn $masterPtn)
+    public function edit(MasterPt $MasterPt)
     {
-        return view('dashboard.master-ptn.ptn-edit', compact('masterPtn'));
+        return view('dashboard.master-ptn.ptn-edit', compact('MasterPt'));
     }
 
-    public function update(Request $request, MasterPtn $masterPtn)
+    public function update(Request $request, MasterPt $MasterPt)
     {
         $request->validate([
             'nama_pt' => 'required',
             'status_pt' => 'required'
         ]);
 
-        $masterPtn->update($request->all());
+        $MasterPt->update($request->all());
         return redirect()->route('master-ptn.index')->with('success', 'Data berhasil diupdate');
     }
 
-    public function destroy(MasterPtn $masterPtn)
+    public function destroy(MasterPt $MasterPt)
     {
-        $masterPtn->delete();
+        $MasterPt->delete();
         return redirect()->route('master-ptn.index')->with('success', 'Data berhasil dihapus');
     }
 }

@@ -9,7 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\AqrOptionController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MasterPtnController;
+use App\Http\Controllers\MasterPtController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\LeadMeasureController;
 use App\Http\Controllers\TaskProcessController;
@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['role:super-admin|humas|direktur|koordinator'])->group(function () {
         Route::resource('sekolah', SekolahController::class);
-        Route::resource('master-ptn', MasterPtnController::class);
+        Route::resource('master-ptn', MasterPtController::class);
         Route::resource('data-prestasi', DataPrestasiController::class);
         Route::get('prestasi/jagakarsa', [DataPrestasiController::class, 'jagakarsa'])->name('prestasi.jagakarsa');
         Route::get('prestasi/cinere', [DataPrestasiController::class, 'cinere'])->name('prestasi.cinere');

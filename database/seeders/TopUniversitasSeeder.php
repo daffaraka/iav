@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\MasterPtn;
+use App\Models\MasterPt;
 use Illuminate\Database\Seeder;
 
 class TopUniversitasSeeder extends Seeder
@@ -23,7 +23,7 @@ class TopUniversitasSeeder extends Seeder
         ];
 
         foreach ($universities as $univ) {
-            MasterPtn::create($univ);
+            MasterPt::create($univ);
         }
     }
 }
