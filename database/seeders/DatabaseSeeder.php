@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             AqrOptionSeeder::class,
             // TiketSeeder::class,
             TopUniversitasSeeder::class,
+            PersebaranPtSeeder::class,
 
         ]);
     }

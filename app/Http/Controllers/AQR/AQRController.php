@@ -81,15 +81,15 @@ class AQRController extends Controller
                     $query->where('kategori_pic', 'Psikolog');
                 });
 
-                $tiketNew = (clone $tiketPsikolog)->where('status', 'New')->count();
-                $tiketProses =  (clone $tiketPsikolog)->where('status', 'Proses')->count();
-                $tiketClosed =  (clone $tiketPsikolog)->where('status', 'Selesai')->count();
+                $tiketNew = (clone $tiketPsikolog)->where('jenjang', $jenjang)->where('lokasi_sekolah', $unit)->where('status', 'New')->count();
+                $tiketProses =  (clone $tiketPsikolog)->where('jenjang', $jenjang)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->count();
+                $tiketClosed =  (clone $tiketPsikolog)->where('jenjang', $jenjang)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->count();
                 $totalTiket =  $tiketProses + $tiketClosed;
                 // dd($tiketProses);
 
-                $latestTiket =  (clone $tiketPsikolog)->where('status', 'New')->latest()->limit(5)->get();
-                $latestProses =  (clone $tiketPsikolog)->where('status', 'Proses')->latest()->limit(5)->get();
-                $latestSelesai =  (clone $tiketPsikolog)->where('status', 'Selesai')->latest()->limit(5)->get();
+                $latestTiket =  (clone $tiketPsikolog)->where('jenjang', $jenjang)->where('status', 'New')->where('lokasi_sekolah', $unit)->latest()->limit(5)->get();
+                $latestProses =  (clone $tiketPsikolog)->where('jenjang', $jenjang)->where('jenjang', $jenjang)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->latest()->limit(5)->get();
+                $latestSelesai =  (clone $tiketPsikolog)->where('jenjang', $jenjang)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->latest()->limit(5)->get();
             }
 
 

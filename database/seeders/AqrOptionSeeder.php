@@ -21,7 +21,7 @@ class AqrOptionSeeder extends Seeder
             ['nama_option' => 'Layanan dan Komunikasi Guru', 'kategori_pic' => 'Kepala Sekolah'],
             ['nama_option' => 'Layanan Perpustakaan dan Laboratorium', 'kategori_pic' => 'Kepala Sekolah'],
             ['nama_option' => 'Layanan UKS & Kantin', 'kategori_pic' => 'Kepala Sekolah'],
-            ['nama_option' => 'Perundungan, kekerasan dan pelecehan seksual', 'kategori_pic' => 'Psikolog'],
+            ['nama_option' => 'Perundungan (Bullying) , kekerasan dan pelecehan seksual', 'kategori_pic' => 'Psikolog'],
             ['nama_option' => 'Proses Kegiatan Belajar Mengajar', 'kategori_pic' => 'Kepala Sekolah'],
             ['nama_option' => 'Kegiatan Sekolah', 'kategori_pic' => 'Kepala Sekolah'],
 

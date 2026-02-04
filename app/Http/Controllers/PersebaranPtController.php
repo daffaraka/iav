@@ -12,8 +12,8 @@ class PersebaranPtController extends Controller
      */
     public function index()
     {
-        $persebarans = PersebaranPt::with('ptn')->latest()->paginate(10);
-        return view('dashboard.persebaran-pt.index', compact('persebarans'));
+        $persebarans = PersebaranPt::with(['ptn','siswa'])->latest()->get();
+        return view('dashboard.persebaran-pt.persebaran-index', compact('persebarans'));
     }
 
     /**
@@ -22,7 +22,7 @@ class PersebaranPtController extends Controller
     public function create()
     {
         $ptns = MasterPt::orderBy('nama_pt')->get();
-        return view('dashboard.persebaran-pt.create', compact('ptns'));
+        return view('dashboard.persebaran-pt.persebaran-create', compact('ptns'));
     }
 
     /**
@@ -51,7 +51,7 @@ class PersebaranPtController extends Controller
     public function show(PersebaranPt $persebaranPt)
     {
         $persebaranPt->load('ptn');
-        return view('dashboard.persebaran-pt.show', compact('persebaranPt'));
+        return view('dashboard.persebaran-pt.persebaran-show', compact('persebaranPt'));
     }
 
     /**
@@ -60,7 +60,7 @@ class PersebaranPtController extends Controller
     public function edit(PersebaranPt $persebaranPt)
     {
         $ptns = MasterPt::orderBy('nama_pt')->get();
-        return view('dashboard.persebaran-pt.edit', compact('persebaranPt', 'ptns'));
+        return view('dashboard.persebaran-pt.persebaran-edit', compact('persebaranPt', 'ptns'));
     }
 
     /**

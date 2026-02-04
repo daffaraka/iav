@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('persebaran_pts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('master_ptn_id');
+            $table->unsignedBigInteger('pt_id');
+            $table->unsignedBigInteger('siswa_id');
             $table->string('fakultas')->nullable();
             $table->string('jurusan')->nullable();
             $table->string('program_studi')->nullable();
@@ -21,7 +22,8 @@ return new class extends Migration
             $table->string('akreditasi')->nullable();
             $table->string('jalur_masuk')->nullable();
 
-            $table->foreign('master_ptn_id')->references('id')->on('master_ptns')->onDelete('cascade');
+            $table->foreign('pt_id')->references('id')->on('master_pts')->onDelete('cascade');
+            $table->foreign('siswa_id')->references('id')->on('master_siswas')->onDelete('cascade');
             $table->timestamps();
         });
     }

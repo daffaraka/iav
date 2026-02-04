@@ -8,7 +8,8 @@ class PersebaranPt extends Model
 {
 
     protected $fillable = [
-        'master_ptn_id',
+        'pt_id',
+        'siswa_id',
         'fakultas',
         'jurusan',
         'program_studi',
@@ -19,6 +20,11 @@ class PersebaranPt extends Model
 
     public function ptn()
     {
-        return $this->belongsTo(MasterPt::class, 'master_ptn_id');
+        return $this->belongsTo(MasterPt::class, 'pt_id');
+    }
+
+    public function siswa()
+    {
+        return $this->belongsTo(MasterSiswa::class, 'siswa_id');
     }
 }
