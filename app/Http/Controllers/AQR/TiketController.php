@@ -253,7 +253,7 @@ class TiketController extends Controller
         $map = [
             'kepala-tata-usaha' => 'Kepala TU',
             'kepala-sekolah'    => 'Kepala Sekolah',
-            'kepala-psikolog'          => 'Psikolog',
+            'kepala-psikolog'   => 'Psikolog',
         ];
 
         return collect($map)

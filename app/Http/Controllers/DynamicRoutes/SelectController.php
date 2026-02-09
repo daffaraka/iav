@@ -20,25 +20,37 @@ class SelectController extends Controller
         }
 
 
-        // dd($unit);
 
+        // dd($unit);
         $jabatan = $request->input('departemen');
 
 
-        // dd($dept);
+        // dd($jabatan);
+
         $pic = null;
-        if (Auth::user()->hasAnyRole(['tata-usaha', 'kepala-sekolah'])) {
-            $pic = User::where('jabatan', $jabatan)
-                ->whereIn('unit', $unit)
-                ->where('unit',$unit)
-                ->select('id', 'name', 'departemen','jabatan', 'unit')->get();
+        if (Auth::user()->hasAnyRole(['tata-usaha', 'kepala-sekolah', 'kepala-psikolog', 'psikolog'])) {
+
+            if ($jabatan == 'Psikolog') {
+                $pic = User::whereHas('roles', function ($query) {
+                    $query->where('name', 'psikolog');
+                })
+                    ->where('unit', $unit)
+                    ->select('id', 'name', 'departemen', 'jabatan', 'unit')->get();
+            } else {
+                $pic = User::where('jabatan', $jabatan)
+                    ->whereIn('unit', $unit)
+                    ->where('unit', $unit)
+                    ->select('id', 'name', 'departemen', 'jabatan', 'unit')->get();
+            }
         } else {
-            $pic = User::where('jabatan', $jabatan)->select('id', 'name', 'departemen', 'unit','jabatan')->get();
+            $pic = User::where('jabatan', $jabatan)->select('id', 'name', 'departemen', 'unit', 'jabatan')->get();
         }
 
 
 
         // dd($pic);
+
+
         return response()->json($pic);
     }
 }

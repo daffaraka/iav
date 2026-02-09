@@ -41,8 +41,32 @@
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->jabatan ?? '-' }}</td>
                                             <td>{{ $user->departemen ?? '-' }}</td>
-                                            <td>{{ $user->unit ?? '-' }}</td>
-                                            <td>{{ $user->jenjang ?? '-' }}</td>
+                                            <td>
+                                                @if($user->unit == 'Jagakarsa')
+                                                    <span class="badge bg-primary">{{ ucfirst($user->unit) }}</span>
+                                                @elseif($user->unit == 'Pamulang')
+                                                    <span class="badge bg-success">{{ ucfirst($user->unit) }}</span>
+                                                @elseif($user->unit == 'Cinere')
+                                                    <span class="badge bg-info">{{ ucfirst($user->unit) }}</span>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($user->jenjang == 'KB')
+                                                    <span class="badge bg-warning">{{ strtoupper($user->jenjang) }}</span>
+                                                @elseif($user->jenjang == 'TK')
+                                                    <span class="badge bg-secondary">{{ strtoupper($user->jenjang) }}</span>
+                                                @elseif($user->jenjang == 'SD')
+                                                    <span class="badge bg-primary">{{ strtoupper($user->jenjang) }}</span>
+                                                @elseif($user->jenjang == 'SMP')
+                                                    <span class="badge bg-success">{{ strtoupper($user->jenjang) }}</span>
+                                                @elseif($user->jenjang == 'SMA')
+                                                    <span class="badge bg-danger">{{ strtoupper($user->jenjang) }}</span>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>
                                                 @foreach ($user->roles as $role)
                                                     @php

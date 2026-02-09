@@ -100,12 +100,21 @@ class HomeAQRController extends Controller
                 $lokasiParts = explode(' ', $request->lokasi_kendala);
                 $jenjang = $lokasiParts[0]; // KB, SD, SMA
                 $unit = end($lokasiParts); // Pamulang, Cinere, Jagakar
-                $adminUnit = User::where('unit', $unit)
+                $psikologQuery = User::where('unit', $unit)
                     ->where('jenjang', $jenjang)
                     ->whereHas('roles', function ($q) {
                         $q->where('name', 'psikolog');
-                    })
-                    ->first();
+                    });
+                
+                $psikologCount = $psikologQuery->count();
+                
+                if ($psikologCount > 1) {
+                    $adminUnit = $psikologQuery->whereHas('roles', function ($q) {
+                        $q->where('name', 'kepala-psikolog');
+                    })->first();
+                } else {
+                    $adminUnit = $psikologQuery->first();
+                }
             } else {
                 $lokasiParts = explode(' ', $request->lokasi_kendala);
                 $jenjang = $lokasiParts[0]; // KB, SD, SMA

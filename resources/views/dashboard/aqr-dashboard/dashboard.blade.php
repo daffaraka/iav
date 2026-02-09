@@ -12,7 +12,7 @@
         <!-- Statistics Cards -->
         <div class="row mb-4">
 
-            @hasanyrole(['super-admin','kepala-tata-usaha','kepala-psikolog', 'humas','kepala-sekolah'])
+            @hasanyrole(['super-admin', 'kepala-tata-usaha', 'kepala-psikolog', 'humas', 'kepala-sekolah'])
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-4 border-primary border-bottom-0 border-top-0 shadow h-100 ">
                         <div class="card-body">
@@ -83,7 +83,7 @@
         <!-- Tiket Lists -->
         <div class="row">
 
-            @hasanyrole(['super-admin','kepala-tata-usaha','kepala-psikolog','humas','kepala-sekolah'])
+            @hasanyrole(['super-admin', 'kepala-tata-usaha', 'kepala-psikolog', 'humas', 'kepala-sekolah'])
                 <!-- Tiket Baru -->
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card shadow h-100">
@@ -288,6 +288,85 @@
                     </div>
                     <div class="card-body">
                         <div id="barChart" style="height: 600px;"></div>
+
+                        <div class="col-12 mb-4">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">List PIC Psikolog</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    <th>Email</th>
+                                                    <th>Unit</th>
+                                                    <th>Jenjang</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($listPsikolog as $psikolog)
+                                                    <tr>
+                                                        <td>{{ $psikolog->name }}</td>
+                                                        <td>{{ $psikolog->email }}</td>>
+                                                        <td>
+                                                            @if ($psikolog->unit == 'Jagakarsa')
+                                                                <span
+                                                                    class="badge bg-primary">{{ $psikolog->unit }}</span>
+                                                            @elseif($psikolog->unit == 'Pamulang')
+                                                                <span
+                                                                    class="badge bg-success">{{ $psikolog->unit }}</span>
+                                                            @elseif($psikolog->unit == 'Cinere')
+                                                                <span class="badge bg-info">{{ $psikolog->unit }}</span>
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($psikolog->jenjang)
+                                                                @if ($psikolog->jenjang == 'TK')
+                                                                    <span
+                                                                        class="badge bg-warning">{{ strtoupper($psikolog->jenjang) }}</span>
+                                                                @elseif ($psikolog->jenjang == 'SD')
+                                                                    <span
+                                                                        class="badge bg-success">{{ strtoupper($psikolog->jenjang) }}</span>
+                                                                @elseif ($psikolog->jenjang == 'SMP')
+                                                                    <span
+                                                                        class="badge bg-info">{{ strtoupper($psikolog->jenjang) }}</span>
+                                                                @elseif ($psikolog->jenjang == 'SMA')
+                                                                    <span
+                                                                        class="badge bg-danger">{{ strtoupper($psikolog->jenjang) }}</span>
+                                                                @else
+                                                                    <span
+                                                                        class="badge bg-primary">{{ strtoupper($psikolog->jenjang) }}</span>
+                                                                @endif
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @foreach ($psikolog->roles as $role)
+                                                                @if ($role->name == 'kepala-psikolog')
+                                                                    <span
+                                                                        class="badge bg-danger">{{ $role->name }}</span>
+                                                                @elseif($role->name == 'psikolog')
+                                                                    <span
+                                                                        class="badge bg-success">{{ $role->name }}</span>
+                                                                @else
+                                                                    <span class="badge bg-info">{{ $role->name }}</span>
+                                                                @endif
+                                                            @endforeach
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

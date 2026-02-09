@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AQR;
 
+use App\Models\User;
 use App\Models\Tiket;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -76,7 +77,7 @@ class AQRController extends Controller
                 $latestSelesai =  (clone $tiketKepsek)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->latest()->limit(5)->get();
             }
 
-            if (Auth::user()->hasRole('kepala-psikolog')) {
+            if (Auth::user()->hasRole('kepala-psikolog') || Auth::user()->hasRole('psikolog')) {
                 $tiketPsikolog = Tiket::whereHas('option', function ($query) use ($unit) {
                     $query->where('kategori_pic', 'Psikolog');
                 });
@@ -170,7 +171,10 @@ class AQRController extends Controller
             'barChartData' => json_encode($barChartData),
             'weekLabels' => json_encode($weekLabels),
             'lokasiChartData' => json_encode($lokasiChartData),
-            'typePengirimChart' => json_encode($typePengirimChart)
+            'typePengirimChart' => json_encode($typePengirimChart),
+            'listPsikolog' => User::whereHas('roles', function($q) {
+                $q->whereIn('name', ['psikolog', 'kepala-psikolog']);
+            })->get()
         ];
         return view('dashboard.aqr-dashboard.dashboard', $data);
     }

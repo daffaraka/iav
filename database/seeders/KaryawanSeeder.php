@@ -347,7 +347,16 @@ class KaryawanSeeder extends Seeder
 
         foreach ($karyawan as $data) {
             $user = User::where('kode_karyawan', $data[0])->first();
-            if ($user) $user->assignRole($this->getRole($data[2]));
+            if ($user) {
+                $roles = $this->getRole($data[2]);
+                if (is_array($roles)) {
+                    foreach ($roles as $role) {
+                        $user->assignRole($role);
+                    }
+                } else {
+                    $user->assignRole($roles);
+                }
+            }
 
             if (isset($data[6]) && $data[6] !== null) {
                 $user->assignRole($this->getWalikelas($data[6]));
@@ -378,7 +387,7 @@ class KaryawanSeeder extends Seeder
         if (str_contains($jabatan, 'Kepala Tata Usaha')) return 'kepala-tata-usaha';
         if (str_contains($jabatan, 'Admin TU') || str_contains($jabatan, 'Tata Usaha')) return 'tata-usaha';
         if (str_contains($jabatan, 'Humas')) return 'humas';
-        if (str_contains($jabatan, 'Kepala Psikolog')) return 'kepala-psikolog';
+        if (str_contains($jabatan, 'Kepala Psikolog')) return ['kepala-psikolog', 'psikolog'];
         if (str_contains($jabatan, 'Psikolog')) return 'psikolog';
         return 'staff';
     }
