@@ -31,7 +31,7 @@ class AQRController extends Controller
             $latestTiket = Tiket::where('status', 'New')->latest()->limit(5)->get();
             $latestProses = Tiket::where('status', 'Proses')->latest()->limit(5)->get();
             $latestSelesai = Tiket::where('status', 'Selesai')->latest()->limit(5)->get();
-        } else {
+        } else if (Auth::user()->hasAnyRole(['kepala-tata-usaha', 'kepala-sekolah', 'kepala-psikolog', 'psikolog'])) {
 
 
             if (Auth::user()->hasRole('kepala-tata-usaha')) {
@@ -98,22 +98,23 @@ class AQRController extends Controller
 
 
 
-            if (Auth::user()->hasRole('tata-usaha')) {
-                $tiketTU = Tiket::whereHas('option', function ($query) use ($unit) {
-                    $query->where('kategori_pic', 'Tata Usaha');
-                });
+        } else {
 
-                $tiketNew =  (clone $tiketTU)->where('status', 'New')->where('lokasi_sekolah', $unit)->where('admin_humas_id', auth()->user()->id)->count();
-                $tiketProses = (clone $tiketTU)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->where('admin_humas_id', auth()->user()->id)->count();
-                $tiketClosed = (clone $tiketTU)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->where('admin_humas_id', auth()->user()->id)->count();
-                $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+            $tiketPIC = Tiket::query();
 
-                $latestTiket = (clone $tiketTU)->where('status', 'New')->where('lokasi_sekolah', $unit)->latest()->limit(5)->where('admin_humas_id', auth()->user()->id)->get();
-                $latestProses = (clone $tiketTU)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->where('admin_humas_id', auth()->user()->id)->latest()->limit(5)->get();
-                $latestSelesai = (clone $tiketTU)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->where('admin_humas_id', auth()->user()->id)->latest()->limit(5)->get();
-            }
+            $tiketNew =  (clone $tiketPIC)->where('status', 'New')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->count();
+            $tiketProses = (clone $tiketPIC)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->count();
+            $tiketClosed = (clone $tiketPIC)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->count();
+            $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+
+            $latestTiket = (clone $tiketPIC)->where('status', 'New')->where('lokasi_sekolah', $unit)->latest()->limit(5)->where('pic_id', auth()->user()->id)->get();
+            $latestProses = (clone $tiketPIC)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->latest()->limit(5)->get();
+            $latestSelesai = (clone $tiketPIC)->where('status', 'Selesai')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->latest()->limit(5)->get();
         }
 
+
+
+        // dd($totalTiket);
 
 
         // dd(str_contains(Tiket::first()->lokasi_kendala,'TK'));
@@ -172,7 +173,7 @@ class AQRController extends Controller
             'weekLabels' => json_encode($weekLabels),
             'lokasiChartData' => json_encode($lokasiChartData),
             'typePengirimChart' => json_encode($typePengirimChart),
-            'listPsikolog' => User::whereHas('roles', function($q) {
+            'listPsikolog' => User::whereHas('roles', function ($q) {
                 $q->whereIn('name', ['psikolog', 'kepala-psikolog']);
             })->get()
         ];

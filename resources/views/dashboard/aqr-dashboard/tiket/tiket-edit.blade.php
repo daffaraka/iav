@@ -266,7 +266,7 @@
                                                     <div class="mb-3">
                                                         <strong><label for="">Pic Menanggapi</label></strong>
                                                         <input type="text" name="" id=""
-                                                            value="{{ $tiket->pic->name }}" class="form-control" disabled>
+                                                            value="{{ $tiket->pic->name }} @role('super-admin') - {{$tiket->pic->email}}  @endrole" class="form-control" disabled>
                                                     </div>
 
                                                     <div class="mb-3">

@@ -367,8 +367,8 @@ class KaryawanSeeder extends Seeder
     private function getDepartemen($jabatan)
     {
         if (str_contains($jabatan, 'Kepala Sekolah')) return 'Kepala Sekolah';
-        if (str_contains($jabatan, 'Wakil') || str_contains($jabatan, 'Wakakur') || str_contains($jabatan, 'Wakasis')) return 'Kurikulum';
-        if (str_contains($jabatan, 'Kesiswaan')) return 'Kesiswaan';
+        if (str_contains($jabatan, 'Wakil Kurikulum')) return 'Kurikulum';
+        if (str_contains($jabatan, 'Wakil Kesiswaan')) return 'Kesiswaan';
         if (str_contains($jabatan, 'Psikolog') || str_contains($jabatan, 'BK')) return 'BK';
         if (str_contains($jabatan, 'Guru')) return 'Guru';
         if (str_contains($jabatan, 'Admin TU') || str_contains($jabatan, 'Tata Usaha')) return 'Tata Usaha';
@@ -389,6 +389,9 @@ class KaryawanSeeder extends Seeder
         if (str_contains($jabatan, 'Humas')) return 'humas';
         if (str_contains($jabatan, 'Kepala Psikolog')) return ['kepala-psikolog', 'psikolog'];
         if (str_contains($jabatan, 'Psikolog')) return 'psikolog';
+        if (str_contains($jabatan, 'Wakil Kurikulum')) return 'wakakur';
+        if (str_contains($jabatan, 'Wakil Kesiswaan	')) return 'wakasis';
+
         return 'staff';
     }
 

@@ -214,7 +214,7 @@
                  </ul>
              </li> --}}
 
-
+{{--
              <!-- Sekolah -->
              <li class="menu-header small text-uppercase"><span class="menu-header-text">Sekolah</span></li>
              <!-- Cards -->
@@ -261,13 +261,13 @@
                  </ul>
              </li>
 
-               <li class="menu-item {{ request()->is('persebaran-ptn*') ? 'active' : '' }}">
+             <li class="menu-item {{ request()->is('persebaran-ptn*') ? 'active' : '' }}">
                  <a href="{{ route('persebaran-ptn.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-building"></i>
                      <div data-i18n="Basic">Persebaran PTN/PTS</div>
                  </a>
              </li>
-
+ --}}
 
 
 

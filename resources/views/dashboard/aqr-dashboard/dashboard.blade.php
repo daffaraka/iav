@@ -111,6 +111,8 @@
                                         @endif
                                         <small class="d-block"><strong>Waktu:</strong>
                                             {{ $item->created_at->diffForHumans() }}</small>
+                                        <small class="d-block"><strong>Gerbang pertama:</strong>
+                                            {{ $item->first_pic->name ?? '-' }}</small>
                                     </div>
 
                                     <div class="d-flex gap-2">
@@ -310,7 +312,7 @@
                                                 @foreach ($listPsikolog as $psikolog)
                                                     <tr>
                                                         <td>{{ $psikolog->name }}</td>
-                                                        <td>{{ $psikolog->email }}</td>>
+                                                        <td>{{ $psikolog->email }}</td>
                                                         <td>
                                                             @if ($psikolog->unit == 'Jagakarsa')
                                                                 <span

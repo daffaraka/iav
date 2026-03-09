@@ -13,12 +13,14 @@
                                 <th>No</th>
                                 <th>Status</th>
                                 <th>Tanggal</th>
-                                <th>Nama</th>
+                                <th>Pengirim</th>
                                 <th>Kategori Masalah</th>
                                 <th>Judul Kendala</th>
                                 <th>Lokasi Kendala</th>
 
-                                <th>PIC</th>
+                                <th>First Gate</th>
+                                                                <th>PIC</th>
+
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -42,7 +44,8 @@
                                     <td>{{ $item->lokasi_kendala }}</td>
 
 
-                                    <td>{{ $item->option->kategori_pic ?? '-' }}</td>
+                                    <td>{{ $item->option->kategori_pic ?? '-' }} - <b>{{ $item->first_pic->name ?? '-' }}</b>  </td>
+                                    <td>{{$item->pic->name ?? '-'}}</td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="{{ route('dashboard.aqr.tiket.edit', $item->id) }}"
