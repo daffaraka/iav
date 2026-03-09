@@ -32,13 +32,20 @@ class Tiket extends Model
         'lokasi_sekolah',
         'option_id',
         'waktu_proses',
-        'waktu_close'
+        'waktu_close',
+        'ai_kategori',
+        'ai_sub_kategori',
+        'ai_prioritas',
+        'ai_sentiment',
+        'ai_ringkasan',
+        'ai_analyzed_at'
     ];
 
     protected $casts = [
         'waktu_proses' => 'datetime',
         'waktu_close' => 'datetime',
-        'rating' => 'integer'
+        'rating' => 'integer',
+        'ai_analyzed_at' => 'datetime'
     ];
 
     public function first_pic(): BelongsTo

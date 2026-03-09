@@ -4,6 +4,14 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h3 class="m-0 font-weight-bold text-primary">Data Tiket</h3>
+                  @if(!$tiket->ai_analyzed_at)
+                <form method="POST" action="{{ route('dashboard.aqr.analytics.analyze', $tiket->id) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-success">🤖 Analisis dengan AI</button>
+                </form>
+                @else
+                <span class="badge badge-success">✅ Sudah Dianalisis AI</span>
+                @endif
             </div>
 
             <div class="container-fluid">

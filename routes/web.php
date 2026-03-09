@@ -80,3 +80,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 require __DIR__ . '/frontend.php';
+
+if (app()->environment('local')) {
+    require __DIR__ . '/test-gemini.php';
+}

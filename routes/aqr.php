@@ -7,6 +7,7 @@ use App\Http\Controllers\AQR\TiketController;
 use App\Http\Controllers\AqrOptionController;
 use App\Http\Controllers\AQR\DashboardAQRController;
 use App\Http\Controllers\AQR\ProgresTiketController;
+use App\Http\Controllers\AQR\AnalyticsController;
 
 Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->group(function () {
     Route::get('/', [AQRController::class, 'index'])->name('dashboard');
@@ -19,4 +20,9 @@ Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->grou
     Route::patch('tiket/{id}/proses', [TiketController::class, 'proses'])->name('tiket.proses');
     Route::post('tiket/{id}/rating', [TiketController::class, 'rating'])->name('tiket.rating');
     Route::get('tiket/selesaikan/{tiket}', [TiketController::class, 'finish'])->name('tiket.finish');
+
+    // AI Analytics
+    Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    Route::post('analytics/analyze/{id}', [AnalyticsController::class, 'analyzeTicket'])->name('analytics.analyze');
+    Route::post('analytics/bulk-analyze', [AnalyticsController::class, 'bulkAnalyze'])->name('analytics.bulk');
 });

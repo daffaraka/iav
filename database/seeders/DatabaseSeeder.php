@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             WigProgressSeeder::class,
             LowonganPekerjaanSeeder::class,
             AqrOptionSeeder::class,
-            // TiketSeeder::class,
+            TiketSeeder::class,
             TopUniversitasSeeder::class,
             PersebaranPtSeeder::class,
 
