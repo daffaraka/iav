@@ -271,6 +271,8 @@
     <!-- Vendors JS -->
     <script src="{{ asset('dashboard-admin/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
 
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+
     <!-- Main JS -->
     <script src="{{ asset('dashboard-admin/assets/js/main.js') }}"></script>
 

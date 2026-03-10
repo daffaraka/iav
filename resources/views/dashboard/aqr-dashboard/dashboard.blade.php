@@ -289,7 +289,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Tiket per Minggu (Lokasi)</h6>
                     </div>
                     <div class="card-body">
-                        <div id="barChart" style="height: 600px;"></div>
+                        <div id="barChartMingguan" style="height: 600px;"></div>
 
                         <div class="col-12 mb-4">
                             <div class="card shadow">
@@ -378,117 +378,150 @@
 @endsection
 
 @push('scripts')
-    <script src="https://code.highcharts.com/highcharts.js"></script>
     <script>
-        // Pie Chart
-        Highcharts.chart('pieChart', {
+        // Data from backend
+        const pieChartData = {!! $pieChartData !!};
+        const barChartData = {!! $barChartData !!};
+        const weekLabels = {!! $weekLabels !!};
+        const lokasiChartData = {!! $lokasiChartData !!};
+        const typePengirimChartData = {!! $typePengirimChart !!};
+
+        // Common options for Donut charts
+        const donutOptions = {
             chart: {
-                type: 'pie'
-            },
-            title: {
-                text: null
+                type: 'donut',
             },
             plotOptions: {
                 pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.y}'
-                    },
-                    showInLegend: true
-                }
-            },
-            colors: ['#ffc107', '#17a2b8', '#28a745'],
-            series: [{
-                name: 'Tiket',
-                colorByPoint: true,
-                data: {!! $pieChartData !!}
-            }]
-        });
-
-        // Bar Chart
-        Highcharts.chart('barChart', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: null
-            },
-            xAxis: {
-                categories: {!! $weekLabels !!},
-                title: {
-                    text: 'Minggu'
-                }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Jumlah Tiket'
-                }
-            },
-            plotOptions: {
-                column: {
-                    dataLabels: {
-                        enabled: true
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'Total',
+                                fontSize: '16px',
+                                fontWeight: 600
+                            }
+                        }
                     }
                 }
             },
-            series: {!! $barChartData !!}
-        });
-
-        // Lokasi Pie Chart
-        Highcharts.chart('lokasiChart', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: null
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.y} '
-                    },
-                    showInLegend: true
+            dataLabels: {
+                enabled: true,
+                formatter: function(val, opts) {
+                    return opts.w.config.series[opts.seriesIndex]
                 }
             },
-            series: [{
-                name: 'Jumlah Tiket',
-                colorByPoint: true,
-                data: {!! $lokasiChartData !!}
-            }]
-        });
-
-
-        // Status Pengirim Chart
-        Highcharts.chart('pengirimPieChart', {
-            chart: {
-                type: 'pie'
+            legend: {
+                show: true,
+                position: 'bottom'
             },
-            title: {
-                text: null
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.y}'
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: '100%'
                     },
-                    showInLegend: true
+                    legend: {
+                        position: 'bottom'
+                    }
                 }
-            },
-            colors: ['#ffa707', '#63a2b8'],
-            series: [{
-                name: 'Tipe Pengirim',
-                colorByPoint: true,
-                data: {!! $typePengirimChart !!}
             }]
-        });
+        };
+
+        // Status Tiket Chart (Donut)
+        if (document.querySelector('#pieChart') && pieChartData) {
+            new ApexCharts(document.querySelector('#pieChart'), {
+                ...donutOptions,
+                series: pieChartData.map(d => d.y),
+                labels: pieChartData.map(d => d.name),
+                colors: ['#ffc107', '#17a2b8', '#28a745'], // warning, info, success
+                chart: {
+                    ...donutOptions.chart,
+                    height: 300 // as per original style
+                }
+            }).render();
+        }
+
+        // Tiket per Lokasi Chart (Donut)
+        if (document.querySelector('#lokasiChart') && lokasiChartData) {
+            new ApexCharts(document.querySelector('#lokasiChart'), {
+                ...donutOptions,
+                series: lokasiChartData.map(d => d.y),
+                labels: lokasiChartData.map(d => d.name),
+                chart: {
+                    ...donutOptions.chart,
+                    height: 500 // as per original style
+                },
+            }).render();
+        }
+
+        // Statistik Pengirim Chart (Donut)
+        if (document.querySelector('#pengirimPieChart') && typePengirimChartData) {
+            new ApexCharts(document.querySelector('#pengirimPieChart'), {
+                ...donutOptions,
+                series: typePengirimChartData.map(d => d.y),
+                labels: typePengirimChartData.map(d => d.name),
+                colors: ['#ffa707', '#63a2b8'],
+                chart: {
+                    ...donutOptions.chart,
+                    height: 300 // as per original style
+                }
+            }).render();
+        }
+
+        // Tiket per Minggu (Lokasi) Chart (Bar)
+        if (document.querySelector('#barChartMingguan') && barChartData && barChartData.length > 0) {
+            console.log('Bar Chart Data:', barChartData);
+            console.log('Week Labels:', weekLabels);
+
+            new ApexCharts(document.querySelector('#barChartMingguan'), {
+                series: barChartData,
+                chart: {
+                    type: 'bar',
+                    height: 600,
+                    toolbar: {
+                        show: true
+                    },
+                    stacked: true
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '70%',
+                        dataLabels: {
+                            position: 'top'
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                xaxis: {
+                    categories: weekLabels ? weekLabels.map(week => 'Minggu ke-' + week) : [],
+                    title: {
+                        text: 'Data mingguan'
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    title: {
+                        text: 'Jumlah Tiket'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'center'
+                },
+                colors: ['#696cff', '#71dd37', '#ffab00', '#ff3e1d', '#8592a3', '#ffc107', '#17a2b8', '#28a745'],
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + " tiket"
+                        }
+                    }
+                }
+            }).render();
+        }
     </script>
 @endpush

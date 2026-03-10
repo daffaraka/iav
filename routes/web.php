@@ -20,6 +20,7 @@ use App\Http\Controllers\LowonganApplyController;
 use App\Http\Controllers\PersebaranPtnController;
 use App\Http\Controllers\LowonganProgressController;
 use App\Http\Controllers\LowonganPekerjaanController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return redirect()->to('dashboard');
@@ -45,6 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('lowongan-progress', LowonganProgressController::class);
         Route::resource('user', UserController::class);
         Route::resource('aqr-option', AqrOptionController::class);
+        Route::resource('role', RoleController::class);
 
 
         Route::resource('departement', DepartementController::class);

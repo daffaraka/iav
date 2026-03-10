@@ -112,8 +112,8 @@
                      </a>
                  </li>
 
-                 <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
-                     <a href="{{ route('user.index') }}" class="menu-link">
+                 <li class="menu-item {{ request()->is('role*') ? 'active' : '' }}">
+                     <a href="{{ route('role    .index') }}" class="menu-link">
                          <i class="menu-icon tf-icons bx bx-check-shield"></i>
                          <div data-i18n="Basic">Manajemen Roles</div>
                      </a>
@@ -214,7 +214,7 @@
                  </ul>
              </li> --}}
 
-{{--
+
              <!-- Sekolah -->
              <li class="menu-header small text-uppercase"><span class="menu-header-text">Sekolah</span></li>
              <!-- Cards -->
@@ -267,7 +267,7 @@
                      <div data-i18n="Basic">Persebaran PTN/PTS</div>
                  </a>
              </li>
- --}}
+
 
 
 
@@ -330,7 +330,7 @@
                  <!-- Cards -->
 
 
-                 {{--
+
              <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
                  <a href="{{ route('wig.index') }}" class="menu-link">
                      <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -342,15 +342,10 @@
                      <i class="menu-icon tf-icons bx bx-collection"></i>
                      <div data-i18n="Basic">Lead Measure</div>
                  </a>
-             </li> --}}
+             </li>
 
 
-                 {{-- <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
-                     <a href="{{ route('user.index') }}" class="menu-link">
-                         <i class="menu-icon tf-icons bx bx-user"></i>
-                         <div data-i18n="Basic">Manajemen User</div>
-                     </a>
-                 </li> --}}
+
              @endrole
 
 

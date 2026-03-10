@@ -160,6 +160,9 @@ class AQRController extends Controller
             ->map(fn($item) => ['name' => $item->pengirim ?: 'Tidak Diketahui', 'y' => $item->total_pengirim])
             ->toArray();
 
+
+        // dd($barChartData);
+
         $data = [
             'tiketNew' => $tiketNew,
             'tiketProses' => $tiketProses,
