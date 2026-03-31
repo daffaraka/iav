@@ -113,7 +113,7 @@
                  </li>
 
                  <li class="menu-item {{ request()->is('role*') ? 'active' : '' }}">
-                     <a href="{{ route('role    .index') }}" class="menu-link">
+                     <a href="{{ route('role.index') }}" class="menu-link">
                          <i class="menu-icon tf-icons bx bx-check-shield"></i>
                          <div data-i18n="Basic">Manajemen Roles</div>
                      </a>
@@ -171,6 +171,57 @@
              </li> --}}
 
 
+             <li class="menu-header small text-uppercase"><span class="menu-header-text">AQR</span></li>
+             <!-- Cards -->
+
+             <li class="menu-item {{ request()->is('dashboard/aqr') ? 'active' : '' }}">
+                 <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                     <div data-i18n="Basic">Dashboard AQR</div>
+                 </a>
+             </li>
+
+             @role('super-admin')
+                 <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
+                     <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-area"></i>
+                         <div data-i18n="Basic">Opsi AQR</div>
+                     </a>
+                 </li>
+             @endrole
+
+             <li class="menu-item {{ request()->is('dashboard/aqr/*') ? 'active open' : '' }}">
+                 <a href="javascript:void(0);"
+                     class="menu-link menu-toggle {{ request()->is('aqr*') ? 'active' : '' }}">
+                     <i class="menu-icon tf-icons bx bx-support"></i>
+                     <div data-i18n="Basic">Tiket Aduan</div>
+                 </a>
+                 <ul class="menu-sub {{ request()->is('dashboard/aqr') ? 'show' : '' }}">
+                     <li class="menu-item {{ request()->is('dashboard/aqr/tiket*') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.tiket.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Data Tiket</div>
+                         </a>
+                     </li>
+                     {{-- <li class="menu-item {{ request()->is('aqr/aduan*') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.aduan.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Data Aduan</div>
+                         </a>
+                     </li> --}}
+                     {{-- <li class="menu-item {{ request()->is('aqr/progres-tiket*') ? 'active' : '' }}">
+                         <a href="{{ route('dashboard.aqr.progres-tiket.index') }}" class="menu-link">
+                             <div data-i18n="Basic">Progress Tiket</div>
+                         </a>
+                     </li> --}}
+
+                     @hasrole('super-admin')
+                         <li class="menu-item {{ request()->is('aqr-option*') ? 'active' : '' }}">
+                             <a href="{{ route('aqr-option.index') }}" class="menu-link">
+                                 <div data-i18n="Basic">AQR Option</div>
+                             </a>
+                         </li>
+                     @endrole
+                 </ul>
+             </li>
 
              {{--
 
@@ -272,57 +323,7 @@
 
 
 
-             <li class="menu-header small text-uppercase"><span class="menu-header-text">AQR</span></li>
-             <!-- Cards -->
 
-             <li class="menu-item {{ request()->is('dashboard/aqr') ? 'active' : '' }}">
-                 <a href="{{ route('dashboard.aqr.dashboard') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                     <div data-i18n="Basic">Dashboard AQR</div>
-                 </a>
-             </li>
-
-             @role('super-admin')
-                 <li class="menu-item {{ request()->is('dashboard/aqr.*') ? 'active' : '' }}">
-                     <a href="{{ route('aqr-option.index') }}" class="menu-link">
-                         <i class="menu-icon tf-icons bx bx-area"></i>
-                         <div data-i18n="Basic">Opsi AQR</div>
-                     </a>
-                 </li>
-             @endrole
-
-             <li class="menu-item {{ request()->is('dashboard/aqr/*') ? 'active open' : '' }}">
-                 <a href="javascript:void(0);"
-                     class="menu-link menu-toggle {{ request()->is('aqr*') ? 'active' : '' }}">
-                     <i class="menu-icon tf-icons bx bx-support"></i>
-                     <div data-i18n="Basic">Tiket Aduan</div>
-                 </a>
-                 <ul class="menu-sub {{ request()->is('dashboard/aqr') ? 'show' : '' }}">
-                     <li class="menu-item {{ request()->is('dashboard/aqr/tiket*') ? 'active' : '' }}">
-                         <a href="{{ route('dashboard.aqr.tiket.index') }}" class="menu-link">
-                             <div data-i18n="Basic">Data Tiket</div>
-                         </a>
-                     </li>
-                     {{-- <li class="menu-item {{ request()->is('aqr/aduan*') ? 'active' : '' }}">
-                         <a href="{{ route('dashboard.aqr.aduan.index') }}" class="menu-link">
-                             <div data-i18n="Basic">Data Aduan</div>
-                         </a>
-                     </li> --}}
-                     {{-- <li class="menu-item {{ request()->is('aqr/progres-tiket*') ? 'active' : '' }}">
-                         <a href="{{ route('dashboard.aqr.progres-tiket.index') }}" class="menu-link">
-                             <div data-i18n="Basic">Progress Tiket</div>
-                         </a>
-                     </li> --}}
-
-                     @hasrole('super-admin')
-                         <li class="menu-item {{ request()->is('aqr-option*') ? 'active' : '' }}">
-                             <a href="{{ route('aqr-option.index') }}" class="menu-link">
-                                 <div data-i18n="Basic">AQR Option</div>
-                             </a>
-                         </li>
-                     @endrole
-                 </ul>
-             </li>
 
 
              @hasrole('super-admin')
@@ -331,18 +332,18 @@
 
 
 
-             <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
-                 <a href="{{ route('wig.index') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                     <div data-i18n="Basic">WIG</div>
-                 </a>
-             </li>
-             <li class="menu-item {{ request()->is('sdm/lead-measure*') ? 'active' : '' }}">
-                 <a href="{{ route('wig.index') }}" class="menu-link">
-                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                     <div data-i18n="Basic">Lead Measure</div>
-                 </a>
-             </li>
+                 <li class="menu-item {{ request()->is('sdm/wig*') ? 'active' : '' }}">
+                     <a href="{{ route('wig.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-collection"></i>
+                         <div data-i18n="Basic">WIG</div>
+                     </a>
+                 </li>
+                 <li class="menu-item {{ request()->is('sdm/lead-measure*') ? 'active' : '' }}">
+                     <a href="{{ route('wig.index') }}" class="menu-link">
+                         <i class="menu-icon tf-icons bx bx-collection"></i>
+                         <div data-i18n="Basic">Lead Measure</div>
+                     </a>
+                 </li>
 
 
 

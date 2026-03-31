@@ -25,4 +25,7 @@ Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->grou
     Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::post('analytics/analyze/{id}', [AnalyticsController::class, 'analyzeTicket'])->name('analytics.analyze');
     Route::post('analytics/bulk-analyze', [AnalyticsController::class, 'bulkAnalyze'])->name('analytics.bulk');
+    
+    // Delete All Tickets
+    Route::delete('tiket/delete-all', [TiketController::class, 'deleteAll'])->name('tiket.deleteAll');
 });

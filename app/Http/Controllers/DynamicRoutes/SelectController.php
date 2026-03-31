@@ -28,7 +28,7 @@ class SelectController extends Controller
         // dd($jabatan);
 
         $pic = null;
-        if (Auth::user()->hasAnyRole(['tata-usaha', 'kepala-sekolah', 'kepala-psikolog', 'psikolog'])) {
+        if (Auth::user()->hasAnyRole(['tata-usaha', 'kepala-sekolah', 'kepala-psikolog', 'psikolog','kepala-tata-usaha'])) {
 
             if ($jabatan == 'Psikolog') {
                 $pic = User::whereHas('roles', function ($query) {
@@ -37,9 +37,8 @@ class SelectController extends Controller
                     ->where('unit', $unit)
                     ->select('id', 'name', 'departemen', 'jabatan', 'unit')->get();
             } else {
-                $pic = User::where('jabatan', $jabatan)
+                $pic = User::where('jabatan', 'LIKE', "%{$jabatan}%")
                     ->whereIn('unit', $unit)
-                    ->where('unit', $unit)
                     ->select('id', 'name', 'departemen', 'jabatan', 'unit')->get();
             }
         } else {

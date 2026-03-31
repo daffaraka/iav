@@ -167,16 +167,23 @@ class TiketController extends Controller
     public function update(Request $request, $id)
     {
 
+
+
         $tiket = Tiket::find($id);
-        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah'])) {
+
+        // if($tiket->pengirim == 'Masyarakat Umum') {
+
+        // };
+
+        // dd(Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah']));
+
+        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah','kepala-tata-usaha'])) {
             $tiket->update([
                 'status' => 'Proses',
                 'departemen' => $request->departemen,
                 'admin_humas_id' => Auth::user()->id,
                 'pic_id' => $request->pic_menanggapi
             ]);
-        } else {
-
             if ($request->has('fotopengerjaan')) {
                 $file = $request->file('fotopengerjaan');
                 $fileName = $file->getClientOriginalName();
@@ -192,10 +199,12 @@ class TiketController extends Controller
                 'direspon_at' => date('Y-m-d H:i:s'),
                 'tiket_id' => $tiket->id
             ]);
+            return redirect()->back()
+                ->with('success', 'Tiket berhasil diupdate');
         }
 
-        return redirect()->back()
-            ->with('success', 'Tiket berhasil diupdate');
+           return redirect()->back()
+            ->with('error', 'Terdapat kesalahan');
     }
 
     public function destroy($id)
@@ -205,6 +214,15 @@ class TiketController extends Controller
 
         return redirect()->route('dashboard.aqr.tiket.index')
             ->with('success', 'Tiket berhasil dihapus');
+    }
+
+    public function deleteAll()
+    {
+        $count = Tiket::count();
+        Tiket::truncate();
+
+        return redirect()->route('dashboard.aqr.tiket.index')
+            ->with('success', "Berhasil menghapus {$count} tiket");
     }
 
     public function proses($id)
