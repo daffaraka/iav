@@ -28,4 +28,7 @@ Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->grou
     
     // Delete All Tickets
     Route::delete('tiket/delete-all', [TiketController::class, 'deleteAll'])->name('tiket.deleteAll');
+    
+    // Forward Ticket
+    Route::post('tiket/forward', [TiketController::class, 'forwardTicket'])->name('tiket.forward');
 });

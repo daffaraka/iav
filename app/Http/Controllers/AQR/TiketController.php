@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\AQR;
 
-use App\Models\User;
-use App\Models\Tiket;
-use App\Models\ProgresTiket;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ProgresTiket;
+use App\Models\Tiket;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TiketController extends Controller
 {
-
     // public function index()
     // {
 
@@ -42,13 +41,11 @@ class TiketController extends Controller
 
     //         if (Auth::user()->hasRole('kepala-tata-usaha')) {
 
-
     //             $data['data'] = Tiket::with(['humas', 'pic', 'option'])->where('lokasi_sekolah', $unit)
     //                 ->whereHas('option', function ($query) use ($unit) {
     //                     $query->where('kategori_pic', 'Kepala TU');
     //                 })->get();
     //         } else {
-
 
     //             $data['data'] = Tiket::with(['humas', 'pic', 'option'])->where('lokasi_sekolah', $unit)
     //                 ->whereHas('option', function ($query) {
@@ -57,15 +54,12 @@ class TiketController extends Controller
     //         }
     //     }
 
-
     //     // dd($data['data']);
-
 
     //     // dd($data);
 
     //     return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     // }
-
 
     public function index()
     {
@@ -95,8 +89,6 @@ class TiketController extends Controller
 
         $data['data'] = $query->get();
 
-
-
         // dd($data);
 
         return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
@@ -105,6 +97,7 @@ class TiketController extends Controller
     public function tiketDalamprogres()
     {
         $data['data'] = Tiket::with(['first_pic', 'pic'])->where('status', 'Proses')->latest()->paginate(15);
+
         return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
     }
 
@@ -124,7 +117,7 @@ class TiketController extends Controller
             'lokasi_kendala' => 'nullable|string|max:250',
             'pengirim' => 'required|in:Masyarakat Umum,Warga Sekolah',
             'lokasi_sekolah' => 'required_if:pengirim,Warga Sekolah|in:Cinere,Jagakarsa,Pamulang',
-            'filename' => 'nullable|file|max:2048'
+            'filename' => 'nullable|file|max:2048',
         ]);
 
         $validated['no_tiket'] = 'AQR-' . date('Ymd') . '-' . \Illuminate\Support\Str::random(6);
@@ -150,6 +143,7 @@ class TiketController extends Controller
     public function show($id)
     {
         $tiket = Tiket::with(['first_pic', 'pic', 'siswa'])->findOrFail($id);
+
         return view('dashboard.aqr.tiket-show', compact('tiket'));
     }
 
@@ -161,49 +155,93 @@ class TiketController extends Controller
 
         $picSelect = User::select('id', 'name', 'unit')->get();
 
+        // dd($tiket);
+
         return view('dashboard.aqr-dashboard.tiket.tiket-edit', compact('tiket', 'picSelect'));
     }
 
     public function update(Request $request, $id)
     {
 
+        // Handle forward action
+        if ($request->action == 'forward') {
+            $validated = $request->validate([
+                'forward_type' => 'required|in:kepala-sekolah,kepala-tu',
+                'pic_id' => 'required|exists:users,id',
+                'catatan' => 'nullable|string|max:500'
+            ]);
 
+            $tiket->update([
+                'pic_id' => $validated['pic_id'],
+                'status' => 'Proses'
+            ]);
+
+            ProgresTiket::create([
+                'tiket_id' => $tiket->id,
+                'penanganan' => 'Tiket diteruskan ke ' . ($validated['forward_type'] == 'kepala-sekolah' ? 'Kepala Sekolah' : 'Kepala TU') . 
+                               ($validated['catatan'] ? '. Catatan: ' . $validated['catatan'] : ''),
+                'status' => 'Proses',
+                'direspon_at' => now()
+            ]);
+
+            return redirect()->back()->with('success', 'Tiket berhasil diteruskan');
+        }
 
         $tiket = Tiket::find($id);
 
-        // if($tiket->pengirim == 'Masyarakat Umum') {
 
-        // };
+        // dd($request->all());
+        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha', 'staff'])) {
 
-        // dd(Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah']));
+            // if ($tiket->admin_humas_id == null) {
+            if ($tiket->pengirim == 'Masyarakat Umum') {
+                $tiket->update([
+                    'status' => 'Proses',
+                    'departemen' => $request->departemen,
+                    'admin_humas_id' => Auth::user()->id,
+                    'pic_id' => Auth::user()->id,
+                ]);
+            } else {
 
-        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah','kepala-tata-usaha'])) {
-            $tiket->update([
-                'status' => 'Proses',
-                'departemen' => $request->departemen,
-                'admin_humas_id' => Auth::user()->id,
-                'pic_id' => $request->pic_menanggapi
-            ]);
-            if ($request->has('fotopengerjaan')) {
-                $file = $request->file('fotopengerjaan');
-                $fileName = $file->getClientOriginalName();
-                $path = $file->move('tiket/' . now()->year . '/progres/', $fileName);
+                if ($tiket->status == 'New') {
+                    $tiket->update([
+                        'status' => 'Proses',
+                        'departemen' => $request->departemen,
+                        'admin_humas_id' => Auth::user()->id,
+                        'pic_id' => $request->pic_menanggapi,
+                    ]);
+                }
             }
 
-            $progressTiket = new ProgresTiket();
 
-            $progressTiket->create([
-                'penanganan' => $request->penanganan,
-                'status' => 'Proses',
-                'fotopengerjaan' => $path ?? null,
-                'direspon_at' => date('Y-m-d H:i:s'),
-                'tiket_id' => $tiket->id
-            ]);
+
+
+
+            if ($request->has('penanganan')) {
+                if ($request->has('fotopengerjaan')) {
+                    $file = $request->file('fotopengerjaan');
+                    $fileName = $file->getClientOriginalName();
+                    $path = $file->move('tiket/' . now()->year . '/progres/', $fileName);
+                }
+
+
+
+                $progressTiket = new ProgresTiket;
+
+                $progressTiket->create([
+                    'penanganan' => $request->penanganan,
+                    'status' => 'Proses',
+                    'fotopengerjaan' => $path ?? null,
+                    'direspon_at' => date('Y-m-d H:i:s'),
+                    'tiket_id' => $tiket->id,
+                ]);
+            }
+
             return redirect()->back()
                 ->with('success', 'Tiket berhasil diupdate');
         }
 
-           return redirect()->back()
+        return redirect()->back()
             ->with('error', 'Terdapat kesalahan');
     }
 
@@ -225,12 +263,41 @@ class TiketController extends Controller
             ->with('success', "Berhasil menghapus {$count} tiket");
     }
 
+    public function forwardTicket(Request $request)
+    {
+        $validated = $request->validate([
+            'tiket_id' => 'required|exists:tikets,id',
+            'pic_id' => 'required|exists:users,id',
+            'forward_type' => 'required|in:kepala-sekolah,kepala-tu',
+            'catatan' => 'nullable|string|max:500'
+        ]);
+
+        $tiket = Tiket::findOrFail($validated['tiket_id']);
+        
+        // Update PIC
+        $tiket->update([
+            'pic_id' => $validated['pic_id'],
+            'status' => 'Proses'
+        ]);
+
+        // Create progress entry
+        ProgresTiket::create([
+            'tiket_id' => $tiket->id,
+            'penanganan' => 'Tiket diteruskan ke ' . ($validated['forward_type'] == 'kepala-sekolah' ? 'Kepala Sekolah' : 'Kepala TU') . 
+                           ($validated['catatan'] ? '. Catatan: ' . $validated['catatan'] : ''),
+            'status' => 'Proses',
+            'direspon_at' => now()
+        ]);
+
+        return redirect()->back()->with('success', 'Tiket berhasil diteruskan');
+    }
+
     public function proses($id)
     {
         $tiket = Tiket::findOrFail($id);
         $tiket->update([
             'status' => 'Proses',
-            'waktu_proses' => now()
+            'waktu_proses' => now(),
         ]);
 
         return redirect()->back()->with('success', 'Tiket berhasil diproses');
@@ -241,7 +308,7 @@ class TiketController extends Controller
         $tiket = Tiket::findOrFail($id);
         $tiket->update([
             'status' => 'Selesai',
-            'waktu_close' => now()
+            'waktu_close' => now(),
         ]);
 
         return redirect()->back()->with('success', 'Tiket berhasil diselesaikan');
@@ -251,7 +318,7 @@ class TiketController extends Controller
     {
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'deskripsi_penilaian' => 'nullable|string|max:1000'
+            'kepuasan' => 'nullable|string|max:1000',
         ]);
 
         $tiket = Tiket::findOrFail($id);
@@ -265,13 +332,12 @@ class TiketController extends Controller
         return redirect()->back()->with('success', 'Rating berhasil diberikan');
     }
 
-
     private function getKategoriPicByRoles()
     {
         $map = [
             'kepala-tata-usaha' => 'Kepala TU',
-            'kepala-sekolah'    => 'Kepala Sekolah',
-            'kepala-psikolog'   => 'Psikolog',
+            'kepala-sekolah' => 'Kepala Sekolah',
+            'kepala-psikolog' => 'Psikolog',
         ];
 
         return collect($map)

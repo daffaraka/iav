@@ -42,7 +42,7 @@
                     @else
                         <div class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-xl">
                             <i class="fas fa-check-circle mr-2 text-green-500"></i>
-                            Survey kepuasan telah diisi: <span class="font-semibold ml-1">{{ $tiket->kepuasan }}</span>
+                            Survey kepuasan telah diisi: <span class="font-semibold ml-1">{{ $tiket->rating }}</span>
                         </div>
                     @endif
                 </div>

@@ -54,6 +54,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tiket Selesai</div>
                                 <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $tiketClosed ?? 0 }}</div>
+
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-check-circle fa-2x text-gray-300"></i>
@@ -95,12 +96,17 @@
                                 <div class="p-3" style="border-left-width: 3px !important;">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
-                                        <button
-                                            class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
-                                            <i
-                                                class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
-                                            {{ $item->pengirim }}
-                                        </button>
+                                        <div class="d-flex flex-column align-items-end gap-1">
+                                            <button
+                                                class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
+                                                <i
+                                                    class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
+                                                {{ $item->pengirim }}
+                                            </button>
+                                            @if ($item->option)
+                                                <span class="badge bg-secondary">{{ $item->option->kategori_pic }}</span>
+                                            @endif
+                                        </div>
                                     </div>
 
                                     <div class="mb-2">
@@ -148,12 +154,17 @@
                             <div class="p-3" style="border-left-width: 3px !important;">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h6 class="mb-1 text-dark">{{ $item->nama }}</h6>
-                                    <button
-                                        class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
-                                        <i
-                                            class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
-                                        {{ $item->pengirim }}
-                                    </button>
+                                    <div class="d-flex flex-column align-items-end gap-1">
+                                        <button
+                                            class="badge badge-sm {{ $item->pengirim == 'Warga Sekolah' ? 'bg-dark text-white' : 'btn-outline-light text-dark' }}">
+                                            <i
+                                                class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
+                                            {{ $item->pengirim }}
+                                        </button>
+                                        @if ($item->option)
+                                            <span class="badge bg-secondary">{{ $item->option->kategori_pic }}</span>
+                                        @endif
+                                    </div>
                                 </div>
 
                                 <div class="mb-2">
@@ -203,6 +214,9 @@
                                                 class="fas {{ $item->pengirim == 'Warga Sekolah' ? 'fa-graduation-cap' : 'fa-users' }} me-1"></i>
                                             {{ $item->pengirim }}
                                         </button>
+                                        @if ($item->option)
+                                            <span class="badge bg-secondary">{{ $item->option->kategori_pic }}</span>
+                                        @endif
                                         {{-- @if ($item->rating)
                                             <div class="d-flex align-items-center">
                                                 @for ($i = 1; $i <= 5; $i++)
@@ -219,6 +233,17 @@
                                         {{ Str::limit($item->detail_kendala, 60) }}</small>
                                     <small class="d-block"><strong>Selesai:</strong>
                                         {{ $item->waktu_close ? \Carbon\Carbon::parse($item->waktu_close)->diffForHumans() : '-' }}</small>
+                                        <strong class="font-bold">Rating : </strong>
+                                      @if($item->rating)
+                                           @for($i = 1; $i <= 5; $i++)
+                                               <i class="fas fa-star {{ $i <= $item->rating ? 'text-warning' : 'text-muted' }}" style="font-size: 12px;"></i>
+                                           @endfor
+                                           <small class="ms-1 text-muted">({{ $item->rating }}/5)</small>
+                                       @else
+                                           <small class="text-muted">Belum ada rating</small>
+                                       @endif
+                                    <small class="d-block"><strong>Ulasan:</strong>
+                                        <span class="btn btn-dark btn-sm">{{ $item->kepuasan }}</span> </small>
                                 </div>
 
                                 <div class="d-flex gap-2">

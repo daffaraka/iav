@@ -23,21 +23,34 @@ class AQRController extends Controller
         // dd($unit);
         if (Auth::user()->hasAnyRole(['super-admin', 'humas'])) {
 
-            $tiketNew = Tiket::where('status', 'New')->count();
-            $tiketProses = Tiket::where('status', 'Proses')->count();
-            $tiketClosed = Tiket::where('status', 'Selesai')->count();
-            $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
 
-            $latestTiket = Tiket::where('status', 'New')->latest()->limit(5)->get();
-            $latestProses = Tiket::where('status', 'Proses')->latest()->limit(5)->get();
-            $latestSelesai = Tiket::where('status', 'Selesai')->latest()->limit(5)->get();
+            if (Auth::user()->hasRole(['super-admin', 'admin'])) {
+                $tiketNew = Tiket::where('status', 'New')->count();
+                $tiketProses = Tiket::where('status', 'Proses')->count();
+                $tiketClosed = Tiket::where('status', 'Selesai')->count();
+                $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+
+                $latestTiket = Tiket::with('option')->where('status', 'New')->latest()->limit(5)->get();
+                $latestProses = Tiket::with('option')->where('status', 'Proses')->latest()->limit(5)->get();
+                $latestSelesai = Tiket::with('option')->where('status', 'Selesai')->latest()->limit(5)->get();
+            } else {
+
+                $tiketNew = Tiket::where('status', 'New')->where('pengirim','Masyarakat Umum')->count();
+                $tiketProses = Tiket::where('status', 'Proses')->where('pengirim','Masyarakat Umum')->count();
+                $tiketClosed = Tiket::where('status', 'Selesai')->where('pengirim','Masyarakat Umum')->count();
+                $totalTiket = $tiketNew + $tiketProses + $tiketClosed;
+
+                $latestTiket = Tiket::with('option')->where('status', 'New')->where('pengirim','Masyarakat Umum')->latest()->limit(5)->get();
+                $latestProses = Tiket::with('option')->where('status', 'Proses')->where('pengirim','Masyarakat Umum')->latest()->limit(5)->get();
+                $latestSelesai = Tiket::with('option')->where('status', 'Selesai')->where('pengirim','Masyarakat Umum')->latest()->limit(5)->get();
+            }
         } else if (Auth::user()->hasAnyRole(['kepala-tata-usaha', 'kepala-sekolah', 'kepala-psikolog', 'psikolog'])) {
 
 
             if (Auth::user()->hasRole('kepala-tata-usaha')) {
 
 
-                $tiketKTU = Tiket::whereHas('option', function ($query) use ($unit) {
+                $tiketKTU = Tiket::with('option')->whereHas('option', function ($query) use ($unit) {
                     $query->where('kategori_pic', 'Kepala TU');
                 });
 
@@ -58,7 +71,7 @@ class AQRController extends Controller
             }
 
             if (Auth::user()->hasRole('kepala-sekolah')) {
-                $tiketKepsek = Tiket::whereHas('option', function ($query) use ($unit) {
+                $tiketKepsek = Tiket::with('option')->whereHas('option', function ($query) use ($unit) {
                     $query->where('kategori_pic', 'Kepala Sekolah');
                 });
 
@@ -78,7 +91,7 @@ class AQRController extends Controller
             }
 
             if (Auth::user()->hasRole('kepala-psikolog') || Auth::user()->hasRole('psikolog')) {
-                $tiketPsikolog = Tiket::whereHas('option', function ($query) use ($unit) {
+                $tiketPsikolog = Tiket::with('option')->whereHas('option', function ($query) use ($unit) {
                     $query->where('kategori_pic', 'Psikolog');
                 });
 
@@ -94,13 +107,11 @@ class AQRController extends Controller
             }
 
 
-            // dd($tiketNew);
-
 
 
         } else {
 
-            $tiketPIC = Tiket::query();
+            $tiketPIC = Tiket::with('option');
 
             $tiketNew =  (clone $tiketPIC)->where('status', 'New')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->count();
             $tiketProses = (clone $tiketPIC)->where('status', 'Proses')->where('lokasi_sekolah', $unit)->where('pic_id', auth()->user()->id)->count();

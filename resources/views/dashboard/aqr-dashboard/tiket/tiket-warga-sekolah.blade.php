@@ -18,7 +18,7 @@
                            <option value="Guru Kelas">Wali Kelas</option>
                            <option value="Psikolog">Psikolog</option>
                            <option value="Guru BK">BK</option>
-                           <option value="Staf Tax Acounting">Keuangan</option>
+                           <option value="Keuangan">Keuangan</option>
                            <option value="Staf Sarpra">Sarana dan Prasarana</option>
                            <option value="Tata Usaha">Tata Usaha</option>
                            <option value="Teknisi">Teknisi</option>
@@ -52,7 +52,7 @@
            @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah','kepala-tata-usaha']]))
                <h6 class="mt-3 mb-4 text-dark">PIC sudah ditentukan</h6>
 
-               <input type="hidden" name="menanggapi" value="selesai">
+               {{-- <input type="hidden" name="menanggapi" value="selesai"> --}}
 
                <div class="mb-3">
                    <strong><label for="">Kepsek / Kepala TU </label></strong>
@@ -98,7 +98,7 @@
                    Ulang</button>
            @else
                {{-- Ketika proses dan akan mengisi --}}
-               <input type="hidden" name="menanggapi" value="selesai">
+               {{-- <input type="hidden" name="menanggapi" value="selesai"> --}}
                <div class="mb-3">
                    <strong><label for="">Departemen</label></strong>
                    <input type="text" name="departemen" id="" value="{{ $tiket->departemen }}" class="form-control"

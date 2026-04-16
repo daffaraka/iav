@@ -175,6 +175,28 @@
                                                 @include('dashboard.aqr-dashboard.tiket.tiket-warga-sekolah')
                                             @else
                                                 @include('dashboard.aqr-dashboard.tiket.tiket-masyarakat-umum')
+
+                                                {{-- Forward to Kepala Sekolah/TU for Masyarakat Umum --}}
+                                                @hasanyrole(['super-admin', 'humas'])
+                                                    @if($tiket->status == 'Proses' && !$tiket->pic_id)
+                                                        <hr>
+                                                        <h6 class="fw-bold text-primary">Teruskan ke:</h6>
+                                                        <div class="row mb-3">
+                                                            <div class="col-6">
+                                                                <button type="button" class="btn btn-warning btn-sm w-100"
+                                                                        data-bs-toggle="modal" data-bs-target="#forwardKepsekModal">
+                                                                    <i class="fas fa-user-tie"></i> Kepala Sekolah
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <button type="button" class="btn btn-info btn-sm w-100"
+                                                                        data-bs-toggle="modal" data-bs-target="#forwardTUModal">
+                                                                    <i class="fas fa-user-cog"></i> Kepala TU
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endhasanyrole
                                             @endif
                                         @endif
 
@@ -186,7 +208,18 @@
                                     </div>
 
 
-                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah','kepala-tata-usaha'])
+
+                                    @hasanyrole(['super-admin', 'humas'])
+                                        @if ($tiket->pengirim == 'Masyarakat Umum')
+                                            @if ($tiket->status == 'Proses')
+                                                <button class="btn btn-primary m-4" type="submit">Update Ticket</button>
+                                            @endif
+
+                                        @endif
+                                    @endhasanyrole
+
+                                    @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah',
+                                        'kepala-tata-usaha'])
                                         @if ($tiket->status == 'New')
                                             <button class="btn btn-primary m-4" type="submit">Update Ticket</button>
                                         @elseif ($tiket->status == 'Proses')
@@ -250,7 +283,7 @@
                         <form action="{{ route('dashboard.aqr.tiket.update', $tiket->id) }}" method="POST">
                             @method('PUT')
                             @csrf
-                            <input type="hidden" name="menanggapi" value="menanggapi">
+                            <input type="hidden" name="pic_menanggapi" value="pic_menanggapi">
                             <div class="departement">
                                 <div class="form-group mb-3">
                                     <label for="Status">Pilih Departemen Terkait</label>
@@ -260,7 +293,7 @@
                                         <option value="Guru Kelas">Wali Kelas</option>
                                         <option value="Psikolog">Psikolog</option>
                                         <option value="Guru BK">BK</option>
-                                        <option value="Staf Tax Acounting">Keuangan</option>
+                                        <option value="Keuangan">Keuangan</option>
                                         <option value="Staf Sarpra">Sarana dan Prasarana</option>
                                         <option value="Tata Usaha">Tata Usaha</option>
                                         <option value="Teknisi">Teknisi</option>
@@ -281,10 +314,10 @@
                                         <option>Pilih PC</option>
                                         {{-- @foreach ($picSelect as $select)
                                             <option value="{{ $select->id }}"> <span
-                                                    class="text-danger">{{ $select->departemen ?? '-' }} </span>
-                                                - {{ $select->name }}
-                                            </option>
-                                        @endforeach --}}
+                                        class="text-danger">{{ $select->departemen ?? '-' }} </span>
+                                    - {{ $select->name }}
+                                    </option>
+                                    @endforeach --}}
                                     </select>
                                 </div>
                             </div>
@@ -302,34 +335,147 @@
         </div>
     </div>
 
+    <!-- Forward to Kepala Sekolah Modal -->
+    <div class="modal fade" id="forwardKepsekModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Teruskan ke Kepala Sekolah</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ route('dashboard.aqr.tiket.forward') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="tiket_id" value="{{ $tiket->id }}">
+                    <input type="hidden" name="forward_type" value="kepala-sekolah">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label>Pilih Kepala Sekolah:</label>
+                            <select name="pic_id" class="form-control" required>
+                                <option value="">-- Pilih Kepala Sekolah --</option>
+                                @php
+                                    $kepalaSekolah = $picSelect->filter(function($user) {
+                                        return stripos($user->jabatan, 'kepala sekolah') !== false ||
+                                               stripos($user->jabatan, 'kepsek') !== false;
+                                    });
+                                @endphp
+                                @foreach($kepalaSekolah as $kepsek)
+                                    <option value="{{ $kepsek->id }}">{{ $kepsek->name }} - {{ $kepsek->unit }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Catatan (opsional):</label>
+                            <textarea name="catatan" class="form-control" rows="3" placeholder="Catatan untuk kepala sekolah..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning">Teruskan ke Kepala Sekolah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forward to Kepala TU Modal -->
+    <div class="modal fade" id="forwardTUModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Teruskan ke Kepala TU</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ route('dashboard.aqr.tiket.forward') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="tiket_id" value="{{ $tiket->id }}">
+                    <input type="hidden" name="forward_type" value="kepala-tu">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label>Pilih Kepala TU:</label>
+                            <select name="pic_id" class="form-control" required>
+                                <option value="">-- Pilih Kepala TU --</option>
+                                @php
+                                    $kepalaTU = $picSelect->filter(function($user) {
+                                        return stripos($user->jabatan, 'tata usaha') !== false ||
+                                               stripos($user->jabatan, 'tu') !== false;
+                                    });
+                                @endphp
+                                @foreach($kepalaTU as $tu)
+                                    <option value="{{ $tu->id }}">{{ $tu->name }} - {{ $tu->unit }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Catatan (opsional):</label>
+                            <textarea name="catatan" class="form-control" rows="3" placeholder="Catatan untuk kepala TU..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-info">Teruskan ke Kepala TU</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
     <script>
         $(document).ready(function() {
+            // Departemen change handler
             $('#departemen').change(function(e) {
                 var departemen = $(this).val();
-                e.preventDefault();
 
+                e.preventDefault();
                 $.ajax({
                     type: "post",
                     url: "{{ route('helpdesk.home.get-pic-by-dept') }}",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        departemen: departemen
-                    },
+                    data: { _token: "{{ csrf_token() }}", departemen: departemen },
                     dataType: "json",
                     success: function(response) {
-                        $('#pic_menanggapi').empty().append(
-                            '<option value="">Pilih PIC</option>');
+                        $('#pic_menanggapi').empty().append('<option value="">Pilih PIC</option>');
                         $.each(response, function(index, pic) {
-                            $('#pic_menanggapi').append(
-                                `<option value="${pic.id}">${pic.unit} - ${pic.jabatan}  -  ${pic.name}</option>`
-                            );
+                            $('#pic_menanggapi').append(`<option value="${pic.id}">${pic.unit} - ${pic.jabatan} - ${pic.name}</option>`);
                         });
                     }
                 });
+            });
 
+            // Dynamic PIC selection for forward
+            $('#forwardType').on('change', function() {
+                const forwardType = $(this).val();
+                const $picSelect = $('#picSelect');
+                const picData = {!! json_encode($picSelect) !!};
+
+
+                console.log(picData);
+
+                if (!forwardType) {
+                    $picSelect.prop('disabled', true).html('<option value="">-- Pilih jabatan terlebih dahulu --</option>');
+                    return;
+                }
+
+                let filteredUsers = [];
+                if (forwardType === 'kepala-sekolah') {
+                    filteredUsers = picData.filter(u => u.jabatan && (
+                        u.jabatan.toLowerCase().includes('kepala sekolah') ||
+                        u.jabatan.toLowerCase().includes('kepsek')
+                    ));
+                } else if (forwardType === 'kepala-tu') {
+                    filteredUsers = picData.filter(u => u.jabatan && (
+                        u.jabatan.toLowerCase().includes('tata usaha') ||
+                        u.jabatan.toLowerCase().includes('tu')
+                    ));
+                }
+
+                let options = '<option value="">-- Pilih Nama --</option>';
+                filteredUsers.forEach(u => {
+                    options += `<option value="${u.id}">${u.name} - ${u.unit || 'N/A'}</option>`;
+                });
+
+                $picSelect.prop('disabled', false).html(options);
             });
         });
     </script>

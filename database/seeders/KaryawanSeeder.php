@@ -45,7 +45,7 @@ class KaryawanSeeder extends Seeder
             ['PK - AVI - 0498', 'Siti Mutiara', 'Guru Bahasa Indonesia (inval)', '', 'Cinere', 'SD'],
             ['PK - AVI - 0484', 'Setyo Wibowo', 'Guru Bahasa Indonesia', '', 'Cinere', 'SD', '3', 'B'],
             ['AVI - 0091', 'Malakim', 'Pramubakti', '', 'Cinere', 'SD'],
-            ['PK - AVI- 0526', 'Santi Wahyuni', 'Staf Admin TU SD', '', 'Cinere', 'SD'],
+            ['PK - AVI- 0526', 'Santi Wahyuni', 'Staf Admin Tata Usaha SD', '', 'Cinere', 'SD'],
             ['PK - AVI - 0509', 'Fitri Mutiara', 'Staf Sarpra', '', 'Cinere', 'SD'],
 
             // --- SMP CINERE ---
@@ -66,7 +66,7 @@ class KaryawanSeeder extends Seeder
             ['PK - AVI - 0508', 'Alvin Syahrul Fauzan', 'Guru Fisika', '', 'Cinere', 'SMP', '9', 'C'],
             ['PK - AVI- 0537', 'Widodo Herianto', 'Guru TIK', '', 'Cinere', 'SMP'],
             ['PK - AVI- 0536', 'Muhammad Farhan Ramadhan', 'Guru PKn', '', 'Cinere', 'SMP'],
-            ['AVI - 0052', 'Ahmad Kamal', 'Staf Admin TU SMP', 'ahmad.kamal@sekolah-avicenna.sch.id', 'Cinere', 'SMP'],
+            ['AVI - 0052', 'Ahmad Kamal', 'Staf Admin Tata Usaha SMP', 'ahmad.kamal@sekolah-avicenna.sch.id', 'Cinere', 'SMP'],
             ['AVI - 0085', 'Atih Rismawati', 'Staf Perpustakaan SD & SMP', 'atih.rismawati@sekolah-avicenna.sch.id', 'Cinere', 'SMP'],
             ['AVI - 0013', 'Nurabdillah', 'Pramubakti', '', 'Cinere', 'SMP'],
             ['AVI - 0211', 'Vira Irmaya', 'Staf Keuangan', 'vira.irmaya@sekolah-avicenna.sch.id', 'Cinere', 'SMP'],
@@ -125,7 +125,7 @@ class KaryawanSeeder extends Seeder
             ['AVI - 0063', 'Nia Kurnia', 'Guru TK', 'nia.kurnia@sekolah-avicenna.sch.id', 'Jagakarsa', 'TK'],
             ['AVI - 0058', 'Siti Zulaeha', 'Guru TK', 'siti.zulaeha@sekolah-avicenna.sch.id', 'Jagakarsa', 'TK'],
             ['PK - AVI - 0497', 'Caesar Astria Pusphita', 'Kepala Psikolog', '', 'Jagakarsa', 'TK'],
-            ['AVI - 0443', 'Amalia Nurlatifah', 'Staf Admin TU TK', '', 'Jagakarsa', 'TK'],
+            ['AVI - 0443', 'Amalia Nurlatifah', 'Staf Admin Tata Usaha TK', '', 'Jagakarsa', 'TK'],
 
             // --- SD JAGAKARSA ---
             ['AVI - 0220', 'Rini Setianingsih', 'Kepala Sekolah', 'rini.setianingsih@sekolah-avicenna.sch.id', 'Jagakarsa', 'SD'],
@@ -165,7 +165,7 @@ class KaryawanSeeder extends Seeder
             ['PK - AVI - 0510', 'Syerin Nur Fadila', 'Inval PGSD', '', 'Jagakarsa', 'SD'],
             ['PK - AVI - 0480', 'Teguh Iswanto', 'Guru Agama Islam', '', 'Jagakarsa', 'SD'],
             ['PK - AVI - 0465', 'Twiska Ajeng Maharani', 'Guru TIK', '', 'Jagakarsa', 'SD'],
-            ['AVI - 0054', 'Ahmad Nadir', 'Staf Admin TU', '', 'Jagakarsa', 'SD'],
+            ['AVI - 0054', 'Ahmad Nadir', 'Staf Admin Tata Usaha', '', 'Jagakarsa', 'SD'],
             ['AVI - 0158', 'Astuti', 'Staf Keuangan', 'astuti@sekolah-avicenna.sch.id', 'Jagakarsa', 'SD'],
             ['AVI - 0202', 'Heru Pebriyanto', 'Staf Sarpra', 'heru.febriyanto@sekolah-avicenna.sch.id', 'Jagakarsa', 'SD'],
             ['AVI - 0053', 'Jamaludin', 'Kurir & Pramubakti', '', 'Jagakarsa', 'SD'],
@@ -200,7 +200,7 @@ class KaryawanSeeder extends Seeder
             ['PK - AVI - 0462', 'Yerika Arum Pertiwi', 'Guru BK', '', 'Jagakarsa', 'SMP'],
             ['AVI - 0291', 'Rosaulina', 'Kepala Tata Usaha', 'rosaulina@sekolah-avicenna.sch.id', 'Jagakarsa', 'SMP'],
             ['AVI - 0186', 'Mitha Yunita', 'Staf Keuangan AP', 'mitha.yunita@sekolah-avicenna.sch.id', 'Jagakarsa', 'SMP'],
-            ['AVI - 0152', 'Nurjaya Apriyadi', 'Staf Admin TU SMP', 'nurjaya.apriyadi@sekolah-avicenna.sch.id', 'Jagakarsa', 'SMP'],
+            ['AVI - 0152', 'Nurjaya Apriyadi', 'Staf Admin Tata Usaha SMP', 'nurjaya.apriyadi@sekolah-avicenna.sch.id', 'Jagakarsa', 'SMP'],
             ['AVI - 0326', 'Wardi Slamet Riyadi', 'Pramubakti', '', 'Jagakarsa', 'SMP'],
 
             // --- SMA JAGAKARSA ---
@@ -233,7 +233,7 @@ class KaryawanSeeder extends Seeder
             ['PK - AVI - 0500', 'Dwi Putri Anggun Kumala Sari', 'Guru Bahasa Inggris', '', 'Jagakarsa', 'SMA', '12', 'C'],
             ['PK - AVI - 0518', 'Nila Asmila Sari', 'Guru Kimia', '', 'Jagakarsa', 'SMA'],
             ['AVI - 0433', 'Andayani Wisnuwardani', 'Staf Perpustakaan', '', 'Jagakarsa', 'SMA'],
-            ['AVI - 0349', 'Arisca Prescilia', 'Staf Admin TU SMA', '', 'Jagakarsa', 'SMA'],
+            ['AVI - 0349', 'Arisca Prescilia', 'Staf Admin Tata Usaha SMA', '', 'Jagakarsa', 'SMA'],
             ['AVI - 0045', 'NurSahid', 'Kurir & Pramubakti', '', 'Jagakarsa', 'SMA'],
             ['PK - AVI - 0504', 'Alex Sander', 'SPV Kebersihan dan Keamanan', '', 'Jagakarsa', 'SMA'],
             ['PK - AVI - 0506', 'Tiara Novianti Putri Fadiah', 'Staff Humas', '', 'Jagakarsa', 'SMA'],
@@ -259,7 +259,7 @@ class KaryawanSeeder extends Seeder
             // --- SD PAMULANG ---
             ['AVI - 0438', 'Raden Windya Afiany', 'Kepala Tata Usaha', 'windya.afiany@sekolah-avicenna.sch.id', 'Pamulang', 'SD'],
             ['AVI - 0015', 'Abdul rohman', 'Teknisi Pengelolaan Gedung', '', 'Pamulang', 'SD'],
-            ['AVI - 0184', 'Eni Dwinanti', 'Staf Admin TU', 'enidwinanti75@gmail.com', 'Pamulang', 'SD'],
+            ['AVI - 0184', 'Eni Dwinanti', 'Staf Admin Tata Usaha', 'enidwinanti75@gmail.com', 'Pamulang', 'SD'],
             ['AVI - 0356', 'Ika Nur Hardiani', 'Staf Keuangan AR', 'ika.hardiani@sekolah-avicenna.sch.id', 'Pamulang', 'SD'],
             ['AVI - 0203', 'Maman Fathurohman', 'Staf Admin SDIA', '', 'Pamulang', 'SD'],
             ['AVI - 0293', 'Muzdalifah', 'Staf Sarpra', 'muzdalifah@sekolah-avicenna.sch.id', 'Pamulang', 'SD'],
