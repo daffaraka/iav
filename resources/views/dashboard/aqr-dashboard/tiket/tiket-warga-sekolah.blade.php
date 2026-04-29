@@ -49,15 +49,15 @@
        @break
 
        @case('Proses')
-           @if (Auth::user()->hasAnyRole([['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah','kepala-tata-usaha']]))
+           @hasanyrole(['super-admin', 'humas', 'admin', 'kepala-sekolah', 'kepala-tata-usaha'])
                <h6 class="mt-3 mb-4 text-dark">PIC sudah ditentukan</h6>
 
                {{-- <input type="hidden" name="menanggapi" value="selesai"> --}}
 
                <div class="mb-3">
                    <strong><label for="">Kepsek / Kepala TU </label></strong>
-                   <input type="text" name="" id="" value="{{ $tiket->first_pic->name }}"
-                       class="form-control" disabled>
+                   <input type="text" name="" id="" value="{{ $tiket->first_pic->name }}" class="form-control"
+                       disabled>
                </div>
                <div class="mb-3">
                    <strong><label for="">Departemen</label></strong>
@@ -96,9 +96,10 @@
 
                <button type="button" class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit
                    Ulang</button>
-           @else
-               {{-- Ketika proses dan akan mengisi --}}
-               {{-- <input type="hidden" name="menanggapi" value="selesai"> --}}
+           @endhasanyrole
+
+
+           @hasanyrole(['tata-usaha', 'humas', 'admin', 'tata-usaha', 'wali-kelas', 'psikolog','staff'])
                <div class="mb-3">
                    <strong><label for="">Departemen</label></strong>
                    <input type="text" name="departemen" id="" value="{{ $tiket->departemen }}" class="form-control"
@@ -106,8 +107,8 @@
                </div>
                <div class="mb-3">
                    <strong><label for="">Pic Menanggapi</label></strong>
-                   <input type="text" name="" id="" value="{{ $tiket->pic->name }} (Anda)"
-                       class="form-control" disabled>
+                   <input type="text" name="" id="" value="{{ $tiket->pic->name }} (Anda)" class="form-control"
+                       disabled>
                </div>
 
                <div class="mb-3">
@@ -122,7 +123,7 @@
                    <br>
                    <input type="file" name="fotopengerjaan" class="form-control" accept="image/*" id="">
                </div>
-           @endif
+           @endhasanyrole
        @break
 
        @default

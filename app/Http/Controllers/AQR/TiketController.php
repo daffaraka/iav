@@ -178,7 +178,7 @@ class TiketController extends Controller
 
             ProgresTiket::create([
                 'tiket_id' => $tiket->id,
-                'penanganan' => 'Tiket diteruskan ke ' . ($validated['forward_type'] == 'kepala-sekolah' ? 'Kepala Sekolah' : 'Kepala TU') . 
+                'penanganan' => 'Tiket diteruskan ke ' . ($validated['forward_type'] == 'kepala-sekolah' ? 'Kepala Sekolah' : 'Kepala TU') .
                                ($validated['catatan'] ? '. Catatan: ' . $validated['catatan'] : ''),
                 'status' => 'Proses',
                 'direspon_at' => now()
@@ -191,7 +191,7 @@ class TiketController extends Controller
 
 
         // dd($request->all());
-        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha', 'staff'])) {
+        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha', 'staff','guru','wali-kelas'])) {
 
             // if ($tiket->admin_humas_id == null) {
             if ($tiket->pengirim == 'Masyarakat Umum') {
@@ -273,7 +273,7 @@ class TiketController extends Controller
         ]);
 
         $tiket = Tiket::findOrFail($validated['tiket_id']);
-        
+
         // Update PIC
         $tiket->update([
             'pic_id' => $validated['pic_id'],
@@ -283,7 +283,7 @@ class TiketController extends Controller
         // Create progress entry
         ProgresTiket::create([
             'tiket_id' => $tiket->id,
-            'penanganan' => 'Tiket diteruskan ke ' . ($validated['forward_type'] == 'kepala-sekolah' ? 'Kepala Sekolah' : 'Kepala TU') . 
+            'penanganan' => 'Tiket diteruskan ke ' . ($validated['forward_type'] == 'kepala-sekolah' ? 'Kepala Sekolah' : 'Kepala TU') .
                            ($validated['catatan'] ? '. Catatan: ' . $validated['catatan'] : ''),
             'status' => 'Proses',
             'direspon_at' => now()

@@ -219,7 +219,7 @@
                                     @endhasanyrole
 
                                     @hasanyrole(['super-admin', 'tata-usaha', 'humas', 'admin', 'kepala-sekolah',
-                                        'kepala-tata-usaha'])
+                                        'kepala-tata-usaha','tata-usaha'])
                                         @if ($tiket->status == 'New')
                                             <button class="btn btn-primary m-4" type="submit">Update Ticket</button>
                                         @elseif ($tiket->status == 'Proses')
