@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\AQR;
 
 use App\Http\Controllers\Controller;
+use App\Mail\TiketCreatedMail;
+use App\Mail\TiketDisposisiMail;
+use App\Mail\TiketNotifAdminMail;
+use App\Mail\TiketResponMail;
 use App\Models\ProgresTiket;
 use App\Models\Tiket;
 use App\Models\User;
+use App\Notifications\TiketNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TiketController extends Controller
 {
@@ -136,6 +142,28 @@ class TiketController extends Controller
             }
         }
 
+        // 1a. Email ke pengirim
+        if ($tiket->email) {
+            Mail::to($tiket->email)->queue(new TiketCreatedMail($tiket));
+        }
+
+        // 1b. Email ke admin_humas (gate 1) jika sudah di-assign
+        if ($tiket->admin_humas_id) {
+            $adminHumas = User::find($tiket->admin_humas_id);
+            if ($adminHumas?->email) {
+                Mail::to($adminHumas->email)->queue(new TiketNotifAdminMail($tiket));
+                $adminHumas->notify(new TiketNotification($tiket, 'Tiket baru masuk: ' . $tiket->judul_kendala, 'new'));
+            }
+        } else {
+            // Broadcast ke semua humas jika belum ada admin_humas
+            User::role('humas')->each(function ($user) use ($tiket) {
+                if ($user->email) {
+                    Mail::to($user->email)->queue(new TiketNotifAdminMail($tiket));
+                }
+                $user->notify(new TiketNotification($tiket, 'Tiket baru masuk: ' . $tiket->judul_kendala, 'new'));
+            });
+        }
+
         return redirect()->route('dashboard.aqr.tiket.index')
             ->with('success', 'Tiket berhasil dibuat dengan nomor: ' . $tiket->no_tiket);
     }
@@ -193,7 +221,8 @@ class TiketController extends Controller
         // dd($request->all());
         if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha', 'staff','guru','wali-kelas'])) {
 
-            // if ($tiket->admin_humas_id == null) {
+            $oldPicId = $tiket->pic_id;
+
             if ($tiket->pengirim == 'Masyarakat Umum') {
                 $tiket->update([
                     'status' => 'Proses',
@@ -202,7 +231,6 @@ class TiketController extends Controller
                     'pic_id' => Auth::user()->id,
                 ]);
             } else {
-
                 if ($tiket->status == 'New') {
                     $tiket->update([
                         'status' => 'Proses',
@@ -213,28 +241,51 @@ class TiketController extends Controller
                 }
             }
 
+            $tiket->refresh();
 
+            // 1b. Email ke admin_humas jika baru di-assign
+            if (!$tiket->wasRecentlyCreated && $tiket->admin_humas_id == Auth::user()->id) {
+                $adminHumas = Auth::user();
+                if ($adminHumas->email) {
+                    Mail::to($adminHumas->email)->queue(new TiketNotifAdminMail($tiket));
+                }
+                $adminHumas->notify(new TiketNotification($tiket, 'Tiket ditugaskan ke Anda: ' . $tiket->judul_kendala, 'new'));
+            }
 
-
+            // 1c. Email ke pic jika pic berubah (disposisi)
+            if ($tiket->pic_id && $tiket->pic_id != $oldPicId) {
+                $pic = User::find($tiket->pic_id);
+                if ($pic?->email) {
+                    Mail::to($pic->email)->queue(new TiketDisposisiMail($tiket));
+                }
+                $pic?->notify(new TiketNotification($tiket, 'Tiket didisposisikan ke Anda: ' . $tiket->judul_kendala, 'disposisi'));
+            }
 
             if ($request->has('penanganan')) {
-                if ($request->has('fotopengerjaan')) {
+                if ($request->hasFile('fotopengerjaan')) {
                     $file = $request->file('fotopengerjaan');
                     $fileName = $file->getClientOriginalName();
                     $path = $file->move('tiket/' . now()->year . '/progres/', $fileName);
                 }
 
-
-
-                $progressTiket = new ProgresTiket;
-
-                $progressTiket->create([
+                ProgresTiket::create([
                     'penanganan' => $request->penanganan,
                     'status' => 'Proses',
                     'fotopengerjaan' => $path ?? null,
                     'direspon_at' => date('Y-m-d H:i:s'),
                     'tiket_id' => $tiket->id,
                 ]);
+
+                // 1d. Email ke pelapor saat pic memberi respon
+                if ($tiket->email) {
+                    Mail::to($tiket->email)->queue(new TiketResponMail($tiket, $request->penanganan));
+                }
+
+                // Notifikasi ke admin_humas bahwa pic sudah merespon
+                if ($tiket->admin_humas_id) {
+                    $adminHumas = User::find($tiket->admin_humas_id);
+                    $adminHumas?->notify(new TiketNotification($tiket, 'PIC telah memberikan respon pada tiket: ' . $tiket->no_tiket, 'respon'));
+                }
             }
 
             return redirect()->back()
