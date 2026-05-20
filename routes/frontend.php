@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AQR\HomeAQRController;
+use App\Http\Controllers\AQR\Demo\DemoController;
 use App\Http\Controllers\DynamicRoutes\SelectController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,17 @@ Route::prefix('helpdesk')->name('helpdesk.')->group(function () {
 
     Route::post('/faq/track', [HomeAQRController::class, 'trackFaqInteraction'])->name('home.faq-track');
     Route::post('/faq/vote', [HomeAQRController::class, 'toggleFaqVote'])->name('home.faq-vote');
+});
+
+// Demo Routes (using lovable views)
+Route::prefix('helpdesk-demo')->name('helpdesk.demo.')->group(function () {
+    Route::get('/', [DemoController::class, 'create'])->name('open-tiket');
+    Route::get('/cek-pengirim', [DemoController::class, 'cekPengirim'])->name('cek-pengirim');
+    Route::post('/store-tiket', [DemoController::class, 'storeTiket'])->name('tiket-store');
+    Route::get('/tiket/tracking', [DemoController::class, 'tracking'])->name('tiket-tracking');
+    Route::post('/pencarian-tiket', [DemoController::class, 'pencarianTiket'])->name('pencarianTiket');
+    Route::get('/tiket/tracking/{tiket}', [DemoController::class, 'show'])->name('tiket-show');
+    Route::post('/kepuasan/store/{id}', [DemoController::class, 'storeKepuasan'])->name('kepuasan-store');
+    Route::post('/get-siswa-by-nisn', [DemoController::class, 'getSiswaByNisn'])->name('get-siswa');
 });
 // });
