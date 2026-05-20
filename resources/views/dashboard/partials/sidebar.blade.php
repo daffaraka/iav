@@ -1,6 +1,4 @@
-     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme
-     {{-- {{ Auth::user()->hasRole('super-admin') ? 'bg-dark' : 'bg-menu-theme' }} --}}
-      ">
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
 
          <div class="app-brand demo">
@@ -223,7 +221,14 @@
                  </ul>
              </li>
 
-             {{--
+             <li class="menu-item {{ request()->is('featured-question*') ? 'active' : '' }}">
+                <a href="{{ route('featured-question.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-help-circle"></i>
+                    <div data-i18n="Basic">Featured Question</div>
+                </a>
+            </li>
+
+            {{--
 
              <!-- Beranda -->
              <li class="menu-header small text-uppercase"><span class="menu-header-text">Beranda Website</span></li>

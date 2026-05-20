@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\AQR;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OpenTiketMail;
 use App\Models\ProgresTiket;
 use App\Models\Tiket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TiketController extends Controller
 {
@@ -135,6 +137,18 @@ class TiketController extends Controller
                 $tiket->update(['pic_id' => $tuAdmin->id]);
             }
         }
+
+        // Kirim email konfirmasi jika email diisi
+        // if (!empty($tiket->email)) {
+            Mail::to($tiket->email)->send(new OpenTiketMail([
+                'id'            => $tiket->id,
+                'name'          => $tiket->nama,
+                'no_tiket'      => $tiket->no_tiket,
+                'tanggal'       => $tiket->created_at->format('d M Y H:i'),
+                'lokasi_kendala'=> $tiket->lokasi_kendala,
+                'detail_kendala'=> $tiket->detail_kendala,
+            ]));
+        // }
 
         return redirect()->route('dashboard.aqr.tiket.index')
             ->with('success', 'Tiket berhasil dibuat dengan nomor: ' . $tiket->no_tiket);

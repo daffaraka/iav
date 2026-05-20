@@ -26,7 +26,8 @@ class PermissionSeeder extends Seeder
             'aduan',
             'progres-tiket',
             'rating-tiket',
-            'user'
+            'user',
+            'featured-question'
         ];
 
         $actions = ['view', 'create', 'edit', 'delete'];

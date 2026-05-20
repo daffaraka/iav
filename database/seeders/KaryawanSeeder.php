@@ -176,7 +176,7 @@ class KaryawanSeeder extends Seeder
             ['AVI - 0388', 'Novi Anggraeni', 'Staf Perpustakaan', 'novi.anggraeni@sekolah-avicenna.sch.id', 'Jagakarsa', 'SD'],
             ['AVI - 0358', 'Noviana', 'Suster', 'noviana@sekolah-avicenna.sch.id', 'Jagakarsa', 'SD'],
             ['PK - AVI - 0505', 'Rahmat Hidayat', 'Teknisi Jaringan Listrik', '', 'Jagakarsa', 'SD'],
-            ['PK - AVI - 0544Sinta Johan Kartika', 'Staff Humas', '', 'Jagakarsa', 'SMA'],
+            ['PK - AVI - 0544','Sinta Johan Kartika', 'Staff Humas', '', 'Jagakarsa', 'SMA'],
 
             // --- SMP JAGAKARSA ---
             ['AVI - 0190', 'Abdul Rahman', 'Kepala Sekolah', 'abdul.rahman@sekolah-avicenna.sch.id', 'Jagakarsa', 'SMP'],

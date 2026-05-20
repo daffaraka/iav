@@ -57,15 +57,24 @@ class UserController extends Controller
         $jabatans = User::whereNotIn('unit', ['BPS'])->pluck('jabatan')->unique()->values();
         $departemens = User::whereNotIn('unit', ['BPS'])->pluck('departemen')->unique()->values();
         $title = 'Edit User '.$user->name;
-        // dd($jabatans);
-        return view('dashboard.user.user-edit', compact('user', 'roles','jabatans','departemens','title'));
+        $permissions = \Spatie\Permission\Models\Permission::all();
+        $userPermissions = $user->getDirectPermissions()->pluck('id', 'id')->all();
+        return view('dashboard.user.user-edit', compact('user', 'roles','jabatans','departemens','title','permissions','userPermissions'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
-        // dd($request->all());
+        // Jika yang disubmit adalah form permissions
+        if ($request->has('update_permissions')) {
+            $request->validate([
+                'direct_permission' => 'nullable|array',
+            ]);
+            $user->syncPermissions($request->input('direct_permission', []));
+            return redirect()->route('user.edit', $id)
+                ->with('success', 'Permissions user berhasil diupdate');
+        }
 
         $validated = $request->validate([
             'name' => 'string|max:255',
@@ -75,8 +84,6 @@ class UserController extends Controller
             'location' => 'nullable|string|max:100',
             'role' => 'required|exists:roles,name'
         ]);
-
-
 
         if ($request->has('password') && $validated['password']) {
             $validated['password'] = Hash::make($validated['password']);

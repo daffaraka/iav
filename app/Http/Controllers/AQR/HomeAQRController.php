@@ -8,7 +8,11 @@ use App\Mail\OpenTiketMail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AqrOption;
+use App\Models\FeaturedQuestion;
+use App\Models\FqInteraction;
+use App\Models\FqVote;
 use App\Models\MasterSiswa as Siswa;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class HomeAQRController extends Controller
@@ -36,7 +40,13 @@ class HomeAQRController extends Controller
 
     public function cekPengirim()
     {
-        return view('frontend.aqr.cek-pengirim-new');
+        $featuredQuestions = FeaturedQuestion::published()
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('vote_count', 'desc')
+            ->orderBy('order')
+            ->take(10)
+            ->get();
+        return view('frontend.aqr.cek-pengirim-new', compact('featuredQuestions'));
     }
 
 
@@ -168,6 +178,10 @@ class HomeAQRController extends Controller
 
             // Mail::to('daffarakals@gmail.com')->send(new OpenTiketMail($data));
 
+            if (!empty($request->email)) {
+                Mail::to($request->email)->send(new OpenTiketMail($data));
+            }
+
 
 
             return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket]);
@@ -238,5 +252,64 @@ class HomeAQRController extends Controller
             'success' => false,
             'message' => 'NISN tidak ditemukan'
         ]);
+    }
+
+    public function trackFaqInteraction(Request $request)
+    {
+        $request->validate([
+            'fq_id' => 'required|exists:featured_questions,id',
+            'visitor_id' => 'required|string|max:36',
+        ]);
+
+        $exists = FqInteraction::where('featured_question_id', $request->fq_id)
+            ->where('visitor_id', $request->visitor_id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json(['already_tracked' => true]);
+        }
+
+        FqInteraction::create([
+            'featured_question_id' => $request->fq_id,
+            'visitor_id' => $request->visitor_id,
+            'ip_address' => $request->ip(),
+            'clicked_at' => now(),
+        ]);
+
+        $fq = FeaturedQuestion::find($request->fq_id);
+        $fq->increment('view_count');
+
+        return response()->json(['tracked' => true, 'new_count' => $fq->view_count]);
+    }
+
+    public function toggleFaqVote(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'fq_id' => 'required|exists:featured_questions,id',
+        ]);
+
+        $vote = FqVote::where('featured_question_id', $request->fq_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $fq = FeaturedQuestion::find($request->fq_id);
+
+        if ($vote) {
+            $vote->delete();
+            $fq->decrement('vote_count');
+            return response()->json(['voted' => false, 'new_count' => $fq->vote_count]);
+        }
+
+        FqVote::create([
+            'featured_question_id' => $request->fq_id,
+            'user_id' => Auth::id(),
+        ]);
+        $fq->increment('vote_count');
+
+        return response()->json(['voted' => true, 'new_count' => $fq->vote_count]);
     }
 }

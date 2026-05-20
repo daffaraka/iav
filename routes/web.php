@@ -21,6 +21,8 @@ use App\Http\Controllers\PersebaranPtnController;
 use App\Http\Controllers\LowonganProgressController;
 use App\Http\Controllers\LowonganPekerjaanController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TopikPermasalahanController;
+use App\Http\Controllers\FeaturedQuestionController;
 
 Route::get('/', function () {
     return redirect()->to('dashboard');
@@ -46,7 +48,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('lowongan-progress', LowonganProgressController::class);
         Route::resource('user', UserController::class);
         Route::resource('aqr-option', AqrOptionController::class);
+        Route::resource('topik-permasalahan', TopikPermasalahanController::class);
         Route::resource('role', RoleController::class);
+        Route::resource('featured-question', FeaturedQuestionController::class);
+        Route::post('featured-question/promote/{tiket}', [FeaturedQuestionController::class, 'promoteFromTiket'])->name('featured-question.promote');
 
 
         Route::resource('departement', DepartementController::class);
