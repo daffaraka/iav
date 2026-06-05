@@ -29,14 +29,18 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
 
+        if (Auth::user()->unit !== 'BPS') {
+            return redirect()->route('dashboard.aqr.dashboard');
+        }
+
         if (Auth::user()->hasRole('super-admin')) {
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->route('dashboard');
         } else {
 
-            if (Auth::user()->hasAnyRole(['kepala-tata-usaha','tata-usaha', 'kepala-sekolah', 'humas'])) {
-                return redirect()->intended(route('dashboard.aqr.tiket.index', absolute: false));
+            if (Auth::user()->hasAnyRole(['kepala-tata-usaha', 'tata-usaha', 'kepala-sekolah', 'humas'])) {
+                return redirect()->route('dashboard.aqr.dashboard');
             } else {
-                return redirect()->intended(route('dashboard', absolute: false));
+                return redirect()->route('dashboard');
             }
         }
     }

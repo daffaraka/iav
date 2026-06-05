@@ -54,6 +54,8 @@ class WigController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->all());
+
         // Validate request
         $validatedData = $request->validate([
             'nama_wig' => 'required|string|max:255',
@@ -91,7 +93,7 @@ class WigController extends Controller
                 'tanggal_mulai' => $request->tanggal_mulai_wig,
                 'tanggal_berakhir' => $request->tanggal_berakhir_wig,
                 'from_x' => $request->from_x,
-                'to_y' => $request->from_y,
+                'to_y' => $request->to_y,
                 'satuan' => $request->satuan,
                 'status_wig' => 1, // Set as active
                 'departement_id' => $request->departement_id
@@ -184,10 +186,10 @@ class WigController extends Controller
         $wig->load('wig_progresses');
 
         $data =
-        [
-            'title' => $title,
-            'wig' => $wig
-        ];
+            [
+                'title' => $title,
+                'wig' => $wig
+            ];
         return view('dashboard.wig.wig-show', $data);
     }
 
@@ -213,7 +215,7 @@ class WigController extends Controller
 
         // dd()
         $data = [
-            'title' => $title.' '.$wig->judul_wig,
+            'title' => $title . ' ' . $wig->judul_wig,
             'dept' => $departement,
             'wig' => $wig,
             'modul' => Str::lower($title)
@@ -237,7 +239,7 @@ class WigController extends Controller
             'from_x' => 'required|numeric',
             'to_y' => 'required|numeric',
             'satuan' => 'required'
-        ],[
+        ], [
             'nama_wig.required' => 'Nama WIG harus diisi',
             'nama_wig.string' => 'Nama WIG harus berupa teks',
             'nama_wig.max' => 'Nama WIG maksimal 255 karakter',

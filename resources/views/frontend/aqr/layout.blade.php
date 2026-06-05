@@ -51,7 +51,7 @@
                             Baru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('helpdesk.home.tiket-tracking') }}">Lacak Tiket </a>
+                        <a class="btn btn-warning rounded-0 fw-bold" href="{{ route('helpdesk.home.tiket-tracking') }}">Lacak Tiket </a>
                     </li>
 
                 </ul>

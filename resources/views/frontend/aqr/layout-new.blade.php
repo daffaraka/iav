@@ -39,7 +39,7 @@
                 </a>
             </div>
             <a href="{{ route('helpdesk.home.tiket-tracking') }}"
-                class="hidden md:inline-flex text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                class="hidden md:inline-flex px-4 py-2 bg-orange-600 text-white text-sm font-medium hover:bg-orange-700 transition-colors rounded-none">
                 Lacak Tiket
             </a>
 
@@ -62,7 +62,7 @@
                     Tiket Masyarakat Umum
                 </a>
                 <a href="{{ route('helpdesk.home.tiket-tracking') }}"
-                   class="block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                   class="block px-3 py-2.5 bg-orange-600 text-white text-center text-sm font-medium hover:bg-orange-700 transition-colors rounded-none">
                     Lacak Tiket
                 </a>
             </div>

@@ -26,7 +26,7 @@
                 </form>
             </div>
         </div>
-
+        {{-- 
         <div class="text-center">
             <p class="text-sm font-bold text-gray-400 mb-4 uppercase tracking-widest">Topik Populer</p>
             <div class="flex flex-wrap justify-center gap-3">
@@ -47,7 +47,7 @@
                     <i class="fas fa-user-plus mr-2"></i>PPDB
                 </a>
             </div>
-        </div>
+        </div> --}}
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 

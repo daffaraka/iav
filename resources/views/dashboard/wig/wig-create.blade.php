@@ -8,7 +8,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title mb-0">{{$title}}</h4>
+                            <h4 class="card-title mb-0">{{ $title }}</h4>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('wig.store') }}" method="POST">
@@ -61,12 +61,12 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <label class="fw-bold"for="">From X (Angka)</label>
-                                            <input type="number" class="form-control" value="from_x">
+                                            <input type="number" class="form-control" name="from_x" value="from_x">
                                         </div>
 
                                         <div class="col-6">
                                             <label class="fw-bold"for="">To Y (Angka)</label>
-                                            <input type="number" class="form-control" value="from_y">
+                                            <input type="number" class="form-control" name="to_y" value="to_y">
                                         </div>
                                     </div>
 
