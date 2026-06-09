@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -13,13 +14,13 @@ class UserController extends Controller
     {
         $data['users'] = User::with('roles')->latest()->get();
         $data['title'] = 'Manajemen User';
-        return view('dashboard.user.user-index', $data);
+        return Inertia::render('User/user-index', $data);
     }
 
     public function create()
     {
         $roles = Role::all();
-        return view('dashboard.user.user-create', compact('roles'));
+        return Inertia::render('User/user-create', ['roles' => $roles]);
     }
 
     public function store(Request $request)
@@ -47,7 +48,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('roles')->findOrFail($id);
-        return view('dashboard.user.user-show', compact('user'));
+        return Inertia::render('User/user-show', ['user' => $user]);
     }
 
     public function edit($id)
@@ -59,7 +60,15 @@ class UserController extends Controller
         $title = 'Edit User '.$user->name;
         $permissions = \Spatie\Permission\Models\Permission::all();
         $userPermissions = $user->getDirectPermissions()->pluck('id', 'id')->all();
-        return view('dashboard.user.user-edit', compact('user', 'roles','jabatans','departemens','title','permissions','userPermissions'));
+        return Inertia::render('User/user-edit', [
+            'user' => $user,
+            'roles' => $roles,
+            'jabatans' => $jabatans,
+            'departemens' => $departemens,
+            'title' => $title,
+            'permissions' => $permissions,
+            'userPermissions' => $userPermissions
+        ]);
     }
 
     public function update(Request $request, $id)

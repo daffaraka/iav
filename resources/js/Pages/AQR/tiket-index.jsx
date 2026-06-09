@@ -1,17 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
-import {
-    useReactTable,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    flexRender,
-} from '@tanstack/react-table';
+import DataTable from '../../Components/DataTable';
 
 export default function TiketIndex({ tikets, userRoles }) {
-    const [globalFilter, setGlobalFilter] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeletingAll, setIsDeletingAll] = useState(false);
     const [confirmText, setConfirmText] = useState('');
@@ -41,8 +33,8 @@ export default function TiketIndex({ tikets, userRoles }) {
         () => [
             {
                 header: 'ID Tiket',
-                accessorKey: 'no_tiket',
-                cell: info => <span className="font-semibold text-slate-800 dark:text-white">{info.getValue()}</span>,
+                accessorKey: 'kode_tiket',
+                cell: info => <span className="font-semibold text-slate-800 dark:text-white">{info.getValue() || info.row.original.no_tiket}</span>,
             },
             {
                 header: 'Status',
@@ -136,27 +128,6 @@ export default function TiketIndex({ tikets, userRoles }) {
         []
     );
 
-    const table = useReactTable({
-        data: tikets,
-        columns,
-        state: {
-            globalFilter,
-        },
-        onGlobalFilterChange: setGlobalFilter,
-        getCoreRowModel: getCoreRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        initialState: {
-            pagination: {
-                pageSize: 10,
-            },
-            sorting: [
-                { id: 'created_at', desc: true }
-            ]
-        }
-    });
-
     return (
         <AuthenticatedLayout>
             <Head title="Manajemen Tiket AQR" />
@@ -183,115 +154,7 @@ export default function TiketIndex({ tikets, userRoles }) {
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-sm overflow-hidden">
-                {/* Toolbar */}
-                <div className="p-4 border-b border-surface-200 dark:border-surface-700 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-50/50 dark:bg-surface-800/50">
-                    <div className="relative w-full sm:w-80 group">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                            <i className="ph ph-magnifying-glass text-slate-400 group-focus-within:text-brand-500 transition-colors text-lg"></i>
-                        </div>
-                        <input
-                            value={globalFilter ?? ''}
-                            onChange={e => setGlobalFilter(e.target.value)}
-                            placeholder="Cari di semua kolom..."
-                            className="block w-full pl-10 pr-4 py-2.5 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-slate-700 dark:text-slate-200 shadow-sm"
-                        />
-                    </div>
-                </div>
-
-                {/* Table */}
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            {table.getHeaderGroups().map(headerGroup => (
-                                <tr key={headerGroup.id} className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-200 dark:border-surface-700">
-                                    {headerGroup.headers.map(header => (
-                                        <th 
-                                            key={header.id} 
-                                            className="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
-                                            onClick={header.column.getToggleSortingHandler()}
-                                        >
-                                            <div className={`flex items-center gap-2 ${header.id === 'actions' ? 'justify-end' : ''}`}>
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                                {{
-                                                    asc: <i className="ph ph-caret-up text-brand-500"></i>,
-                                                    desc: <i className="ph ph-caret-down text-brand-500"></i>,
-                                                }[header.column.getIsSorted()] ?? null}
-                                            </div>
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-                        </thead>
-                        <tbody className="divide-y divide-surface-100 dark:divide-surface-700">
-                            {table.getRowModel().rows.length > 0 ? (
-                                table.getRowModel().rows.map(row => (
-                                    <tr key={row.id} className="hover:bg-surface-50/50 dark:hover:bg-surface-700/30 transition-colors">
-                                        {row.getVisibleCells().map(cell => (
-                                            <td key={cell.id} className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan={columns.length} className="px-6 py-12 text-center">
-                                        <div className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
-                                            <i className="ph ph-ticket text-5xl mb-3 opacity-20"></i>
-                                            <p className="text-base font-medium">Tidak ada data tiket ditemukan</p>
-                                            <p className="text-sm mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* Pagination */}
-                <div className="p-4 border-t border-surface-200 dark:border-surface-700 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-surface-800">
-                    <div className="text-sm text-slate-500 dark:text-slate-400">
-                        Menampilkan <span className="font-semibold text-slate-700 dark:text-slate-200">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span> hingga <span className="font-semibold text-slate-700 dark:text-slate-200">{Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)}</span> dari <span className="font-semibold text-slate-700 dark:text-slate-200">{table.getFilteredRowModel().rows.length}</span> entri
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => table.setPageIndex(0)}
-                            disabled={!table.getCanPreviousPage()}
-                            className="p-2 rounded-lg border border-surface-200 dark:border-surface-700 text-slate-500 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <i className="ph ph-caret-double-left"></i>
-                        </button>
-                        <button
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                            className="p-2 rounded-lg border border-surface-200 dark:border-surface-700 text-slate-500 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <i className="ph ph-caret-left"></i>
-                        </button>
-                        <span className="text-sm text-slate-600 dark:text-slate-300 font-medium px-4">
-                            Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
-                        </span>
-                        <button
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                            className="p-2 rounded-lg border border-surface-200 dark:border-surface-700 text-slate-500 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <i className="ph ph-caret-right"></i>
-                        </button>
-                        <button
-                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                            disabled={!table.getCanNextPage()}
-                            className="p-2 rounded-lg border border-surface-200 dark:border-surface-700 text-slate-500 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <i className="ph ph-caret-double-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <DataTable columns={columns} data={tikets || []} searchable={true} />
 
             {/* Delete All Modal */}
             {showDeleteModal && (

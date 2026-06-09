@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import Chart from 'react-apexcharts';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import { useTheme } from '../../Contexts/ThemeContext';
+import DataTable from '../../Components/DataTable';
 
 export default function Dashboard({ 
     stats, 
@@ -53,11 +54,18 @@ export default function Dashboard({
             xaxis: { lines: { show: false } },
             padding: { top: 0, right: 0, bottom: 0, left: 10 }
         },
+        yaxis: {
+            decimalsInFloat: 0,
+            forceNiceScale: true,
+            labels: {
+                formatter: (val) => Math.round(val)
+            }
+        },
         legend: {
-            position: 'top',
-            horizontalAlign: 'right',
+            position: 'bottom',
+            horizontalAlign: 'center',
             markers: { radius: 12 },
-            itemMargin: { horizontal: 10, vertical: 0 }
+            itemMargin: { horizontal: 10, vertical: 8 }
         }
     };
 
@@ -97,7 +105,12 @@ export default function Dashboard({
         ...donutChartOptions,
         labels: lokasiChartData ? lokasiChartData.map(d => d.name) : [],
         colors: ['#696cff', '#71dd37', '#ffab00', '#ff3e1d', '#8592a3', '#ffc107', '#17a2b8', '#28a745'],
-        legend: { show: true, position: 'bottom' },
+        legend: { 
+            show: true, 
+            position: 'bottom',
+            horizontalAlign: 'center',
+            itemMargin: { horizontal: 15, vertical: 8 }
+        },
         plotOptions: { pie: { donut: { ...donutChartOptions.plotOptions.pie.donut, labels: { ...donutChartOptions.plotOptions.pie.donut.labels, total: { ...donutChartOptions.plotOptions.pie.donut.labels.total, label: 'Total' } } } } }
     };
 
@@ -106,7 +119,12 @@ export default function Dashboard({
         ...donutChartOptions,
         labels: typePengirimChart ? typePengirimChart.map(d => d.name) : [],
         colors: ['#ffa707', '#63a2b8'],
-        legend: { show: true, position: 'bottom' },
+        legend: { 
+            show: true, 
+            position: 'bottom',
+            horizontalAlign: 'center',
+            itemMargin: { horizontal: 15, vertical: 8 }
+        },
         plotOptions: { pie: { donut: { ...donutChartOptions.plotOptions.pie.donut, labels: { ...donutChartOptions.plotOptions.pie.donut.labels, total: { ...donutChartOptions.plotOptions.pie.donut.labels.total, label: 'Total' } } } } }
     };
 
@@ -115,6 +133,70 @@ export default function Dashboard({
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
     };
+
+    // Data table columns for listPsikolog
+    const psikologColumns = useMemo(() => [
+        {
+            id: 'nama_email',
+            header: 'Nama & Email',
+            cell: info => {
+                const p = info.row.original;
+                return (
+                    <div>
+                        <div className="text-sm font-semibold text-slate-800 dark:text-white">{p.name}</div>
+                        <div className="text-xs text-slate-500 mt-0.5">{p.email}</div>
+                    </div>
+                );
+            }
+        },
+        {
+            accessorKey: 'unit',
+            header: 'Unit',
+            cell: info => {
+                const val = info.getValue();
+                let colorClass = 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
+                if(val === 'Jagakarsa') colorClass = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
+                if(val === 'Pamulang') colorClass = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
+                if(val === 'Cinere') colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
+                return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>{val || '-'}</span>;
+            }
+        },
+        {
+            accessorKey: 'jenjang',
+            header: 'Jenjang',
+            cell: info => {
+                const val = info.getValue();
+                if (!val) return '-';
+                let colorClass = 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400';
+                if(val === 'TK') colorClass = 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400';
+                if(val === 'SD') colorClass = 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400';
+                if(val === 'SMP') colorClass = 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400';
+                if(val === 'SMA') colorClass = 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400';
+                return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${colorClass}`}>{val}</span>;
+            }
+        },
+        {
+            accessorKey: 'roles',
+            header: 'Roles',
+            cell: info => {
+                const roles = info.getValue() || [];
+                return (
+                    <div className="flex flex-wrap gap-1">
+                        {roles.map(role => {
+                            let colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
+                            if(role.name === 'kepala-psikolog') colorClass = 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400';
+                            if(role.name === 'psikolog') colorClass = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
+                            return (
+                                <span key={role.id} className={`inline-flex px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider ${colorClass}`}>
+                                    {role.name}
+                                </span>
+                            );
+                        })}
+                    </div>
+                );
+            }
+        }
+    ], []);
 
     return (
         <AuthenticatedLayout>
@@ -312,7 +394,9 @@ export default function Dashboard({
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
                 <div className="lg:col-span-2 bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 transition-colors duration-300">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Tren Tiket Berdasarkan Lokasi (4 Minggu Terakhir)</h2>
-                    <Chart options={mainChartOptions} series={barChartData} type="bar" height={300} />
+                    <div className="flex-1 flex items-center justify-center mt-2">
+                        <Chart className="w-full" options={mainChartOptions} series={barChartData} type="bar" height={380} />
+                    </div>
                 </div>
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 flex flex-col transition-colors duration-300">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Status Keseluruhan</h2>
@@ -326,84 +410,25 @@ export default function Dashboard({
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 flex flex-col transition-colors duration-300">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Tiket per Lokasi</h2>
                     <div className="flex-1 flex items-center justify-center">
-                        <Chart options={lokasiDonutOptions} series={lokasiChartData ? lokasiChartData.map(d => d.y) : []} type="donut" height={300} />
+                        <Chart className="w-full" options={lokasiDonutOptions} series={lokasiChartData ? lokasiChartData.map(d => d.y) : []} type="donut" height={450} />
                     </div>
                 </div>
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 flex flex-col transition-colors duration-300">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Statistik Pengirim</h2>
                     <div className="flex-1 flex items-center justify-center">
-                        <Chart options={pengirimDonutOptions} series={typePengirimChart ? typePengirimChart.map(d => d.y) : []} type="donut" height={300} />
+                        <Chart className="w-full" options={pengirimDonutOptions} series={typePengirimChart ? typePengirimChart.map(d => d.y) : []} type="donut" height={450} />
                     </div>
                 </div>
             </div>
 
             {/* List Psikolog */}
             {listPsikolog && listPsikolog.length > 0 && (
-                <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft overflow-hidden transition-colors duration-300 mt-6">
-                    <div className="p-4 lg:p-6 border-b border-surface-100 dark:border-surface-700">
-                        <h2 className="text-lg font-bold text-slate-800 dark:text-white flex items-center">
-                            <i className="ph ph-users-three mr-2 text-brand-500"></i>
-                            Daftar PIC Psikolog
-                        </h2>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-surface-50/50 dark:bg-surface-800/50 text-slate-500 dark:text-slate-300 text-xs uppercase tracking-wider border-b border-surface-100 dark:border-surface-700">
-                                    <th className="px-6 py-4 font-semibold whitespace-nowrap">Nama & Email</th>
-                                    <th className="px-6 py-4 font-semibold whitespace-nowrap">Unit</th>
-                                    <th className="px-6 py-4 font-semibold whitespace-nowrap">Jenjang</th>
-                                    <th className="px-6 py-4 font-semibold whitespace-nowrap">Roles</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-surface-100 dark:divide-surface-700">
-                                {listPsikolog.map(psikolog => (
-                                    <tr key={psikolog.id} className="hover:bg-surface-50/50 dark:hover:bg-surface-700/50 transition-colors group">
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm font-semibold text-slate-800 dark:text-white">{psikolog.name}</div>
-                                            <div className="text-xs text-slate-500 mt-0.5">{psikolog.email}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${
-                                                psikolog.unit === 'Jagakarsa' ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400' :
-                                                psikolog.unit === 'Pamulang' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' :
-                                                psikolog.unit === 'Cinere' ? 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400' :
-                                                'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300'
-                                            }`}>
-                                                {psikolog.unit || '-'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            {psikolog.jenjang ? (
-                                                <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${
-                                                    psikolog.jenjang === 'TK' ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400' :
-                                                    psikolog.jenjang === 'SD' ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400' :
-                                                    psikolog.jenjang === 'SMP' ? 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400' :
-                                                    psikolog.jenjang === 'SMA' ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400' :
-                                                    'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400'
-                                                }`}>
-                                                    {psikolog.jenjang}
-                                                </span>
-                                            ) : '-'}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-wrap gap-1">
-                                                {psikolog.roles && psikolog.roles.map(role => (
-                                                    <span key={role.id} className={`inline-flex px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider ${
-                                                        role.name === 'kepala-psikolog' ? 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400' :
-                                                        role.name === 'psikolog' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' :
-                                                        'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400'
-                                                    }`}>
-                                                        {role.name}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="mt-6">
+                    <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center">
+                        <i className="ph ph-users-three mr-2 text-brand-500"></i>
+                        Daftar PIC Psikolog
+                    </h2>
+                    <DataTable columns={psikologColumns} data={listPsikolog} searchable={true} />
                 </div>
             )}
         </AuthenticatedLayout>

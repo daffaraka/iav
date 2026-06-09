@@ -69,18 +69,18 @@ export default function Sidebar({ isSidebarOpen, isMobile, setIsSidebarOpen }) {
                             <i className={`ph ph-squares-four text-xl group-hover:text-brand-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="text-sm font-medium whitespace-nowrap">Dashboard</span>}
                         </Link>
-                        <a href="#" title="Departemen" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
+                        <Link href="/departement" title="Departemen" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
                             <i className={`ph ph-buildings text-xl group-hover:text-brand-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">Departemen</span>}
-                        </a>
-                        <a href="#" title="Manajemen User" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
+                        </Link>
+                        <Link href="/user" title="Manajemen User" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
                             <i className={`ph ph-users text-xl group-hover:text-brand-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">Manajemen User</span>}
-                        </a>
-                        <a href="#" title="Manajemen Roles" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
+                        </Link>
+                        <Link href="/role" title="Manajemen Roles" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
                             <i className={`ph ph-shield-check text-xl group-hover:text-brand-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">Manajemen Roles</span>}
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Divider */}

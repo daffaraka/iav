@@ -32,9 +32,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/dashboard', function () {
-        return redirect()->route('dashboard.aqr.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
     Route::middleware(['role:super-admin|humas|direktur|koordinator'])->group(function () {

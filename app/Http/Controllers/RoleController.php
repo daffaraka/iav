@@ -4,21 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class RoleController extends Controller
 {
     public function index() {
         $data['title'] = 'Manajemen Roles';
         $data['roles'] = Role::orderBy('id', 'DESC')->get();
-        return view('dashboard.role.role-index', $data);
+        return Inertia::render('Role/role-index', $data);
     }
 
     public function create() {
         $data['title'] = 'Tambah Role';
         $data['permissions'] = Permission::get();
-        return view('dashboard.role.role-create', $data);
+        return Inertia::render('Role/role-create', $data);
     }
 
     public function store(Request $request) {
@@ -44,7 +46,7 @@ class RoleController extends Controller
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
 
-        return view('dashboard.role.role-edit', $data);
+        return Inertia::render('Role/role-edit', $data);
     }
 
     public function update($id, Request $request) {
