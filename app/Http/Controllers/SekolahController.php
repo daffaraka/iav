@@ -6,6 +6,7 @@ use App\Models\Sekolah;
 use App\Models\MasterSiswa;
 use App\Models\DataPrestasi;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SekolahController extends Controller
 {
@@ -78,20 +79,23 @@ class SekolahController extends Controller
 
         $tahunPamulang = ['2022/2023' => 4, '2023/2024' => 7, '2024/2025' => 5];
 
-        return view('dashboard.sekolah.sekolah-index', [
-            'jagakarsa' => json_encode($jagakarsa),
-            'cinere' => json_encode($cinere),
-            'pamulang' => json_encode($pamulang),
+        $sekolahs = Sekolah::all();
+
+        return Inertia::render('Sekolah/sekolah-index', [
+            'jagakarsa' => $jagakarsa,
+            'cinere' => $cinere,
+            'pamulang' => $pamulang,
             'prestasiJagakarsa' => $prestasiJagakarsa,
             'prestasiCinere' => $prestasiCinere,
             'prestasiPamulang' => $prestasiPamulang,
-            'tingkatJagakarsa' => json_encode($tingkatJagakarsa),
-            'tingkatCinere' => json_encode($tingkatCinere),
-            'tingkatPamulang' => json_encode($tingkatPamulang),
-            'tahunJagakarsa' => json_encode(array_values($tahunJagakarsa)),
-            'tahunCinere' => json_encode(array_values($tahunCinere)),
-            'tahunPamulang' => json_encode(array_values($tahunPamulang)),
-            'tahunLabels' => json_encode(array_keys($tahunJagakarsa + $tahunCinere + $tahunPamulang))
+            'tingkatJagakarsa' => $tingkatJagakarsa,
+            'tingkatCinere' => $tingkatCinere,
+            'tingkatPamulang' => $tingkatPamulang,
+            'tahunJagakarsa' => array_values($tahunJagakarsa),
+            'tahunCinere' => array_values($tahunCinere),
+            'tahunPamulang' => array_values($tahunPamulang),
+            'tahunLabels' => array_keys($tahunJagakarsa + $tahunCinere + $tahunPamulang),
+            'sekolahs' => $sekolahs
         ]);
     }
 
@@ -100,46 +104,46 @@ class SekolahController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Sekolah/sekolah-create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_sekolah' => 'required',
+            'unit' => 'required',
+            'jenjang' => 'required'
+        ]);
+
+        Sekolah::create($request->all());
+        return redirect()->route('sekolah.index')->with('success', 'Data sekolah berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Sekolah $sekolah)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Sekolah $sekolah)
     {
-        //
+        return Inertia::render('Sekolah/sekolah-edit', ['sekolah' => $sekolah]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Sekolah $sekolah)
     {
-        //
+        $request->validate([
+            'nama_sekolah' => 'required',
+            'unit' => 'required',
+            'jenjang' => 'required'
+        ]);
+
+        $sekolah->update($request->all());
+        return redirect()->route('sekolah.index')->with('success', 'Data sekolah berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Sekolah $sekolah)
     {
-        //
+        $sekolah->delete();
+        return redirect()->route('sekolah.index')->with('success', 'Data sekolah berhasil dihapus');
     }
 }
