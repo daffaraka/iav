@@ -7,6 +7,7 @@ use App\Models\Tiket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
+use Inertia\Inertia;
 
 class FeaturedQuestionController extends Controller
 {
@@ -21,7 +22,10 @@ class FeaturedQuestionController extends Controller
 
         $title = 'Featured Question';
 
-        return view('dashboard.featured-question.index', compact('featuredQuestions', 'title'));
+        return Inertia::render('FeaturedQuestion/Index', [
+            'featuredQuestions' => $featuredQuestions,
+            'title' => $title
+        ]);
     }
 
     /**
@@ -31,7 +35,9 @@ class FeaturedQuestionController extends Controller
     {
         $title = 'Tambah Featured Question';
 
-        return view('dashboard.featured-question.create', compact('title'));
+        return Inertia::render('FeaturedQuestion/Create', [
+            'title' => $title
+        ]);
     }
 
     /**
@@ -67,7 +73,10 @@ class FeaturedQuestionController extends Controller
         $fq = FeaturedQuestion::findOrFail($id);
         $title = 'Edit Featured Question';
 
-        return view('dashboard.featured-question.edit', compact('fq', 'title'));
+        return Inertia::render('FeaturedQuestion/Edit', [
+            'fq' => $fq,
+            'title' => $title
+        ]);
     }
 
     /**

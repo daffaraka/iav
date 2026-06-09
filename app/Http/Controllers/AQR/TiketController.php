@@ -92,7 +92,10 @@ class TiketController extends Controller
             $data['data'] = $query->get();
         }
 
-        return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
+        return \Inertia\Inertia::render('AQR/tiket-index', [
+            'tikets' => $data['data'],
+            'userRoles' => $user->getRoleNames()
+        ]);
     }
 
     public function tiketDalamprogres()
@@ -176,11 +179,14 @@ class TiketController extends Controller
             $query->latest();
         }])->find($id);
 
-        $picSelect = User::select('id', 'name', 'unit')->get();
+        $picSelect = User::select('id', 'name', 'unit', 'jabatan', 'departemen')->get();
 
-        // dd($tiket);
-
-        return view('dashboard.aqr-dashboard.tiket.tiket-edit', compact('tiket', 'picSelect'));
+        return \Inertia\Inertia::render('AQR/tiket-edit', [
+            'tiket' => $tiket,
+            'picSelect' => $picSelect,
+            'userRoles' => Auth::user()->getRoleNames(),
+            'currentUser' => Auth::user()
+        ]);
     }
 
     public function update(Request $request, $id)

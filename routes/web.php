@@ -25,15 +25,16 @@ use App\Http\Controllers\TopikPermasalahanController;
 use App\Http\Controllers\FeaturedQuestionController;
 
 Route::get('/', function () {
-    return redirect()->to('dashboard');
+    return redirect()->route('dashboard.aqr.dashboard');
 });
-
 
 Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', function () {
+        return redirect()->route('dashboard.aqr.dashboard');
+    })->name('dashboard');
 
 
     Route::middleware(['role:super-admin|humas|direktur|koordinator'])->group(function () {
