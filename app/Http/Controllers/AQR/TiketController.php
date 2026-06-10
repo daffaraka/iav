@@ -168,9 +168,18 @@ class TiketController extends Controller
 
     public function show($id)
     {
-        $tiket = Tiket::with(['first_pic', 'pic', 'siswa'])->findOrFail($id);
+        $tiket = Tiket::with(['first_pic', 'pic', 'option', 'siswa', 'progres' => function ($query) {
+            $query->latest();
+        }])->findOrFail($id);
 
-        return view('dashboard.aqr.tiket-show', compact('tiket'));
+        $picSelect = User::select('id', 'name', 'unit', 'jabatan', 'departemen')->get();
+
+        return \Inertia\Inertia::render('AQR/tiket-edit', [
+            'tiket' => $tiket,
+            'picSelect' => $picSelect,
+            'userRoles' => Auth::user()->getRoleNames(),
+            'currentUser' => Auth::user()
+        ]);
     }
 
     public function edit($id)
@@ -232,7 +241,7 @@ class TiketController extends Controller
                     'pic_id' => Auth::user()->id,
                 ]);
             } else {
-                if ($tiket->status == 'New') {
+                if ($tiket->status == 'New' || $request->has('pic_menanggapi')) {
                     $tiket->update([
                         'status' => 'Proses',
                         'departemen' => $request->departemen,

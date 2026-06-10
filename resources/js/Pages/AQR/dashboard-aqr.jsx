@@ -36,6 +36,11 @@ export default function Dashboard({
             foreColor: isDarkMode ? '#cbd5e1' : '#64748b'
         },
         theme: { mode: isDarkMode ? 'dark' : 'light' },
+        colors: [
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
+            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', 
+            '#f97316', '#6366f1', '#64748b', '#84cc16'
+        ],
         fill: {
             type: 'solid',
             opacity: 0.8
@@ -81,7 +86,7 @@ export default function Dashboard({
             foreColor: isDarkMode ? '#cbd5e1' : '#64748b'
         },
         theme: { mode: isDarkMode ? 'dark' : 'light' },
-        colors: ['#38bdf8', '#fbbf24', '#34d399'], // Biru(Baru), Kuning(Proses), Hijau(Selesai)
+        colors: ['#3b82f6', '#f59e0b', '#10b981'], // Biru(Baru), Kuning/Oranye(Proses), Hijau(Selesai)
         plotOptions: {
             pie: {
                 donut: {
@@ -104,7 +109,11 @@ export default function Dashboard({
     const lokasiDonutOptions = {
         ...donutChartOptions,
         labels: lokasiChartData ? lokasiChartData.map(d => d.name) : [],
-        colors: ['#696cff', '#71dd37', '#ffab00', '#ff3e1d', '#8592a3', '#ffc107', '#17a2b8', '#28a745'],
+        colors: [
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
+            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', 
+            '#f97316', '#6366f1', '#64748b', '#84cc16'
+        ],
         legend: { 
             show: true, 
             position: 'bottom',
@@ -118,7 +127,10 @@ export default function Dashboard({
     const pengirimDonutOptions = {
         ...donutChartOptions,
         labels: typePengirimChart ? typePengirimChart.map(d => d.name) : [],
-        colors: ['#ffa707', '#63a2b8'],
+        colors: [
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
+            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6'
+        ],
         legend: { 
             show: true, 
             position: 'bottom',
@@ -219,7 +231,7 @@ export default function Dashboard({
             {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-6">
                 <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-emerald-50 dark:bg-emerald-500/10 rounded-full opacity-70"></div>
+                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-emerald-400 dark:bg-emerald-400/80 rounded-full opacity-80"></div>
                     <div className="flex justify-between items-center relative z-10 h-full">
                         <div>
                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Tiket</p>
@@ -232,7 +244,7 @@ export default function Dashboard({
                 </div>
                 {canSeeNewTickets && (
                     <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
-                        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-blue-50 dark:bg-blue-500/10 rounded-full opacity-70"></div>
+                        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-blue-400 dark:bg-blue-400/80 rounded-full opacity-80"></div>
                         <div className="flex justify-between items-center relative z-10 h-full">
                             <div>
                                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Tiket Baru</p>
@@ -245,7 +257,7 @@ export default function Dashboard({
                     </div>
                 )}
                 <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-amber-50 dark:bg-amber-500/10 rounded-full opacity-70"></div>
+                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-amber-400 dark:bg-amber-400/80 rounded-full opacity-80"></div>
                     <div className="flex justify-between items-center relative z-10 h-full">
                         <div>
                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Sedang Diproses</p>
@@ -257,7 +269,7 @@ export default function Dashboard({
                     </div>
                 </div>
                 <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-emerald-50 dark:bg-emerald-500/10 rounded-full opacity-70"></div>
+                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-emerald-400 dark:bg-emerald-400/80 rounded-full opacity-80"></div>
                     <div className="flex justify-between items-center relative z-10 h-full">
                         <div>
                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Tiket Selesai</p>
@@ -276,12 +288,12 @@ export default function Dashboard({
                 {/* Tiket Baru Column */}
                 {canSeeNewTickets && (
                     <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft overflow-hidden flex flex-col h-[500px]">
-                        <div className="p-4 border-b border-surface-100 dark:border-surface-700 bg-blue-50/50 dark:bg-blue-900/10 flex items-center justify-between sticky top-0 z-10">
-                            <h2 className="text-base font-bold text-slate-800 dark:text-white flex items-center">
-                                <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+                        <div className="p-4 border-b border-surface-100 dark:border-surface-700 bg-blue-400 dark:bg-blue-600 flex items-center justify-between sticky top-0 z-10">
+                            <h2 className="text-base font-bold text-white flex items-center">
+                                <span className="w-2 h-2 rounded-full bg-white mr-2"></span>
                                 Tiket Baru
                             </h2>
-                            <Link href="/dashboard/aqr/tiket?status=New" className="text-xs text-brand-600 hover:text-brand-700 font-medium dark:text-brand-400">Lihat Semua</Link>
+                            <Link href="/dashboard/aqr/tiket?status=New" className="text-xs text-blue-100 hover:text-white font-medium">Lihat Semua</Link>
                         </div>
                         <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
                             <div className="space-y-3">
@@ -315,12 +327,12 @@ export default function Dashboard({
 
                 {/* Tiket Proses Column */}
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft overflow-hidden flex flex-col h-[500px]">
-                    <div className="p-4 border-b border-surface-100 dark:border-surface-700 bg-amber-50/50 dark:bg-amber-900/10 flex items-center justify-between sticky top-0 z-10">
-                        <h2 className="text-base font-bold text-slate-800 dark:text-white flex items-center">
-                            <span className="w-2 h-2 rounded-full bg-amber-500 mr-2"></span>
+                    <div className="p-4 border-b border-surface-100 dark:border-surface-700 bg-amber-400 dark:bg-amber-600 flex items-center justify-between sticky top-0 z-10">
+                        <h2 className="text-base font-bold text-white flex items-center">
+                            <span className="w-2 h-2 rounded-full bg-white mr-2"></span>
                             Sedang Diproses
                         </h2>
-                        <Link href="/dashboard/aqr/tiket?status=Proses" className="text-xs text-brand-600 hover:text-brand-700 font-medium dark:text-brand-400">Lihat Semua</Link>
+                        <Link href="/dashboard/aqr/tiket?status=Proses" className="text-xs text-amber-100 hover:text-white font-medium">Lihat Semua</Link>
                     </div>
                     <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
                         <div className="space-y-3">
@@ -353,12 +365,12 @@ export default function Dashboard({
 
                 {/* Tiket Selesai Column */}
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft overflow-hidden flex flex-col h-[500px]">
-                    <div className="p-4 border-b border-surface-100 dark:border-surface-700 bg-emerald-50/50 dark:bg-emerald-900/10 flex items-center justify-between sticky top-0 z-10">
-                        <h2 className="text-base font-bold text-slate-800 dark:text-white flex items-center">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+                    <div className="p-4 border-b border-surface-100 dark:border-surface-700 bg-emerald-400 dark:bg-emerald-600 flex items-center justify-between sticky top-0 z-10">
+                        <h2 className="text-base font-bold text-white flex items-center">
+                            <span className="w-2 h-2 rounded-full bg-white mr-2"></span>
                             Tiket Selesai
                         </h2>
-                        <Link href="/dashboard/aqr/tiket?status=Selesai" className="text-xs text-brand-600 hover:text-brand-700 font-medium dark:text-brand-400">Lihat Semua</Link>
+                        <Link href="/dashboard/aqr/tiket?status=Selesai" className="text-xs text-emerald-100 hover:text-white font-medium">Lihat Semua</Link>
                     </div>
                     <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
                         <div className="space-y-3">
