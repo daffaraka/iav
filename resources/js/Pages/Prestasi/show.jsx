@@ -13,7 +13,7 @@ export default function PrestasiShow({ prestasi }) {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Lihat rincian data prestasi lomba siswa.</p>
                 </div>
                 <Link
-                    href={route('data-prestasi.index')}
+                    href="/data-prestasi"
                     className="inline-flex items-center justify-center px-4 py-2 bg-surface-100 dark:bg-surface-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium hover:bg-surface-200 dark:hover:bg-surface-600 transition-all"
                 >
                     <i className="ph ph-arrow-left mr-2 text-lg"></i>
@@ -54,7 +54,7 @@ export default function PrestasiShow({ prestasi }) {
                 </div>
                 <div className="p-4 border-t border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800/50 flex justify-end gap-3">
                     <Link
-                        href={route('data-prestasi.edit', prestasi.id)}
+                        href={`/data-prestasi/${prestasi.id}/edit`}
                         className="px-4 py-2 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors"
                     >
                         Edit Data

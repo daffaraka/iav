@@ -8,7 +8,7 @@ export default function PtnIndex({ ptns, flash }) {
 
     const handleDelete = (id) => {
         if (confirm('Yakin ingin menghapus data ini?')) {
-            destroy(route('master-ptn.destroy', id));
+            destroy('/master-ptn/' + id);
         }
     };
 
@@ -47,7 +47,7 @@ export default function PtnIndex({ ptns, flash }) {
             cell: info => (
                 <div className="flex items-center gap-2">
                     <Link
-                        href={route('master-ptn.edit', info.row.original.id)}
+                        href={`/master-ptn/${info.row.original.id}/edit`}
                         className="px-3 py-1.5 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
                     >
                         <i className="ph ph-pencil-simple"></i> Edit
@@ -73,7 +73,7 @@ export default function PtnIndex({ ptns, flash }) {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola data perguruan tinggi negeri dan swasta.</p>
                 </div>
                 <Link
-                    href={route('master-ptn.create')}
+                    href="/master-ptn/create"
                     className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition-all"
                 >
                     <i className="ph ph-plus mr-2 text-lg"></i>
@@ -91,9 +91,7 @@ export default function PtnIndex({ ptns, flash }) {
                 </div>
             )}
 
-            <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
-                <DataTable columns={columns} data={ptns} searchable={true} />
-            </div>
+            <DataTable columns={columns} data={ptns} searchable={true} />
         </AuthenticatedLayout>
     );
 }

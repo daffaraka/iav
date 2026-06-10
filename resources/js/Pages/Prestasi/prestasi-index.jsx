@@ -8,7 +8,7 @@ export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi
 
     const handleDelete = (id) => {
         if (confirm('Yakin ingin menghapus data ini?')) {
-            destroy(route('data-prestasi.destroy', id));
+            destroy('/data-prestasi/' + id);
         }
     };
 
@@ -80,13 +80,13 @@ export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi
             cell: info => (
                 <div className="flex items-center gap-1.5 flex-wrap">
                     <Link
-                        href={route('data-prestasi.show', info.row.original.id)}
+                        href={`/data-prestasi/${info.row.original.id}`}
                         className="px-2.5 py-1.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors"
                     >
                         Lihat
                     </Link>
                     <Link
-                        href={route('data-prestasi.edit', info.row.original.id)}
+                        href={`/data-prestasi/${info.row.original.id}/edit`}
                         className="px-2.5 py-1.5 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg text-xs font-medium hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors"
                     >
                         Edit
@@ -129,21 +129,18 @@ export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi
                 {renderSchoolCard('Sekolah Pamulang', pamulang)}
             </div>
 
-            <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
-                <div className="p-6 border-b border-surface-200 dark:border-surface-700 flex justify-between items-center bg-surface-50/50 dark:bg-surface-800/50">
-                    <h3 className="text-lg font-bold text-slate-800 dark:text-white">Semua Data Prestasi</h3>
-                    <Link
-                        href={route('data-prestasi.create')}
-                        className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-all"
-                    >
-                        <i className="ph ph-plus mr-2 text-lg"></i>
-                        Tambah Data
-                    </Link>
-                </div>
-                <div className="p-0">
-                    <DataTable columns={columns} data={allPrestasi} searchable={true} />
-                </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Semua Data Prestasi</h3>
+                <Link
+                    href="/data-prestasi/create"
+                    className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-all"
+                >
+                    <i className="ph ph-plus mr-2 text-lg"></i>
+                    Tambah Data
+                </Link>
             </div>
+            
+            <DataTable columns={columns} data={allPrestasi} searchable={true} />
         </AuthenticatedLayout>
     );
 }

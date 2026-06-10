@@ -17,7 +17,7 @@ export default function SekolahIndex({
 
     const handleDelete = (id) => {
         if (confirm('Yakin ingin menghapus data sekolah ini?')) {
-            destroy(route('sekolah.destroy', id));
+            destroy('/sekolah/' + id);
         }
     };
 
@@ -130,7 +130,7 @@ export default function SekolahIndex({
             cell: info => (
                 <div className="flex items-center gap-2">
                     <Link
-                        href={route('sekolah.edit', info.row.original.id)}
+                        href={`/sekolah/${info.row.original.id}/edit`}
                         className="px-3 py-1.5 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
                     >
                         <i className="ph ph-pencil-simple"></i> Edit
@@ -196,24 +196,23 @@ export default function SekolahIndex({
                 </div>
             </div>
 
-            {/* Data Master Sekolah */}
-            <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
-                <div className="p-6 border-b border-surface-200 dark:border-surface-700 flex justify-between items-center bg-surface-50/50 dark:bg-surface-800/50">
-                    <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
                         <i className="ph ph-buildings text-brand-500"></i> Data Master Sekolah
-                    </h3>
-                    <Link
-                        href={route('sekolah.create')}
-                        className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-all"
-                    >
-                        <i className="ph ph-plus mr-2 text-lg"></i>
-                        Tambah Sekolah
-                    </Link>
+                    </h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola data seluruh unit sekolah di bawah naungan yayasan.</p>
                 </div>
-                <div className="p-0">
-                    <DataTable columns={columns} data={sekolahs} searchable={true} />
-                </div>
+                <Link
+                    href="/sekolah/create"
+                    className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-all"
+                >
+                    <i className="ph ph-plus mr-2 text-lg"></i>
+                    Tambah Sekolah
+                </Link>
             </div>
+
+            <DataTable columns={columns} data={sekolahs} searchable={true} />
         </AuthenticatedLayout>
     );
 }
