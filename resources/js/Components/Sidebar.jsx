@@ -119,18 +119,18 @@ export default function Sidebar({ isSidebarOpen, isMobile, setIsSidebarOpen }) {
                         {isSidebarOpen && <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">Sekolah</p>}
                     </div>
                     <div className={`px-3 ${!isSidebarOpen && 'flex flex-col items-center'}`}>
-                        <a href="#" title="Master Sekolah" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
+                        <Link href="/sekolah" title="Master Sekolah" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
                             <i className={`ph ph-graduation-cap text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">Master Sekolah</span>}
-                        </a>
-                        <a href="#" title="Master PTN/PTS" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
+                        </Link>
+                        <Link href="/master-ptn" title="Master PTN/PTS" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
                             <i className={`ph ph-bank text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">Master PTN/PTS</span>}
-                        </a>
-                        <a href="#" title="Data Prestasi" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
+                        </Link>
+                        <Link href="/data-prestasi" title="Data Prestasi" className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? 'px-3 rounded-xl border-l-4' : 'justify-center w-12 h-12 rounded-xl mt-1'}`}>
                             <i className={`ph ph-trophy text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? 'mr-3' : 'mr-0'}`}></i>
                             {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">Data Prestasi</span>}
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Divider */}
