@@ -230,18 +230,7 @@ export default function Dashboard({
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-6">
-                <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-emerald-400 dark:bg-emerald-400/80 rounded-full opacity-80"></div>
-                    <div className="flex justify-between items-center relative z-10 h-full">
-                        <div>
-                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Tiket</p>
-                            <h3 className="text-3xl font-bold text-slate-800 dark:text-white">{stats.total}</h3>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-100/50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center relative z-10 backdrop-blur-sm">
-                            <i className="ph ph-ticket text-2xl"></i>
-                        </div>
-                    </div>
-                </div>
+                {/* 1. Tiket Baru */}
                 {canSeeNewTickets && (
                     <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
                         <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-blue-400 dark:bg-blue-400/80 rounded-full opacity-80"></div>
@@ -256,6 +245,7 @@ export default function Dashboard({
                         </div>
                     </div>
                 )}
+                {/* 2. Sedang Diproses */}
                 <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-amber-400 dark:bg-amber-400/80 rounded-full opacity-80"></div>
                     <div className="flex justify-between items-center relative z-10 h-full">
@@ -268,6 +258,7 @@ export default function Dashboard({
                         </div>
                     </div>
                 </div>
+                {/* 3. Tiket Selesai */}
                 <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-emerald-400 dark:bg-emerald-400/80 rounded-full opacity-80"></div>
                     <div className="flex justify-between items-center relative z-10 h-full">
@@ -277,6 +268,19 @@ export default function Dashboard({
                         </div>
                         <div className="w-12 h-12 rounded-2xl bg-emerald-100/50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center relative z-10 backdrop-blur-sm">
                             <i className="ph ph-check-circle text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+                {/* 4. Total Tiket - warna berbeda (indigo/slate) */}
+                <div className="bg-gradient-to-br from-slate-800 to-slate-900 dark:from-surface-700 dark:to-surface-800 p-6 rounded-2xl border border-slate-700 dark:border-surface-600 shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-indigo-500/30 dark:bg-indigo-400/20 rounded-full opacity-80"></div>
+                    <div className="flex justify-between items-center relative z-10 h-full">
+                        <div>
+                            <p className="text-sm font-medium text-slate-300 mb-1">Total Tiket</p>
+                            <h3 className="text-3xl font-bold text-white">{stats.total}</h3>
+                        </div>
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center relative z-10 backdrop-blur-sm">
+                            <i className="ph ph-ticket text-2xl"></i>
                         </div>
                     </div>
                 </div>

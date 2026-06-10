@@ -271,7 +271,7 @@ class TiketController extends Controller
                 $pic?->notify(new TiketNotification($tiket, 'Tiket didisposisikan ke Anda: ' . $tiket->judul_kendala, 'disposisi'));
             }
 
-            if ($request->has('penanganan')) {
+            if ($request->filled('penanganan')) {
                 if ($request->hasFile('fotopengerjaan')) {
                     $file = $request->file('fotopengerjaan');
                     $fileName = $file->getClientOriginalName();

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, router } from "@inertiajs/react";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
+import Alert from "../../Components/Alert";
 import { useTheme } from "../../Contexts/ThemeContext";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
@@ -11,12 +12,14 @@ export default function TiketEdit({
     picSelect,
     userRoles,
     currentUser,
+    flash,
 }) {
     const { isDarkMode } = useTheme();
     const [isForwardKepsekModalOpen, setForwardKepsekModalOpen] =
         useState(false);
     const [isForwardTUModalOpen, setForwardTUModalOpen] = useState(false);
     const [isPICModalOpen, setPICModalOpen] = useState(false);
+    const [isSelesaiModalOpen, setSelesaiModalOpen] = useState(false);
 
     // AI Form
     const { post: postAi, processing: aiProcessing } = useForm({});
@@ -58,12 +61,22 @@ export default function TiketEdit({
     };
 
     const isSuperAdminOrHumas = hasRole(["super-admin", "humas"]);
-    const isPimpinan = hasRole([
+    const isGroupA = hasRole([
         "super-admin",
         "humas",
         "admin",
         "kepala-sekolah",
         "kepala-tata-usaha",
+    ]);
+
+    const isGroupB = hasRole([
+        "tata-usaha",
+        "humas",
+        "admin",
+        "wali-kelas",
+        "psikolog",
+        "staff",
+        "guru",
     ]);
     const isPic = currentUser.id === tiket.pic_id;
     const isWargaSekolah = tiket.pengirim === "Warga Sekolah";
@@ -127,6 +140,7 @@ export default function TiketEdit({
                 setUpdateData("penanganan", "");
                 setUpdateData("fotopengerjaan", null);
                 setPICModalOpen(false);
+                window.location.reload(); // Hard refresh halaman setelah sukses
             },
         });
     };
@@ -140,6 +154,7 @@ export default function TiketEdit({
                 setForwardTUModalOpen(false);
                 setForwardData("catatan", "");
                 setForwardData("pic_id", "");
+                window.location.reload();
             },
         });
     };
@@ -200,6 +215,9 @@ export default function TiketEdit({
                     )}
                 </div>
             </div>
+
+            <Alert type="success" message={flash?.success} />
+            <Alert type="error" message={flash?.error} />
 
             <div className="space-y-6">
                 {/* Full Width - Detail Tiket */}
@@ -402,16 +420,18 @@ export default function TiketEdit({
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-surface-200 dark:before:via-surface-700 before:to-transparent">
+                                    <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-surface-200 dark:before:via-surface-700 before:to-transparent">
                                         {tiket.progres.map((prog, idx) => (
                                             <div
                                                 key={prog.id}
-                                                className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
+                                                className="relative flex items-start gap-4 group is-active"
                                             >
-                                                <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-surface-800 bg-surface-100 dark:bg-surface-700 text-slate-500 dark:text-slate-400 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10">
-                                                    <i className="ph ph-chat-circle-text"></i>
+                                                <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-surface-800 bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 shrink-0 shadow-sm">
+                                                    <span className="font-bold text-sm">
+                                                        {tiket.progres.length - idx}
+                                                    </span>
                                                 </div>
-                                                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-2xl bg-surface-50 dark:bg-surface-900/50 border border-surface-100 dark:border-surface-700 shadow-sm">
+                                                <div className="flex-1 p-4 rounded-2xl bg-surface-50 dark:bg-surface-900/50 border border-surface-100 dark:border-surface-700 shadow-sm">
                                                     <div className="flex items-center justify-between mb-1">
                                                         <span className="text-xs font-semibold text-brand-600 dark:text-brand-400">
                                                             {idx === 0
@@ -598,161 +618,216 @@ export default function TiketEdit({
                                         </>
                                     )}
 
-                                    {status === "Proses" && isPimpinan && (
-                                        <div className="p-4 bg-surface-50 dark:bg-surface-900/50 rounded-xl border border-surface-100 dark:border-surface-700 mb-4 shadow-sm space-y-4">
-                                            <h3 className="font-bold text-slate-800 dark:text-white mb-2">
-                                                Penugasan Departemen & PIC
-                                            </h3>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                                    Pilih Departemen Terkait
-                                                </label>
-                                                <select
-                                                    className="w-full border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:ring-brand-500 focus:border-brand-500 shadow-sm"
-                                                    value={
-                                                        updateData.departemen
-                                                    }
-                                                    onChange={(e) =>
-                                                        setUpdateData(
-                                                            "departemen",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    required
-                                                >
-                                                    <option value="">
-                                                        Pilih Departemen
-                                                    </option>
-                                                    <option value="Wakil Kurikulum">
-                                                        Wakil Kurikulum
-                                                    </option>
-                                                    <option value="Wakil Kesiswaan">
-                                                        Wakil Kesiswaan
-                                                    </option>
-                                                    <option value="Guru Kelas">
-                                                        Wali Kelas
-                                                    </option>
-                                                    <option value="Psikolog">
-                                                        Psikolog
-                                                    </option>
-                                                    <option value="Guru BK">
-                                                        BK
-                                                    </option>
-                                                    <option value="Keuangan">
-                                                        Keuangan
-                                                    </option>
-                                                    <option value="Staf Sarpra">
-                                                        Sarana dan Prasarana
-                                                    </option>
-                                                    <option value="Tata Usaha">
-                                                        Tata Usaha
-                                                    </option>
-                                                    <option value="Teknisi">
-                                                        Teknisi
-                                                    </option>
-                                                    <option value="Humas">
-                                                        Humas
-                                                    </option>
-                                                    <option value="Koperasi">
-                                                        Koperasi
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                                    Pilih PIC Yang Menangani
-                                                </label>
-                                                <select
-                                                    className="w-full border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:ring-brand-500 focus:border-brand-500 disabled:opacity-50 shadow-sm"
-                                                    value={
-                                                        updateData.pic_menanggapi
-                                                    }
-                                                    onChange={(e) =>
-                                                        setUpdateData(
-                                                            "pic_menanggapi",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    required
-                                                    disabled={
-                                                        !updateData.departemen ||
-                                                        isLoadingPics
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        {updateData.departemen
-                                                            ? "Pilih PIC"
-                                                            : "Pilih Departemen dulu"}
-                                                    </option>
-                                                    {isLoadingPics ? (
-                                                        <option disabled>
-                                                            Memuat PIC...
-                                                        </option>
-                                                    ) : (
-                                                        filteredPics.map(
-                                                            (pic) => (
-                                                                <option
-                                                                    key={pic.id}
+                                    {status === "Proses" && isWargaSekolah && (
+                                        <>
+                                            {isGroupA && (
+                                                <div className="p-4 bg-surface-50 dark:bg-surface-900/50 rounded-xl border border-surface-100 dark:border-surface-700 mb-4 shadow-sm space-y-4">
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <h3 className="font-bold text-slate-800 dark:text-white">
+                                                            PIC sudah ditentukan
+                                                        </h3>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                setPICModalOpen(
+                                                                    true,
+                                                                )
+                                                            }
+                                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-surface-800 border border-brand-200 dark:border-brand-500/30 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-500/10 hover:border-brand-300 dark:hover:border-brand-500/50 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 group"
+                                                        >
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform"
+                                                                viewBox="0 0 24 24"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                strokeWidth="2.5"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                            >
+                                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                                            </svg>
+                                                            Edit Ulang
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 gap-4">
+                                                        <div>
+                                                            <label className="block text-sm text-slate-500 mb-1 font-bold">
+                                                                Kepsek / Kepala
+                                                                TU
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                value={
+                                                                    tiket
+                                                                        .first_pic
+                                                                        ?.name ||
+                                                                    ""
+                                                                }
+                                                                disabled
+                                                                className="w-full bg-white-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-xl text-md font-bold shadow-sm border-2"
+                                                            />
+                                                        </div>
+
+                                                        <div className="md:col-span-2 flex flex-col gap-3 mt-2 p-4 bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700">
+                                                            <div>
+                                                                <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                                                                    Detail PIC
+                                                                    Menanggapi
+                                                                </h4>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-sm text-slate-500 mb-1 font-semibold">
+                                                                    Departemen
+                                                                </label>
+                                                                <input
+                                                                    type="text"
                                                                     value={
-                                                                        pic.id
+                                                                        tiket.departemen ||
+                                                                        ""
                                                                     }
-                                                                >
-                                                                    {pic.unit} -{" "}
-                                                                    {pic.jabatan ||
-                                                                        pic.departemen}{" "}
-                                                                    - {pic.name}
-                                                                </option>
-                                                            ),
-                                                        )
-                                                    )}
-                                                </select>
-                                            </div>
-                                        </div>
+                                                                    disabled
+                                                                    className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-xl text-sm font-bold shadow-sm"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs text-slate-500 mb-1 font-semibold">
+                                                                    Nama PIC
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        tiket
+                                                                            .pic
+                                                                            ?.name ||
+                                                                        "Belum diassign"
+                                                                    }
+                                                                    disabled
+                                                                    className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-lg text-sm font-bold shadow-sm"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs text-slate-500 mb-1 font-semibold">
+                                                                    Email PIC
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        tiket
+                                                                            .pic
+                                                                            ?.email ||
+                                                                        "-"
+                                                                    }
+                                                                    disabled
+                                                                    className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-lg text-sm font-bold shadow-sm"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs text-slate-500 mb-1 font-semibold">
+                                                                    Unit
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        tiket
+                                                                            .pic
+                                                                            ?.unit ||
+                                                                        "-"
+                                                                    }
+                                                                    disabled
+                                                                    className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-lg text-sm font-bold shadow-sm"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {isGroupB && (
+                                                <div className="p-4 bg-white dark:bg-surface-800 rounded-xl border border-surface-100 dark:border-surface-700 mb-4 shadow-sm space-y-4">
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <div>
+                                                            <label className="block text-sm text-slate-500 mb-1 font-semibold">
+                                                                Departemen
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                value={
+                                                                    tiket.departemen ||
+                                                                    ""
+                                                                }
+                                                                disabled
+                                                                className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-xl text-sm font-bold shadow-sm"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-sm text-slate-500 mb-1 font-semibold">
+                                                                Pic Menanggapi
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                value={`${tiket.pic?.name || "Belum diassign"} (Anda)`}
+                                                                disabled
+                                                                className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 text-slate-500 rounded-xl text-sm font-bold shadow-sm"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                                                            Deskripsi Penanganan
+                                                        </label>
+                                                        <textarea
+                                                            className="w-full border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:ring-brand-500 focus:border-brand-500 shadow-sm"
+                                                            rows="4"
+                                                            value={
+                                                                updateData.penanganan
+                                                            }
+                                                            onChange={(e) =>
+                                                                setUpdateData(
+                                                                    "penanganan",
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            required
+                                                        ></textarea>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                                                            Foto Penanganan
+                                                        </label>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) =>
+                                                                setUpdateData(
+                                                                    "fotopengerjaan",
+                                                                    e.target
+                                                                        .files[0],
+                                                                )
+                                                            }
+                                                            className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 shadow-sm"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
                                     )}
 
-                                    {status === "Proses" && !isPimpinan && (
-                                        <div className="p-4 bg-surface-50 dark:bg-surface-900/50 rounded-xl border border-surface-100 dark:border-surface-700 mb-4 shadow-sm space-y-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                                    Departemen Terkait
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 dark:border-surface-700 text-slate-500 rounded-xl text-sm shadow-sm font-bold"
-                                                    value={
-                                                        tiket.departemen || "-"
-                                                    }
-                                                    disabled
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                                    PIC Saat Ini
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    className="w-full bg-slate-100 dark:bg-surface-900 border-surface-200 dark:border-surface-700 text-slate-500 rounded-xl text-sm shadow-sm font-bold"
-                                                    value={
-                                                        tiket.pic?.name ||
-                                                        "Belum diassign"
-                                                    }
-                                                    disabled
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {status === "Proses" &&
-                                        (isPic || isSuperAdminOrHumas) && (
-                                            <>
+                                    {/* Masyarakat Umum Logic */}
+                                    {!isWargaSekolah &&
+                                        status !== "Selesai" && (
+                                            <div className="space-y-4 mb-4">
                                                 <div>
                                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                                        Deskripsi Penanganan /
-                                                        Pesan Baru
+                                                        Deskripsi Penanganan
                                                     </label>
                                                     <textarea
-                                                        rows="4"
                                                         className="w-full border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:ring-brand-500 focus:border-brand-500 shadow-sm"
+                                                        rows="4"
                                                         value={
                                                             updateData.penanganan
                                                         }
@@ -762,14 +837,12 @@ export default function TiketEdit({
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        placeholder="Tuliskan tindakan yang telah dilakukan..."
                                                         required
                                                     ></textarea>
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                                        Foto Bukti Penanganan
-                                                        (Opsional)
+                                                        Foto Penanganan
                                                     </label>
                                                     <input
                                                         type="file"
@@ -781,21 +854,18 @@ export default function TiketEdit({
                                                                     .files[0],
                                                             )
                                                         }
-                                                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 dark:file:bg-brand-500/10 dark:file:text-brand-400 shadow-sm"
+                                                        className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 shadow-sm"
                                                     />
                                                 </div>
-                                            </>
+                                            </div>
                                         )}
 
-                                    {/* Form Submit Actions */}
+                                    {/* Form Submit Actions using exact Blade Roles */}
                                     {status !== "Selesai" && (
                                         <div className="pt-4 mt-2 border-t border-surface-100 dark:border-surface-700">
-                                            {((status === "New" &&
-                                                isPimpinan) ||
-                                                (status === "Proses" &&
-                                                    (isPic ||
-                                                        isSuperAdminOrHumas ||
-                                                        isPimpinan))) && (
+                                            {isSuperAdminOrHumas &&
+                                            !isWargaSekolah &&
+                                            status === "Proses" ? (
                                                 <button
                                                     type="submit"
                                                     disabled={updateProcessing}
@@ -803,9 +873,68 @@ export default function TiketEdit({
                                                 >
                                                     {updateProcessing
                                                         ? "Memproses..."
-                                                        : status === "New"
-                                                          ? "Update Tiket"
-                                                          : "Simpan Perubahan / Tanggapan"}
+                                                        : "Update Ticket"}
+                                                </button>
+                                            ) : hasRole([
+                                                  "super-admin",
+                                                  "tata-usaha",
+                                                  "humas",
+                                                  "admin",
+                                                  "kepala-sekolah",
+                                                  "kepala-tata-usaha",
+                                              ]) ? (
+                                                status === "New" ? (
+                                                    <button
+                                                        type="submit"
+                                                        disabled={
+                                                            updateProcessing
+                                                        }
+                                                        className="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 flex justify-center items-center"
+                                                    >
+                                                        {updateProcessing
+                                                            ? "Memproses..."
+                                                            : "Update Ticket"}
+                                                    </button>
+                                                ) : status === "Proses" ? (
+                                                    // Allow Group B members to still submit if they are assigned as PIC or are filling out penanganan,
+                                                    // but conceptually hide it for Kepsek who just views it disabled
+                                                    isGroupB ? (
+                                                        <button
+                                                            type="submit"
+                                                            disabled={
+                                                                updateProcessing
+                                                            }
+                                                            className="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 flex justify-center items-center"
+                                                        >
+                                                            {updateProcessing
+                                                                ? "Memproses..."
+                                                                : "Update Ticket"}
+                                                        </button>
+                                                    ) : null
+                                                ) : (
+                                                    <button
+                                                        disabled
+                                                        className="w-full py-2.5 bg-slate-300 text-slate-500 rounded-xl font-medium cursor-not-allowed"
+                                                    >
+                                                        Selesai
+                                                    </button>
+                                                )
+                                            ) : status === "Proses" ? (
+                                                <button
+                                                    type="submit"
+                                                    disabled={updateProcessing}
+                                                    className="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 flex justify-center items-center"
+                                                >
+                                                    {updateProcessing
+                                                        ? "Memproses..."
+                                                        : "Update Ticket"}
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    disabled
+                                                    className="w-full py-2.5 bg-slate-300 text-slate-500 rounded-xl font-medium cursor-not-allowed"
+                                                >
+                                                    Selesai
                                                 </button>
                                             )}
                                         </div>
@@ -851,20 +980,14 @@ export default function TiketEdit({
                                 {/* Finish Ticket Button */}
                                 {status === "Proses" && (
                                     <div className="mt-4 pt-4 border-t border-surface-100 dark:border-surface-700">
-                                        <Link
-                                            href={`/dashboard/aqr/tiket/selesaikan/${tiket.id}`}
+                                        <button
+                                            type="button"
+                                            onClick={() => setSelesaiModalOpen(true)}
                                             className="w-full py-2.5 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 rounded-xl font-medium transition-colors flex justify-center items-center border border-red-200 dark:border-red-500/20"
-                                            as="button"
-                                            method="get"
-                                            onBefore={() =>
-                                                confirm(
-                                                    "Apakah anda yakin ingin menyelesaikan tiket ini?",
-                                                )
-                                            }
                                         >
                                             <i className="ph ph-check-fat mr-2"></i>{" "}
                                             Tandai Tiket Selesai
-                                        </Link>
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -872,6 +995,142 @@ export default function TiketEdit({
                     </div>
                 </div>
             </div>
+
+            {/* Modal Edit PIC Penugasan */}
+            {isPICModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+                    <div
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                        onClick={() => setPICModalOpen(false)}
+                    ></div>
+                    <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-xl w-full max-w-lg transform transition-all relative z-10 border border-surface-100 dark:border-surface-700 overflow-hidden">
+                        <div className="p-6 border-b border-surface-100 dark:border-surface-700 flex justify-between items-center bg-brand-50 dark:bg-brand-500/5">
+                            <h3 className="text-lg font-bold text-brand-700 dark:text-brand-400">
+                                Pilih PIC Yang Menanggapi
+                            </h3>
+                            <button
+                                type="button"
+                                onClick={() => setPICModalOpen(false)}
+                                className="text-slate-400 hover:text-slate-600"
+                            >
+                                <i className="ph ph-x text-xl"></i>
+                            </button>
+                        </div>
+                        <form onSubmit={handleUpdate}>
+                            <div className="p-6 space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                                        Pilih Departemen Terkait
+                                    </label>
+                                    <select
+                                        className="w-full border-surface-200 dark:border-surface-600 bg-surface-50 dark:bg-surface-900 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:ring-brand-500 focus:border-brand-500 shadow-sm"
+                                        value={updateData.departemen}
+                                        onChange={(e) =>
+                                            setUpdateData(
+                                                "departemen",
+                                                e.target.value,
+                                            )
+                                        }
+                                        required
+                                    >
+                                        <option value="">
+                                            Pilih Departemen
+                                        </option>
+                                        <option value="Wakil Kurikulum">
+                                            Wakil Kurikulum
+                                        </option>
+                                        <option value="Wakil Kesiswaan">
+                                            Wakil Kesiswaan
+                                        </option>
+                                        <option value="Guru Kelas">
+                                            Wali Kelas
+                                        </option>
+                                        <option value="Psikolog">
+                                            Psikolog
+                                        </option>
+                                        <option value="Guru BK">BK</option>
+                                        <option value="Keuangan">
+                                            Keuangan
+                                        </option>
+                                        <option value="Staf Sarpra">
+                                            Sarana dan Prasarana
+                                        </option>
+                                        <option value="Tata Usaha">
+                                            Tata Usaha
+                                        </option>
+                                        <option value="Teknisi">Teknisi</option>
+                                        <option value="Humas">Humas</option>
+                                        <option value="Koperasi">
+                                            Koperasi
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                                        Pilih PIC Yang Menangani
+                                    </label>
+                                    <select
+                                        className="w-full border-surface-200 dark:border-surface-600 bg-surface-50 dark:bg-surface-900 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:ring-brand-500 focus:border-brand-500 disabled:opacity-50 shadow-sm"
+                                        value={updateData.pic_menanggapi}
+                                        onChange={(e) =>
+                                            setUpdateData(
+                                                "pic_menanggapi",
+                                                e.target.value,
+                                            )
+                                        }
+                                        required
+                                        disabled={
+                                            !updateData.departemen ||
+                                            isLoadingPics
+                                        }
+                                    >
+                                        <option value="">
+                                            {updateData.departemen
+                                                ? "Pilih PIC"
+                                                : "Pilih Departemen dulu"}
+                                        </option>
+                                        {isLoadingPics ? (
+                                            <option disabled>
+                                                Memuat PIC...
+                                            </option>
+                                        ) : (
+                                            filteredPics.map((pic) => (
+                                                <option
+                                                    key={pic.id}
+                                                    value={pic.id}
+                                                >
+                                                    {pic.unit} -{" "}
+                                                    {pic.jabatan ||
+                                                        pic.departemen}{" "}
+                                                    - {pic.name}
+                                                </option>
+                                            ))
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="p-6 border-t border-surface-100 dark:border-surface-700 bg-surface-50 dark:bg-surface-800/50 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setPICModalOpen(false)}
+                                    className="px-4 py-2 text-slate-500 hover:text-slate-700 font-medium text-sm transition-colors"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={updateProcessing}
+                                    className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-medium transition-colors shadow-soft shadow-brand-500/30 disabled:opacity-50"
+                                >
+                                    {updateProcessing
+                                        ? "Menyimpan..."
+                                        : "Save changes"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             {/* Modals for Forwarding */}
             {(isForwardKepsekModalOpen || isForwardTUModalOpen) && (
@@ -961,6 +1220,50 @@ export default function TiketEdit({
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Konfirmasi Selesai */}
+            {isSelesaiModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+                    <div
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                        onClick={() => setSelesaiModalOpen(false)}
+                    ></div>
+                    <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all relative z-10 border border-surface-100 dark:border-surface-700 overflow-hidden">
+                        <div className="p-6 flex flex-col items-center text-center">
+                            <div className="w-16 h-16 rounded-full bg-red-50 dark:bg-red-500/10 flex items-center justify-center mb-4">
+                                <i className="ph ph-warning text-3xl text-red-500 dark:text-red-400"></i>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2">
+                                Tandai Tiket Selesai?
+                            </h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 max-w-xs">
+                                Apakah Anda yakin ingin menyelesaikan tiket ini? 
+                                Status tiket akan berubah menjadi <span className="font-semibold text-emerald-600 dark:text-emerald-400">"Selesai"</span> dan tidak dapat dikembalikan.
+                            </p>
+                            <div className="flex items-center gap-3 w-full">
+                                <button
+                                    type="button"
+                                    onClick={() => setSelesaiModalOpen(false)}
+                                    className="flex-1 px-4 py-2.5 border border-surface-200 dark:border-surface-600 text-slate-600 dark:text-slate-300 hover:bg-surface-50 dark:hover:bg-surface-700 rounded-xl text-sm font-medium transition-colors"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        router.get(`/dashboard/aqr/tiket/selesaikan/${tiket.id}`);
+                                        setSelesaiModalOpen(false);
+                                    }}
+                                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl text-sm font-semibold transition-all shadow-soft shadow-emerald-500/30 flex items-center justify-center gap-1.5"
+                                >
+                                    <i className="ph ph-check-fat"></i>
+                                    Ya, Selesaikan
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

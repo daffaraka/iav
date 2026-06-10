@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
+import Alert from '../../Components/Alert';
 
 export default function PtnIndex({ ptns, flash }) {
     const { delete: destroy } = useForm();
@@ -81,15 +82,7 @@ export default function PtnIndex({ ptns, flash }) {
                 </Link>
             </div>
 
-            {flash?.success && (
-                <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl flex items-start gap-3">
-                    <i className="ph ph-check-circle text-xl text-emerald-600 dark:text-emerald-400 mt-0.5"></i>
-                    <div>
-                        <h4 className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Berhasil</h4>
-                        <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-0.5">{flash.success}</p>
-                    </div>
-                </div>
-            )}
+            <Alert type="success" message={flash?.success} />
 
             <DataTable columns={columns} data={ptns} searchable={true} />
         </AuthenticatedLayout>
