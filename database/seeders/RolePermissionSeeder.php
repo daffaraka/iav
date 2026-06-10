@@ -29,7 +29,7 @@ class RolePermissionSeeder extends Seeder
         ];
         $staff->givePermissionTo($staffPermissions);
 
-        // Guru - Limited access
+        // Guru - Limited access + penjemputan
         $guru = Role::findByName('guru');
         $guruPermissions = [
             'view-dashboard',
@@ -37,9 +37,21 @@ class RolePermissionSeeder extends Seeder
             'view-data-prestasi', 'create-data-prestasi', 'edit-data-prestasi',
             'view-wig', 'view-lead-measure', 'view-task-process',
             'create-task-process', 'edit-task-process',
-            'view-tiket', 'create-tiket'
+            'view-tiket', 'create-tiket',
+            'view-penjemputan-harian', 'konfirmasi-penyerahan'
         ];
         $guru->givePermissionTo($guruPermissions);
+
+        // Satpam - Penjemputan Access
+        $satpam = Role::firstOrCreate(['name' => 'satpam']);
+        $satpamPermissions = [
+            'view-dashboard',
+            'view-penjemputan-harian',
+            'konfirmasi-kedatangan',
+            'konfirmasi-keluar',
+            'konfirmasi-ojol'
+        ];
+        $satpam->givePermissionTo($satpamPermissions);
 
         // TU - Administrative tasks
         $tu = Role::findByName('tata-usaha');

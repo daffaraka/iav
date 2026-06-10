@@ -11,6 +11,8 @@ class MasterSiswa extends Model
     protected $fillable = [
         'nama',
         'nama_orang_tua',
+        'nama_ayah',
+        'nama_ibu',
         'nik',
         'tempat_lahir',
         'tanggal_lahir',
@@ -37,6 +39,11 @@ class MasterSiswa extends Model
     public function sekolah()
     {
         return $this->belongsTo(Sekolah::class);
+    }
+
+    public function penjemputan()
+    {
+        return $this->hasMany(PenjemputanHarian::class, 'master_siswa_id');
     }
 
 }

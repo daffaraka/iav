@@ -26,7 +26,8 @@ class PermissionSeeder extends Seeder
             'aduan',
             'progres-tiket',
             'rating-tiket',
-            'user'
+            'user',
+            'penjemputan-harian'
         ];
 
         $actions = ['view', 'create', 'edit', 'delete'];
@@ -49,7 +50,11 @@ class PermissionSeeder extends Seeder
             'tiket-pilih-pic',
             'monitor-all-tiket',
             'reminder-tiket',
-            'view-all-locations'
+            'view-all-locations',
+            'konfirmasi-kedatangan',
+            'konfirmasi-keluar',
+            'konfirmasi-ojol',
+            'konfirmasi-penyerahan'
         ];
 
         foreach ($specificPermissions as $permission) {

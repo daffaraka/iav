@@ -26,6 +26,7 @@ class RoleSeeder extends Seeder
             'wakasis',
             'psikolog',
             'kepala-psikolog',
+            'satpam',
         ];
 
         foreach ($roles as $role) {
