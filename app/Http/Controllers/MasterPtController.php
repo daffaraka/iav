@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MasterPt;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MasterPtController extends Controller
 {
@@ -12,13 +13,13 @@ class MasterPtController extends Controller
      */
     public function index()
     {
-        $ptns = MasterPt::latest()->paginate(10);
-        return view('dashboard.master-ptn.ptn-index', compact('ptns'));
+        $ptns = MasterPt::latest()->get();
+        return Inertia::render('MasterPTN/ptn-index', ['ptns' => $ptns]);
     }
 
     public function create()
     {
-        return view('dashboard.master-ptn.ptn-create');
+        return Inertia::render('MasterPTN/ptn-create');
     }
 
     public function store(Request $request)
@@ -34,7 +35,7 @@ class MasterPtController extends Controller
 
     public function edit(MasterPt $MasterPt)
     {
-        return view('dashboard.master-ptn.ptn-edit', compact('MasterPt'));
+        return Inertia::render('MasterPTN/ptn-edit', ['MasterPt' => $MasterPt]);
     }
 
     public function update(Request $request, MasterPt $MasterPt)

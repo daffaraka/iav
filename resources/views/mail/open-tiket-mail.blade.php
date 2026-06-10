@@ -44,7 +44,7 @@
         <div class="my-4">
             <p class="text-gray-600 mt-2 mb-4">Untuk melihat progress
                 terkait tiket anda, silahkan klik link dibawah.</p>
-            <a href="{{route('helpdesk.home.tiket-show', ['tiket' => $data['no_tiket']])}}"
+            <a href="{{ route('helpdesk.home.tiket-show', ['tiket' => $data['no_tiket']]) }}"
                 class="bg-blue-500 text-white px-4 py-2 shadow-lg border rounded-lg text-sm font-medium hover:bg-blue-600">Click
                 Here</a>
         </div>

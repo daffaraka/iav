@@ -13,6 +13,7 @@ class RoleSeeder extends Seeder
             'direktur',
             'koordinator',
             'kadept',
+            'bps',
             'super-admin',
             'staff',
             'guru',

@@ -174,23 +174,25 @@ class AQRController extends Controller
 
         // dd($barChartData);
 
-        $data = [
-            'tiketNew' => $tiketNew,
-            'tiketProses' => $tiketProses,
-            'tiketClosed' => $tiketClosed,
-            'totalTiket' => $totalTiket,
+        return \Inertia\Inertia::render('AQR/aqr-index', [
+            'stats' => [
+                'new' => $tiketNew,
+                'proses' => $tiketProses,
+                'closed' => $tiketClosed,
+                'total' => $totalTiket,
+            ],
             'latestTiket' => $latestTiket,
             'latestProses' => $latestProses,
             'latestSelesai' => $latestSelesai,
-            'pieChartData' => json_encode($pieChartData),
-            'barChartData' => json_encode($barChartData),
-            'weekLabels' => json_encode($weekLabels),
-            'lokasiChartData' => json_encode($lokasiChartData),
-            'typePengirimChart' => json_encode($typePengirimChart),
+            'pieChartData' => $pieChartData,
+            'barChartData' => $barChartData,
+            'weekLabels' => $weekLabels,
+            'lokasiChartData' => $lokasiChartData,
+            'typePengirimChart' => $typePengirimChart,
             'listPsikolog' => User::whereHas('roles', function ($q) {
                 $q->whereIn('name', ['psikolog', 'kepala-psikolog']);
-            })->get()
-        ];
-        return view('dashboard.aqr-dashboard.dashboard', $data);
+            })->get(),
+            'userRoles' => Auth::user()->getRoleNames()
+        ]);
     }
 }

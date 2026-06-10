@@ -34,7 +34,7 @@
                 </div>
             </div>
         @endif
-        <div class="bg-white rounded-2xl shadow-2xl p-8 border-0">
+        <div class="bg-white shadow-2xl p-8 border-2 border-gray-200 py-[80px]">
             <!-- Step 1: Validasi NISN -->
             <div id="step-nisn">
                 <div class="text-center mb-8">
@@ -42,7 +42,6 @@
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Validasi Warga Sekolah</h2>
                     <div
                         class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                        <i class="fas fa-graduation-cap mr-2"></i>
                         Warga Sekolah
                     </div>
                     <p class="text-gray-600 mt-4">Masukkan NISN untuk verifikasi identitas</p>
@@ -52,14 +51,13 @@
                 <div class="space-y-6">
                     <div class="animate-slide-in-right">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-id-card mr-2 text-green-500"></i>NISN (Nomor Induk Siswa Nasional)
+                            NISN (Nomor Induk Siswa Nasional)
                         </label>
                         <input type="text" id="nisn-check"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
                             placeholder="Masukkan NISN Anda">
                         <div class="mt-2 p-3 bg-blue-50 rounded-lg">
                             <p class="text-sm text-blue-700">
-                                <i class="fas fa-info-circle mr-1"></i>
                                 Contoh NISN: <span class="font-mono">1234567890</span>, <span
                                     class="font-mono">1234567891</span>, <span class="font-mono">1234567892</span>
                             </p>
@@ -90,7 +88,6 @@
                     <!-- Validate Button -->
                     <button type="button" id="btn-check-nisn"
                         class="w-full flex justify-center py-4 px-6 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                        <i class="fas fa-check-circle mr-2"></i>
                         Validasi NISN
                     </button>
                 </div>
@@ -110,7 +107,6 @@
                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Kritik dan Saran</h2>
                         <div
                             class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            <i class="fas fa-graduation-cap mr-2"></i>
                             Warga Sekolah
                         </div>
                     </div>
@@ -118,24 +114,24 @@
                     <!-- Data Siswa (Read-only) -->
                     <div class="bg-gray-50 rounded-xl py-4 px-1 space-y-4">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">
-                            <i class="fas fa-user-graduate mr-2 text-green-500"></i>Data Siswa
+                            Data Siswa
                         </h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
                                 <input type="text" id="nisn-display" readonly
-                                    class="w-full px-3 py-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-800 font-medium">
+                                    class="w-full px-3 py-2 bg-gray-200 border-2 border-gray-400 rounded-lg text-gray-800 font-medium">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Siswa</label>
                                 <input type="text" name="nama" id="nama-siswa" readonly
-                                    class="w-full px-3 py-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-800 font-medium">
+                                    class="w-full px-3 py-2 bg-gray-200 border-2 border-gray-400 rounded-lg text-gray-800 font-medium">
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua</label>
                                 <input type="text" id="nama-orangtua-display" readonly
-                                    class="w-full px-3 py-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-800 font-medium">
+                                    class="w-full px-3 py-2 bg-gray-200 border-2 border-gray-400 rounded-lg text-gray-800 font-medium">
                             </div>
                         </div>
                     </div>
@@ -144,40 +140,40 @@
                     <!-- Email -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.2s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-envelope mr-2 text-green-500"></i>Email
+                            Email
                         </label>
                         <input type="email" name="email" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
                             placeholder="contoh@email.com">
                     </div>
 
                     <!-- No HP -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.3s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-phone mr-2 text-green-500"></i>Nomor Handphone
+                            Nomor Handphone
                         </label>
                         <input type="tel" name="no_hp" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
                             placeholder="08xxxxxxxxxx">
                     </div>
 
                     <!-- Judul -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.4s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-heading mr-2 text-green-500"></i>Judul Kritik dan Saran
+                            Judul Kritik dan Saran
                         </label>
                         <input type="text" name="judul_kendala" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400"
                             placeholder="Ringkasan singkat kritik/saran Anda">
                     </div>
 
                     <!-- Jenis Kritik -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.45s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-tags mr-2 text-green-500"></i>Jenis Kritik dan Saran
+                            Jenis Kritik dan Saran
                         </label>
                         <select name="kendala" id="kendala-select" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400">
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400">
                             <option value="">Pilih</option>
 
                             @foreach ($options as $opt)
@@ -267,10 +263,10 @@
                     <!-- Lokasi -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.47s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-map-marker-alt mr-2 text-green-500"></i>Lokasi
+                            Lokasi
                         </label>
                         <select name="lokasi_kendala" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400">
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400">
                             <option value="">Pilih</option>
                             <option value="KB Avicenna Pamulang">KB Avicenna Pamulang</option>
                             <option value="TK Avicenna Jagakarsa">TK Avicenna Jagakarsa</option>
@@ -286,17 +282,17 @@
                     <!-- Detail -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.5s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-comment-alt mr-2 text-green-500"></i>Detail Kritik dan Saran
+                            Detail Kritik dan Saran
                         </label>
                         <textarea name="detail_kendala" required rows="4"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400 resize-none"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 hover:border-gray-400 resize-none"
                             placeholder="Deskripsikan area detail kritik atau saran Anda. Misal : Ruang Kelas 2A, Area Parkir, Area Kantin dsb..."></textarea>
                     </div>
 
                     <!-- File Upload -->
                     <div class="animate-slide-in-right" style="animation-delay: 0.6s">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-paperclip mr-2 text-green-500"></i>Lampiran (Opsional)
+                            Lampiran (Opsional)
                         </label>
                         <div class="relative">
                             <input type="file" name="choosefile" accept="image/*" id="file-upload" class="hidden">
@@ -314,13 +310,11 @@
                     <!-- Action Buttons -->
                     <div class="flex space-x-4 animate-slide-in-right" style="animation-delay: 0.7s">
                         <button type="button" id="btn-back"
-                            class="flex-1 flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                            <i class="fas fa-arrow-left mr-2"></i>
+                            class="flex-1 flex justify-center py-3 px-4 border-2 border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Kembali
                         </button>
                         <button type="submit"
                             class="flex-1 flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                            <i class="fas fa-paper-plane mr-2"></i>
                             Kirim Kritik dan Saran
                         </button>
                     </div>

@@ -293,6 +293,157 @@
                 </form>
             </div>
         </div>
+
+        {{-- Card Permissions per User (Direct Permissions) --}}
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <h5 class="mb-0 fw-bold">Permissions Langsung (Direct Permissions)</h5>
+                <small class="text-muted">Permission ini diberikan langsung ke user, di luar permission yang didapat dari role.</small>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('user.update', $user->id) }}" method="POST">
+                    @method('PUT')
+                    @csrf
+                    <input type="hidden" name="update_permissions" value="1">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="form-label mb-0 fw-bold">Pilih Permissions</label>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="checkAllPerm">Centang Semua</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="uncheckAllPerm">Hapus Semua</button>
+                        </div>
+                    </div>
+
+                    @php
+                        $moduleGroups = [
+                            'Dashboard' => [
+                                'color' => '#696cff',
+                                'modules' => ['dashboard'],
+                            ],
+                            'Sekolah & Prestasi' => [
+                                'color' => '#28c76f',
+                                'modules' => ['sekolah', 'data-prestasi'],
+                            ],
+                            'Lowongan' => [
+                                'color' => '#ff6f61',
+                                'modules' => ['lowongan-pekerjaan', 'lowongan-apply', 'lowongan-progress'],
+                            ],
+                            'Departemen & SDM' => [
+                                'color' => '#ff9f43',
+                                'modules' => ['departement', 'wig', 'lead-measure', 'task-process', 'wig-progress'],
+                            ],
+                            'AQR (Aduan & Tiket)' => [
+                                'color' => '#00cfe8',
+                                'modules' => ['aqr-dashboard', 'tiket', 'aduan', 'progres-tiket', 'rating-tiket'],
+                            ],
+                            'User Management' => [
+                                'color' => '#7367f0',
+                                'modules' => ['user'],
+                            ],
+                        ];
+
+                        $actions = ['view', 'create', 'edit', 'delete'];
+
+                        $moduleBased = [];
+                        foreach ($moduleGroups as $groupLabel => $group) {
+                            foreach ($group['modules'] as $mod) {
+                                foreach ($actions as $act) {
+                                    $moduleBased[] = $act . '-' . $mod;
+                                }
+                            }
+                        }
+
+                        $specificPermissions = $permissions->filter(function ($p) use ($moduleBased) {
+                            return !in_array($p->name, $moduleBased);
+                        });
+                    @endphp
+
+                    @foreach ($moduleGroups as $groupLabel => $group)
+                        <div class="card mb-3 border" style="border-left: 4px solid {{ $group['color'] }} !important;">
+                            <div class="card-header py-2 d-flex justify-content-between align-items-center" style="background-color: {{ $group['color'] }}10;">
+                                <h6 class="mb-0 fw-bold" style="color: {{ $group['color'] }};">
+                                    {{ $groupLabel }}
+                                </h6>
+                                <button type="button" class="btn btn-sm btn-outline-primary toggle-group-user" data-group="user-{{ Str::slug($groupLabel) }}">Toggle</button>
+                            </div>
+                            <div class="card-body py-3">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered mb-0 align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="width:30%;">Modul</th>
+                                                @foreach ($actions as $action)
+                                                    <th class="text-center" style="width:17.5%;">{{ ucfirst($action) }}</th>
+                                                @endforeach
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($group['modules'] as $module)
+                                                <tr>
+                                                    <td class="fw-semibold">{{ ucwords(str_replace('-', ' ', $module)) }}</td>
+                                                    @foreach ($actions as $action)
+                                                        @php
+                                                            $permName = $action . '-' . $module;
+                                                            $perm = $permissions->firstWhere('name', $permName);
+                                                        @endphp
+                                                        <td class="text-center">
+                                                            @if ($perm)
+                                                                <div class="form-check d-flex justify-content-center mb-0">
+                                                                    <input class="form-check-input user-perm-checkbox group-user-{{ Str::slug($groupLabel) }}"
+                                                                        type="checkbox"
+                                                                        name="direct_permission[]"
+                                                                        value="{{ $perm->name }}"
+                                                                        id="user-perm-{{ $perm->id }}"
+                                                                        {{ in_array($perm->id, $userPermissions) ? 'checked' : '' }}>
+                                                                </div>
+                                                            @else
+                                                                <span class="text-muted">—</span>
+                                                            @endif
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    @if ($specificPermissions->count() > 0)
+                        <div class="card mb-3 border" style="border-left: 4px solid #ea5455 !important;">
+                            <div class="card-header py-2" style="background-color: #ea545510;">
+                                <h6 class="mb-0 fw-bold" style="color: #ea5455;">
+                                    Permission Khusus
+                                </h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div class="row">
+                                    @foreach ($specificPermissions as $perm)
+                                        <div class="col-md-4 col-sm-6 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input user-perm-checkbox"
+                                                    type="checkbox"
+                                                    name="direct_permission[]"
+                                                    value="{{ $perm->name }}"
+                                                    id="user-perm-{{ $perm->id }}"
+                                                    {{ in_array($perm->id, $userPermissions) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="user-perm-{{ $perm->id }}">
+                                                    {{ $perm->name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Simpan Permissions</button>
+                </form>
+            </div>
+        </div>
+
     </div>
     </div>
 @endsection
@@ -427,6 +578,20 @@
                 } else {
                     $(this).text('Lihat Data Sekarang');
                 }
+            });
+
+            // Permission checkboxes
+            $('#checkAllPerm').on('click', function() {
+                $('.user-perm-checkbox').prop('checked', true);
+            });
+            $('#uncheckAllPerm').on('click', function() {
+                $('.user-perm-checkbox').prop('checked', false);
+            });
+            $('.toggle-group-user').on('click', function() {
+                const group = $(this).data('group');
+                const checkboxes = $('.group-' + group);
+                const allChecked = checkboxes.toArray().every(cb => cb.checked);
+                checkboxes.prop('checked', !allChecked);
             });
         });
     </script>

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\AQR;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OpenTiketMail;
 use App\Models\Tiket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AduanController extends Controller
@@ -50,6 +52,18 @@ class AduanController extends Controller
             if ($tuAdmin) {
                 $tiket->update(['pic_id' => $tuAdmin->id]);
             }
+        }
+
+        // Kirim email konfirmasi jika email diisi
+        if (!empty($tiket->email)) {
+            Mail::to($tiket->email)->send(new OpenTiketMail([
+                'id'            => $tiket->id,
+                'name'          => $tiket->nama,
+                'no_tiket'      => $tiket->no_tiket,
+                'tanggal'       => $tiket->created_at->format('d M Y H:i'),
+                'lokasi_kendala'=> $tiket->lokasi_kendala,
+                'detail_kendala'=> $tiket->detail_kendala,
+            ]));
         }
 
         return redirect()->route('dashboard.aqr.aduan.index')

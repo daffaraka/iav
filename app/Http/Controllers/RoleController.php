@@ -3,30 +3,75 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class RoleController extends Controller
 {
     public function index() {
-        $data['title'] = 'Roles Manajemen';
+        $data['title'] = 'Manajemen Roles';
+        $data['roles'] = Role::orderBy('id', 'DESC')->get();
+        return Inertia::render('Role/role-index', $data);
     }
 
     public function create() {
-        $data['title'] = 'Roles Manajemen';
+        $data['title'] = 'Tambah Role';
+        $data['permissions'] = Permission::get();
+        return Inertia::render('Role/role-create', $data);
     }
 
     public function store(Request $request) {
-        $data['title'] = 'Roles Manajemen';
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            'permission' => 'nullable|array',
+        ]);
+
+        $role = Role::create(['name' => $request->input('name')]);
+        if($request->has('permission')) {
+            $role->syncPermissions($request->input('permission'));
+        }
+
+        return redirect()->route('role.index')
+                        ->with('success','Role berhasil ditambahkan');
     }
 
     public function edit($id) {
-        $data['title'] = 'Roles Manajemen';
+        $data['title'] = 'Edit Role';
+        $data['role'] = Role::find($id);
+        $data['permissions'] = Permission::get();
+        $data['rolePermissions'] = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all();
+
+        return Inertia::render('Role/role-edit', $data);
     }
 
     public function update($id, Request $request) {
-        $data['title'] = 'Roles Manajemen';
+        $this->validate($request, [
+            'name' => 'required',
+            'permission' => 'nullable|array',
+        ]);
+
+        $role = Role::find($id);
+        $role->name = $request->input('name');
+        $role->save();
+
+        if($request->has('permission')) {
+            $role->syncPermissions($request->input('permission'));
+        } else {
+            $role->syncPermissions([]);
+        }
+
+        return redirect()->route('role.index')
+                        ->with('success','Role berhasil diupdate');
     }
 
     public function destroy($id) {
-        $data['title'] = 'Roles Manajemen';
+        Role::find($id)->delete();
+        return redirect()->route('role.index')
+                        ->with('success','Role berhasil dihapus');
     }
 }

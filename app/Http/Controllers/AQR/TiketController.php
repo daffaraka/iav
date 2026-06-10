@@ -73,31 +73,29 @@ class TiketController extends Controller
         $unit = $user->unit;
 
         $data['title'] = 'Manajemen Tiket AQR';
+        $query = Tiket::with(['first_pic', 'pic', 'option'])->latest();
 
-        if ($user->hasAnyRole(['super-admin', 'humas'])) {
-            $data['data'] = Tiket::with(['first_pic', 'pic', 'option'])
-                ->latest()
-                ->get();
+        if ($user->hasAnyRole(['super-admin', 'admin', 'humas'])) {
+            $data['data'] = $query->get();
+        } elseif ($user->hasAnyRole(['kepala-sekolah', 'kepala-tata-usaha', 'kepala-psikolog'])) {
+            $kategoriPics = $this->getKategoriPicByRoles();
+            $query->where('lokasi_sekolah', $unit);
 
-            return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
+            if (!empty($kategoriPics)) {
+                $query->whereHas('option', function ($q) use ($kategoriPics) {
+                    $q->whereIn('kategori_pic', $kategoriPics);
+                });
+            }
+            $data['data'] = $query->get();
+        } else {
+            $query->where('pic_id', $user->id);
+            $data['data'] = $query->get();
         }
 
-        $kategoriPics = $this->getKategoriPicByRoles();
-
-        $query = Tiket::with(['first_pic', 'pic', 'option'])
-            ->where('lokasi_sekolah', $unit);
-
-        if ($kategoriPics) {
-            $query->whereHas('option', function ($q) use ($kategoriPics) {
-                $q->whereIn('kategori_pic', $kategoriPics);
-            });
-        }
-
-        $data['data'] = $query->get();
-
-        // dd($data);
-
-        return view('dashboard.aqr-dashboard.tiket.tiket-index', $data);
+        return \Inertia\Inertia::render('AQR/tiket-index', [
+            'tikets' => $data['data'],
+            'userRoles' => $user->getRoleNames()
+        ]);
     }
 
     public function tiketDalamprogres()
@@ -181,11 +179,14 @@ class TiketController extends Controller
             $query->latest();
         }])->find($id);
 
-        $picSelect = User::select('id', 'name', 'unit')->get();
+        $picSelect = User::select('id', 'name', 'unit', 'jabatan', 'departemen')->get();
 
-        // dd($tiket);
-
-        return view('dashboard.aqr-dashboard.tiket.tiket-edit', compact('tiket', 'picSelect'));
+        return \Inertia\Inertia::render('AQR/tiket-edit', [
+            'tiket' => $tiket,
+            'picSelect' => $picSelect,
+            'userRoles' => Auth::user()->getRoleNames(),
+            'currentUser' => Auth::user()
+        ]);
     }
 
     public function update(Request $request, $id)

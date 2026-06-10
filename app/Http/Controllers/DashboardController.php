@@ -7,12 +7,13 @@ use App\Models\Departement;
 use App\Models\Wig;
 use App\Models\LeadMeasure;
 use App\Models\TaskProcess;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $title = 'Dashboard';
+        $title = 'Dashboard Master';
 
 
         // Count total records from each table
@@ -27,7 +28,7 @@ class DashboardController extends Controller
             ->pluck('wigs_count', 'nama_dept')
             ->toArray();
 
-        return view('dashboard.dashboard', compact(
+        return Inertia::render('Dashboard/dashboard', compact(
             'title',
             'totalDepartemen',
             'totalWig',

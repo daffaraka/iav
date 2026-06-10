@@ -27,7 +27,8 @@ class PermissionSeeder extends Seeder
             'progres-tiket',
             'rating-tiket',
             'user',
-            'penjemputan-harian'
+            'penjemputan-harian',
+            'featured-question'
         ];
 
         $actions = ['view', 'create', 'edit', 'delete'];

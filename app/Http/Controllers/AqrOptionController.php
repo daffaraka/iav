@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\AqrOption;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AqrOptionController extends Controller
 {
     public function index()
     {
         $aqrOptions = AqrOption::orderBy('nama_option', 'asc')->get();
-        return view('dashboard.aqr-option.aqro-index', compact('aqrOptions'));
+        return Inertia::render('AQROption/Index', [
+            'aqrOptions' => $aqrOptions
+        ]);
     }
 
     public function create()
     {
-        return view('dashboard.aqr-option.aqro-create');
+        return Inertia::render('AQROption/Create');
     }
 
     public function store(Request $request)
@@ -32,7 +35,9 @@ class AqrOptionController extends Controller
 
     public function edit(AqrOption $aqrOption)
     {
-        return view('dashboard.aqr-option.aqro-edit', compact('aqrOption'));
+        return Inertia::render('AQROption/Edit', [
+            'aqrOption' => $aqrOption
+        ]);
     }
 
     public function update(Request $request, AqrOption $aqrOption)

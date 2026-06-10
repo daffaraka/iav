@@ -9,8 +9,10 @@ use App\Models\Wig;
 use App\Models\Departement;
 use App\Models\LeadMeasure;
 use App\Models\TaskProcess;
+use App\Models\TaskProcess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class DepartementController extends Controller
 {
@@ -29,7 +31,7 @@ class DepartementController extends Controller
             'title' => $title,
             'departement' => $departement
         ];
-        return view('dashboard.departement.dept-index', $data);
+        return Inertia::render('Departement/dept-index', $data);
     }
 
     /**
@@ -86,7 +88,7 @@ class DepartementController extends Controller
         // dd($data);
 
 
-        return view('dashboard.departement.dept-show', $data);
+        return Inertia::render('Departement/dept-show', $data);
     }
 
 
@@ -168,7 +170,7 @@ class DepartementController extends Controller
             ]);
         } else {
 
-            return view('dashboard.departement.dept-show-wig', $data);
+            return Inertia::render('Departement/dept-show-wig', $data);
         }
     }
 

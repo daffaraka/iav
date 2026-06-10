@@ -25,6 +25,9 @@ Route::prefix('helpdesk')->name('helpdesk.')->group(function () {
     Route::post('/get-siswa-by-nisn', [HomeAQRController::class, 'getSiswaByNisn'])->name('home.get-siswa');
 
     Route::post('get-pic-by-dept', [SelectController::class, 'getPicByDept'])->name('home.get-pic-by-dept');
+
+    Route::post('/faq/track', [HomeAQRController::class, 'trackFaqInteraction'])->name('home.faq-track');
+    Route::post('/faq/vote', [HomeAQRController::class, 'toggleFaqVote'])->name('home.faq-vote');
 });
 
 // Demo Routes (using lovable views)

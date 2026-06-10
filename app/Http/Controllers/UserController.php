@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -13,13 +14,13 @@ class UserController extends Controller
     {
         $data['users'] = User::with('roles')->latest()->get();
         $data['title'] = 'Manajemen User';
-        return view('dashboard.user.user-index', $data);
+        return Inertia::render('User/user-index', $data);
     }
 
     public function create()
     {
         $roles = Role::all();
-        return view('dashboard.user.user-create', compact('roles'));
+        return Inertia::render('User/user-create', ['roles' => $roles]);
     }
 
     public function store(Request $request)
@@ -47,7 +48,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('roles')->findOrFail($id);
-        return view('dashboard.user.user-show', compact('user'));
+        return Inertia::render('User/user-show', ['user' => $user]);
     }
 
     public function edit($id)
@@ -57,15 +58,32 @@ class UserController extends Controller
         $jabatans = User::whereNotIn('unit', ['BPS'])->pluck('jabatan')->unique()->values();
         $departemens = User::whereNotIn('unit', ['BPS'])->pluck('departemen')->unique()->values();
         $title = 'Edit User '.$user->name;
-        // dd($jabatans);
-        return view('dashboard.user.user-edit', compact('user', 'roles','jabatans','departemens','title'));
+        $permissions = \Spatie\Permission\Models\Permission::all();
+        $userPermissions = $user->getDirectPermissions()->pluck('id', 'id')->all();
+        return Inertia::render('User/user-edit', [
+            'user' => $user,
+            'roles' => $roles,
+            'jabatans' => $jabatans,
+            'departemens' => $departemens,
+            'title' => $title,
+            'permissions' => $permissions,
+            'userPermissions' => $userPermissions
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
-        // dd($request->all());
+        // Jika yang disubmit adalah form permissions
+        if ($request->has('update_permissions')) {
+            $request->validate([
+                'direct_permission' => 'nullable|array',
+            ]);
+            $user->syncPermissions($request->input('direct_permission', []));
+            return redirect()->route('user.edit', $id)
+                ->with('success', 'Permissions user berhasil diupdate');
+        }
 
         $validated = $request->validate([
             'name' => 'string|max:255',
@@ -75,8 +93,6 @@ class UserController extends Controller
             'location' => 'nullable|string|max:100',
             'role' => 'required|exists:roles,name'
         ]);
-
-
 
         if ($request->has('password') && $validated['password']) {
             $validated['password'] = Hash::make($validated['password']);

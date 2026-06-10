@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MasterSiswa;
 use App\Models\DataPrestasi;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DataPrestasiController extends Controller
 {
@@ -33,7 +34,12 @@ class DataPrestasiController extends Controller
 
         $allPrestasi = DataPrestasi::with('siswa.sekolah')->latest()->get();
 
-        return view('dashboard.prestasi.prestasi-index', compact('jagakarsa', 'cinere', 'pamulang', 'allPrestasi'));
+        return Inertia::render('Prestasi/prestasi-index', [
+            'jagakarsa' => $jagakarsa, 
+            'cinere' => $cinere, 
+            'pamulang' => $pamulang, 
+            'allPrestasi' => $allPrestasi
+        ]);
     }
 
     public function jagakarsa()
@@ -42,7 +48,7 @@ class DataPrestasiController extends Controller
             ->with('siswa.sekolah')
             ->latest()
             ->get();
-        return view('dashboard.prestasi.sekolah', ['prestasi' => $prestasi, 'sekolah' => 'Jagakarsa']);
+        return Inertia::render('Prestasi/sekolah', ['prestasi' => $prestasi, 'sekolah' => 'Jagakarsa']);
     }
 
     public function cinere()
@@ -51,7 +57,7 @@ class DataPrestasiController extends Controller
             ->with('siswa.sekolah')
             ->latest()
             ->get();
-        return view('dashboard.prestasi.sekolah', ['prestasi' => $prestasi, 'sekolah' => 'Cinere']);
+        return Inertia::render('Prestasi/sekolah', ['prestasi' => $prestasi, 'sekolah' => 'Cinere']);
     }
 
     public function pamulang()
@@ -60,7 +66,7 @@ class DataPrestasiController extends Controller
             ->with('siswa.sekolah')
             ->latest()
             ->get();
-        return view('dashboard.prestasi.sekolah', ['prestasi' => $prestasi, 'sekolah' => 'Pamulang']);
+        return Inertia::render('Prestasi/sekolah', ['prestasi' => $prestasi, 'sekolah' => 'Pamulang']);
     }
 
     /**
@@ -69,7 +75,7 @@ class DataPrestasiController extends Controller
     public function create()
     {
         $siswa = MasterSiswa::with('sekolah')->get();
-        return view('dashboard.prestasi.prestasi-create', compact('siswa'));
+        return Inertia::render('Prestasi/prestasi-create', ['siswa' => $siswa]);
     }
 
     public function store(Request $request)
@@ -90,14 +96,14 @@ class DataPrestasiController extends Controller
     public function show($id)
     {
         $prestasi = DataPrestasi::with('siswa.sekolah')->findOrFail($id);
-        return view('dashboard.prestasi.show', compact('prestasi'));
+        return Inertia::render('Prestasi/show', ['prestasi' => $prestasi]);
     }
 
     public function edit($id)
     {
         $prestasi = DataPrestasi::findOrFail($id);
         $siswa = MasterSiswa::with('sekolah')->get();
-        return view('dashboard.prestasi.prestasi-edit', compact('prestasi', 'siswa'));
+        return Inertia::render('Prestasi/prestasi-edit', ['prestasi' => $prestasi, 'siswa' => $siswa]);
     }
 
     public function update(Request $request, $id)

@@ -7,16 +7,21 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): Response
     {
-        return view('auth.login');
+        return Inertia::render('Auth/Login', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+        ]);
     }
 
     /**
@@ -29,16 +34,11 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
 
-        if (Auth::user()->hasRole('super-admin')) {
-            return redirect()->intended(route('dashboard', absolute: false));
-        } else {
-
-            if (Auth::user()->hasAnyRole(['kepala-tata-usaha','tata-usaha', 'kepala-sekolah', 'humas'])) {
-                return redirect()->intended(route('dashboard.aqr.tiket.index', absolute: false));
-            } else {
-                return redirect()->intended(route('dashboard', absolute: false));
-            }
+        if (Auth::user()->unit !== 'BPS') {
+            return redirect()->route('dashboard.aqr.dashboard');
         }
+
+        return redirect()->route('dashboard.aqr.dashboard');
     }
 
     /**
