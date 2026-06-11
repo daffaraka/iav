@@ -35,10 +35,11 @@ export default function DepartementShow({ title, departement, wig_total, wig_akt
 
     // Prepare chart configs
     const getChartOptions = (chartData) => {
-        if (!chartData) return { options: {}, series: [] };
+        if (!chartData) return { options: {}, series: [{ data: [] }] };
         
-        const progressData = chartData.map(item => item.progress);
-        const bulanData = chartData.map(item => item.bulan);
+        const dataArray = Array.isArray(chartData) ? chartData : Object.values(chartData);
+        const progressData = dataArray.map(item => item?.progress || 0);
+        const bulanData = dataArray.map(item => item?.bulan || '');
 
         return {
             series: [{
