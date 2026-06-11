@@ -27,6 +27,7 @@ class PermissionSeeder extends Seeder
             'progres-tiket',
             'rating-tiket',
             'user',
+            'penjemputan-harian',
             'featured-question'
         ];
 
@@ -50,7 +51,11 @@ class PermissionSeeder extends Seeder
             'tiket-pilih-pic',
             'monitor-all-tiket',
             'reminder-tiket',
-            'view-all-locations'
+            'view-all-locations',
+            'konfirmasi-kedatangan',
+            'konfirmasi-keluar',
+            'konfirmasi-ojol',
+            'konfirmasi-penyerahan'
         ];
 
         foreach ($specificPermissions as $permission) {

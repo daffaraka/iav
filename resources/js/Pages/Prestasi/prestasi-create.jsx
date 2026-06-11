@@ -13,7 +13,7 @@ export default function PrestasiCreate({ siswa }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('data-prestasi.store'));
+        post('/data-prestasi');
     };
 
     return (
@@ -26,7 +26,7 @@ export default function PrestasiCreate({ siswa }) {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Masukkan data prestasi baru siswa.</p>
                 </div>
                 <Link
-                    href={route('data-prestasi.index')}
+                    href="/data-prestasi"
                     className="inline-flex items-center justify-center px-4 py-2 bg-surface-100 dark:bg-surface-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium hover:bg-surface-200 dark:hover:bg-surface-600 transition-all"
                 >
                     <i className="ph ph-arrow-left mr-2 text-lg"></i>
@@ -118,7 +118,7 @@ export default function PrestasiCreate({ siswa }) {
 
                         <div className="flex items-center justify-end gap-3 pt-6 border-t border-surface-100 dark:border-surface-700">
                             <Link
-                                href={route('data-prestasi.index')}
+                                href="/data-prestasi"
                                 className="px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
                             >
                                 Batal

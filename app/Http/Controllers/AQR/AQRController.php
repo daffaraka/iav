@@ -139,24 +139,44 @@ class AQRController extends Controller
             ['name' => 'Selesai', 'y' => $tiketClosed]
         ];
 
-        // Bar Chart Data - Weekly by Location
-        $weeklyData = Tiket::selectRaw('WEEK(created_at) as week, lokasi_kendala, COUNT(*) as total')
-            ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 4 WEEK)')
-            ->groupBy('week', 'lokasi_kendala')
-            ->orderBy('week')
-            ->get();
-
-        $barChartData = [];
-        $locations = $weeklyData->pluck('lokasi_kendala')->unique()->values();
-
-        foreach ($locations as $location) {
-            $barChartData[] = [
-                'name' => $location ?: 'Tidak Diketahui',
-                'data' => $weeklyData->where('lokasi_kendala', $location)->pluck('total')->toArray()
-            ];
+        // Bar Chart Data - Weekly by Location (PHP-based grouping to prevent misalignment and support dev data)
+        $latestTicketDate = Tiket::max('created_at');
+        if ($latestTicketDate) {
+            $latestCarbon = \Carbon\Carbon::parse($latestTicketDate);
+            $startDate = (clone $latestCarbon)->subWeeks(3)->startOfWeek();
+            $tickets = Tiket::where('created_at', '>=', $startDate)->get();
+            
+            $weekLabels = [];
+            for ($i = 3; $i >= 0; $i--) {
+                $weekLabels[] = (clone $latestCarbon)->subWeeks($i)->weekOfYear;
+            }
+            $weekLabels = array_values(array_unique($weekLabels));
+        } else {
+            $tickets = collect();
+            $now = \Carbon\Carbon::now();
+            $weekLabels = [];
+            for ($i = 3; $i >= 0; $i--) {
+                $weekLabels[] = (clone $now)->subWeeks($i)->weekOfYear;
+            }
         }
 
-        $weekLabels = $weeklyData->pluck('week')->unique()->sort()->values()->toArray();
+        $barChartData = [];
+        $locations = $tickets->pluck('lokasi_kendala')->unique()->values();
+
+        foreach ($locations as $location) {
+            $data = [];
+            foreach ($weekLabels as $week) {
+                $count = $tickets->filter(function ($ticket) use ($location, $week) {
+                    return $ticket->lokasi_kendala === $location && 
+                           \Carbon\Carbon::parse($ticket->created_at)->weekOfYear === $week;
+                })->count();
+                $data[] = $count;
+            }
+            $barChartData[] = [
+                'name' => $location ?: 'Tidak Diketahui',
+                'data' => $data
+            ];
+        }
 
         // Grouping by lokasi_kendala
         $lokasiChartData = Tiket::selectRaw('lokasi_kendala, COUNT(*) as total')
@@ -174,7 +194,7 @@ class AQRController extends Controller
 
         // dd($barChartData);
 
-        return \Inertia\Inertia::render('AQR/aqr-index', [
+        return \Inertia\Inertia::render('AQR/dashboard-aqr', [
             'stats' => [
                 'new' => $tiketNew,
                 'proses' => $tiketProses,

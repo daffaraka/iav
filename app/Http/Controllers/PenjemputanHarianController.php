@@ -27,7 +27,6 @@ class PenjemputanHarianController extends Controller
                 ->groupBy('siswa.kelas')
                 ->sortKeys();
 
-
             $penjemputan = PenjemputanHarian::whereDate('created_at', Carbon::now()->format('Y-m-d'))
                 ->with('siswa')
                 ->orderBy('waktu_dijemput', 'desc')
@@ -247,7 +246,6 @@ class PenjemputanHarianController extends Controller
     {
         $siswa = PenjemputanHarian::with('siswa')->find($request->id);
 
-
         return response()->json([
             'success' => true,
             'data' => $siswa->siswa
@@ -304,7 +302,6 @@ class PenjemputanHarianController extends Controller
             return response()->json(['status' => 'no ajax']);
         }
     }
-
 
     public function nullPenjemputan()
     {
