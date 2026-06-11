@@ -25,6 +25,9 @@ use App\Http\Controllers\LowonganPekerjaanController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TopikPermasalahanController;
 use App\Http\Controllers\FeaturedQuestionController;
+use App\Http\Controllers\MasterSiswaController;
+use App\Http\Controllers\MasterGuruController;
+use App\Http\Controllers\MasterKelasController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard.aqr.dashboard');
@@ -38,6 +41,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware(['role:super-admin|humas|direktur|koordinator'])->group(function () {
+        Route::resource('master-guru', MasterGuruController::class);
+        Route::resource('master-kelas', MasterKelasController::class);
         Route::resource('sekolah', SekolahController::class);
         Route::resource('master-ptn', MasterPtController::class);
         Route::resource('data-prestasi', DataPrestasiController::class);
