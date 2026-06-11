@@ -7,6 +7,7 @@ use App\Models\Wig;
 use App\Models\LeadMeasure;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class LeadMeasureController extends Controller
 {
@@ -29,7 +30,7 @@ class LeadMeasureController extends Controller
             'modul' => Str::lower($title),
             'wig' => $wig
         ];
-        return view('dashboard.lead-measure.create-lm-by-dept', $data);
+        return Inertia::render('Departement/LeadMeasureCreate', $data);
     }
 
     /**
