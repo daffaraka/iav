@@ -38,16 +38,14 @@ export default function PrestasiCreate({ siswa }) {
                 </Link>
             </div>
 
-            <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden max-w-3xl">
-                <div className="p-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        
-                        {/* SECTION 1: SISWA */}
-                        <div className="mb-8">
-                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
-                                1. Data Siswa
-                            </h3>
-                            <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
+                {/* SECTION 1: SISWA */}
+                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
+                    <div className="p-6">
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
+                            1. Data Siswa
+                        </h3>
+                        <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Siswa <span className="text-red-500">*</span></label>
                                     <select
@@ -65,13 +63,16 @@ export default function PrestasiCreate({ siswa }) {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        {/* SECTION 2: LOMBA */}
-                        <div className="mb-8">
-                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
-                                2. Data Lomba
-                            </h3>
-                            <div className="space-y-6">
+                {/* SECTION 2: LOMBA */}
+                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
+                    <div className="p-6">
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
+                            2. Data Lomba
+                        </h3>
+                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nama Lomba <span className="text-red-500">*</span></label>
                                 <input
@@ -187,13 +188,16 @@ export default function PrestasiCreate({ siswa }) {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        {/* SECTION 3: GURU */}
-                        <div className="mb-8">
-                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
-                                3. Data Guru
-                            </h3>
-                            <div className="space-y-6">
+                {/* SECTION 3: GURU */}
+                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
+                    <div className="p-6">
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
+                            3. Data Guru
+                        </h3>
+                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Eskul</label>
                                 <input
@@ -217,26 +221,28 @@ export default function PrestasiCreate({ siswa }) {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="flex items-center justify-end gap-3 pt-6 border-t border-surface-100 dark:border-surface-700">
-                            <Link
-                                href="/data-prestasi"
-                                className="px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
-                            >
-                                Batal
-                            </Link>
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="px-5 py-2.5 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 disabled:opacity-70 disabled:cursor-not-allowed transition-all flex items-center"
-                            >
-                                {processing && <i className="ph ph-spinner animate-spin mr-2"></i>}
-                                Simpan Data
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
+                    <div className="p-6 flex items-center justify-end gap-3">
+                        <Link
+                            href="/data-prestasi"
+                            className="px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+                        >
+                            Batal
+                        </Link>
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="px-5 py-2.5 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 disabled:opacity-70 disabled:cursor-not-allowed transition-all flex items-center"
+                        >
+                            {processing && <i className="ph ph-spinner animate-spin mr-2"></i>}
+                            Simpan Data
+                        </button>
+                    </div>
+                </div>
+            </form>
         </AuthenticatedLayout>
     );
 }
