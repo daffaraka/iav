@@ -64,9 +64,9 @@ class DepartementController extends Controller
                 return [
                     'judul_wig' => $wig->judul_wig,
                     'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
-                    'progress' => $progress->sum('progress_wig')
+                    'progress' => (float) $progress->sum('progress_wig')
                 ];
-            })->sortKeys()->toArray();
+            })->sortKeys()->values()->toArray();
 
             // dd($chartWig);
             $chartPerWig[$index] =  $chartWig;
@@ -146,9 +146,9 @@ class DepartementController extends Controller
         $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
             return [
                 'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
-                'progress' => $progress->sum('progress_wig')
+                'progress' => (float) $progress->sum('progress_wig')
             ];
-        })->sortKeys()->toArray();
+        })->sortKeys()->values()->toArray();
 
 
 
