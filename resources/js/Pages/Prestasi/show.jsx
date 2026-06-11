@@ -37,6 +37,10 @@ export default function PrestasiShow({ prestasi }) {
                             <p className="text-base font-semibold text-slate-800 dark:text-slate-200">{prestasi.nama_lomba}</p>
                         </div>
                         <div>
+                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Kategori Lomba</p>
+                            <p className="text-base font-semibold text-slate-800 dark:text-slate-200">{prestasi.kategori_lomba || '-'}</p>
+                        </div>
+                        <div>
                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Tingkat Lomba</p>
                             <p className="text-base font-semibold text-slate-800 dark:text-slate-200">{prestasi.tingkat_lomba}</p>
                         </div>

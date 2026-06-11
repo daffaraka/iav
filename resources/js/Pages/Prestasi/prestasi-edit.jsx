@@ -6,6 +6,7 @@ export default function PrestasiEdit({ prestasi, siswa }) {
     const { data, setData, put, processing, errors } = useForm({
         master_siswa_id: prestasi.master_siswa_id || '',
         nama_lomba: prestasi.nama_lomba || '',
+        kategori_lomba: prestasi.kategori_lomba || '',
         tingkat_lomba: prestasi.tingkat_lomba || '',
         status_lomba: prestasi.status_lomba || '',
         tahun_pelajaran: prestasi.tahun_pelajaran || '',
@@ -70,6 +71,20 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                                 {errors.nama_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.nama_lomba}</p>}
                             </div>
 
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Kategori Lomba</label>
+                                <input
+                                    type="text"
+                                    value={data.kategori_lomba}
+                                    onChange={e => setData('kategori_lomba', e.target.value)}
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.kategori_lomba ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                    placeholder="Contoh: Akademik, Olahraga, Seni"
+                                />
+                                {errors.kategori_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.kategori_lomba}</p>}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Lomba <span className="text-red-500">*</span></label>
                                 <select

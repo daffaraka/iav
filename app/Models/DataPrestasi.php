@@ -18,6 +18,7 @@ class DataPrestasi extends Model
         'lokasi',
         'tanggal_pelaksanaan',
         'keterangan',
+        'kategori_lomba',
         'guru_eskul',
         'guru_pendamping',
     ];
