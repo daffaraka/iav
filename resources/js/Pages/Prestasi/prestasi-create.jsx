@@ -7,6 +7,7 @@ export default function PrestasiCreate({ siswa }) {
         master_siswa_id: '',
         nama_lomba: '',
         kategori_lomba: '',
+        tipe_lomba: '',
         tingkat_lomba: '',
         status_lomba: '',
         tahun_pelajaran: '',
@@ -73,16 +74,56 @@ export default function PrestasiCreate({ siswa }) {
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Kategori Lomba</label>
-                                <input
-                                    type="text"
+                                <select
                                     value={data.kategori_lomba}
-                                    onChange={e => setData('kategori_lomba', e.target.value)}
+                                    onChange={e => {
+                                        setData(data => ({
+                                            ...data,
+                                            kategori_lomba: e.target.value,
+                                            tipe_lomba: ''
+                                        }));
+                                    }}
                                     className={`w-full px-4 py-2.5 rounded-xl border ${errors.kategori_lomba ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
-                                    placeholder="Contoh: Akademik, Olahraga, Seni"
-                                />
+                                >
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="Akademik">Akademik</option>
+                                    <option value="Non Akademik">Non Akademik</option>
+                                </select>
                                 {errors.kategori_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.kategori_lomba}</p>}
                             </div>
                         </div>
+
+                        {data.kategori_lomba && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tipe Lomba</label>
+                                    <select
+                                        value={data.tipe_lomba}
+                                        onChange={e => setData('tipe_lomba', e.target.value)}
+                                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.tipe_lomba ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                    >
+                                        <option value="">-- Pilih Tipe Lomba --</option>
+                                        {data.kategori_lomba === 'Akademik' ? (
+                                            <>
+                                                <option value="Sains">Sains</option>
+                                                <option value="Matematika">Matematika</option>
+                                                <option value="Bahasa">Bahasa</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <option value="Olahraga">Olahraga</option>
+                                                <option value="Seni">Seni</option>
+                                                <option value="Keagamaan">Keagamaan</option>
+                                                <option value="Pramuka/Kepemimpinan">Pramuka/Kepemimpinan</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </>
+                                        )}
+                                    </select>
+                                    {errors.tipe_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.tipe_lomba}</p>}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
