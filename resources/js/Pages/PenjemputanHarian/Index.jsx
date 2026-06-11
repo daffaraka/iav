@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { usePage, router, Link } from '@inertiajs/react';
+import { usePage, router, Link, Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import DataTable from '@/Components/DataTable';
 import dayjs from 'dayjs';
@@ -115,54 +115,65 @@ export default function Index() {
             header: 'Action',
             cell: ({ row }) => {
                 const penjemput = row.original;
-                const isSatpamOrAdmin = userRole === 'satpam' || userRole === 'admin' || userRole === 'super-admin';
+                const isAdmin = userRole === 'admin' || userRole === 'super-admin';
+                const isSatpam = userRole === 'satpam' || isAdmin;
+                const isGuru = userRole === 'guru' || userRole === 'walikelas' || isAdmin;
 
                 if (!penjemput.waktu_dijemput) {
-                    return (
-                        <div className="flex flex-wrap gap-2">
-                            <Link 
-                                href={`/penjemputan-harian/satpam-konfirmasi-kedatangan/${penjemput.id}`} 
-                                className="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors"
-                                preserveScroll
-                            >
-                                Konfirmasi Kedatangan
-                            </Link>
-                            <button 
-                                onClick={() => openOjolModal(penjemput)} 
-                                className="px-3 py-1.5 bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg transition-colors"
-                            >
-                                Penjemput Lain
-                            </button>
-                        </div>
-                    );
+                    if (isSatpam) {
+                        return (
+                            <div className="flex flex-wrap gap-2">
+                                <Link 
+                                    href={`/penjemputan-harian/satpam-konfirmasi-kedatangan/${penjemput.id}`} 
+                                    className="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors inline-block whitespace-nowrap"
+                                    preserveScroll
+                                >
+                                    Konfirmasi Kedatangan
+                                </Link>
+                                <button 
+                                    onClick={() => openOjolModal(penjemput)} 
+                                    className="px-3 py-1.5 bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
+                                >
+                                    Penjemput Lain
+                                </button>
+                            </div>
+                        );
+                    }
+                    return <span className="text-slate-500 dark:text-slate-400 text-sm font-medium">Menunggu Kedatangan</span>;
                 }
 
                 if (penjemput.waktu_dijemput && !penjemput.confirm_pic_at) {
-                    return (
-                        <Link 
-                            href={`/penjemputan-harian/guru-konfirmasi/${penjemput.id}`}
-                            className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors inline-block"
-                            preserveScroll
-                        >
-                            Konfirmasi Dijemput (Guru)
-                        </Link>
-                    );
+                    if (isGuru) {
+                        return (
+                            <Link 
+                                href={`/penjemputan-harian/guru-konfirmasi/${penjemput.id}`}
+                                className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors inline-block whitespace-nowrap"
+                                preserveScroll
+                            >
+                                Konfirmasi Dijemput (Guru)
+                            </Link>
+                        );
+                    }
+                    return <span className="text-slate-500 dark:text-slate-400 text-sm font-medium">Menunggu Konfirmasi Guru</span>;
                 }
 
                 if (penjemput.waktu_dijemput && penjemput.confirm_pic_at && !penjemput.confirm_satpam_at) {
-                    return (
-                        <Link 
-                            href={`/penjemputan-harian/satpam-konfirmasi-keluar/${penjemput.id}`}
-                            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors inline-block"
-                            preserveScroll
-                        >
-                            Siswa Sudah Keluar Area
-                        </Link>
-                    );
+                    if (isSatpam) {
+                        return (
+                            <Link 
+                                href={`/penjemputan-harian/satpam-konfirmasi-keluar/${penjemput.id}`}
+                                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors inline-block whitespace-nowrap"
+                                preserveScroll
+                            >
+                                Siswa Sudah Keluar Area
+                            </Link>
+                        );
+                    }
+                    return <span className="text-slate-500 dark:text-slate-400 text-sm font-medium">Menunggu Konfirmasi Satpam</span>;
                 }
 
                 if (penjemput.waktu_dijemput && penjemput.confirm_pic_at && penjemput.confirm_satpam_at) {
-                    return <span className="px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg flex w-fit items-center gap-2"><i className="ph ph-check-circle"></i> Sudah Pulang</span>;
+                    return <span className="px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg flex w-fit items-center gap-2 whitespace-nowrap"><i className="ph ph-check-circle"></i> Sudah Pulang</span>;
                 }
 
                 return null;
@@ -172,6 +183,7 @@ export default function Index() {
 
     return (
         <AuthenticatedLayout>
+            <Head title="Penjemputan Harian" />
             <Toaster />
             
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
