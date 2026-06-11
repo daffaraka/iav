@@ -1,8 +1,9 @@
 import React from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
+import SearchableSelect from '../../Components/SearchableSelect';
 
-export default function PrestasiEdit({ prestasi, siswa }) {
+export default function PrestasiEdit({ prestasi, siswa, guru }) {
     const { data, setData, put, processing, errors } = useForm({
         master_siswa_id: prestasi.master_siswa_id || '',
         nama_lomba: prestasi.nama_lomba || '',
@@ -14,6 +15,16 @@ export default function PrestasiEdit({ prestasi, siswa }) {
         guru_eskul: prestasi.guru_eskul || '',
         guru_pendamping: prestasi.guru_pendamping || ''
     });
+
+    const siswaOptions = siswa.map(s => ({
+        value: s.id,
+        label: `${s.nama} - ${s.sekolah?.unit || ''}`
+    }));
+
+    const guruOptions = (guru || []).map(g => ({
+        value: g.name,
+        label: g.name
+    }));
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,17 +59,13 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Siswa <span className="text-red-500">*</span></label>
-                                <select
+                                <SearchableSelect
+                                    options={siswaOptions}
                                     value={data.master_siswa_id}
-                                    onChange={e => setData('master_siswa_id', e.target.value)}
-                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.master_siswa_id ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
-                                    required
-                                >
-                                    <option value="">-- Pilih Siswa --</option>
-                                    {siswa.map(s => (
-                                        <option key={s.id} value={s.id}>{s.nama} - {s.sekolah?.unit}</option>
-                                    ))}
-                                </select>
+                                    onChange={val => setData('master_siswa_id', val)}
+                                    placeholder="Cari & Pilih Siswa..."
+                                    error={errors.master_siswa_id}
+                                />
                                 {errors.master_siswa_id && <p className="mt-1.5 text-sm text-red-500">{errors.master_siswa_id}</p>}
                             </div>
                         </div>
@@ -203,23 +210,23 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Eskul</label>
-                                <input
-                                    type="text"
+                                <SearchableSelect
+                                    options={guruOptions}
                                     value={data.guru_eskul}
-                                    onChange={e => setData('guru_eskul', e.target.value)}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
-                                    placeholder="Nama Guru Eskul (Opsional)"
+                                    onChange={val => setData('guru_eskul', val)}
+                                    placeholder="Cari & Pilih Guru Eskul (Opsional)"
+                                    error={errors.guru_eskul}
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Pendamping</label>
-                                <input
-                                    type="text"
+                                <SearchableSelect
+                                    options={guruOptions}
                                     value={data.guru_pendamping}
-                                    onChange={e => setData('guru_pendamping', e.target.value)}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
-                                    placeholder="Nama Guru Pendamping (Opsional)"
+                                    onChange={val => setData('guru_pendamping', val)}
+                                    placeholder="Cari & Pilih Guru Pendamping (Opsional)"
+                                    error={errors.guru_pendamping}
                                 />
                             </div>
                         </div>

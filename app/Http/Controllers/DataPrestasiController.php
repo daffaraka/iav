@@ -75,7 +75,8 @@ class DataPrestasiController extends Controller
     public function create()
     {
         $siswa = MasterSiswa::with('sekolah')->get();
-        return Inertia::render('Prestasi/prestasi-create', ['siswa' => $siswa]);
+        $guru = \App\Models\User::role('guru')->get(['id', 'name']);
+        return Inertia::render('Prestasi/prestasi-create', ['siswa' => $siswa, 'guru' => $guru]);
     }
 
     public function store(Request $request)
@@ -103,7 +104,8 @@ class DataPrestasiController extends Controller
     {
         $prestasi = DataPrestasi::findOrFail($id);
         $siswa = MasterSiswa::with('sekolah')->get();
-        return Inertia::render('Prestasi/prestasi-edit', ['prestasi' => $prestasi, 'siswa' => $siswa]);
+        $guru = \App\Models\User::role('guru')->get(['id', 'name']);
+        return Inertia::render('Prestasi/prestasi-edit', ['prestasi' => $prestasi, 'siswa' => $siswa, 'guru' => $guru]);
     }
 
     public function update(Request $request, $id)
