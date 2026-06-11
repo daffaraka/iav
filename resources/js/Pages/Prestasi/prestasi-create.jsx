@@ -42,23 +42,36 @@ export default function PrestasiCreate({ siswa }) {
                 <div className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Siswa <span className="text-red-500">*</span></label>
-                            <select
-                                value={data.master_siswa_id}
-                                onChange={e => setData('master_siswa_id', e.target.value)}
-                                className={`w-full px-4 py-2.5 rounded-xl border ${errors.master_siswa_id ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
-                                required
-                            >
-                                <option value="">-- Pilih Siswa --</option>
-                                {siswa.map(s => (
-                                    <option key={s.id} value={s.id}>{s.nama} - {s.sekolah?.unit}</option>
-                                ))}
-                            </select>
-                            {errors.master_siswa_id && <p className="mt-1.5 text-sm text-red-500">{errors.master_siswa_id}</p>}
+                        {/* SECTION 1: SISWA */}
+                        <div className="mb-8">
+                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
+                                1. Data Siswa
+                            </h3>
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Siswa <span className="text-red-500">*</span></label>
+                                    <select
+                                        value={data.master_siswa_id}
+                                        onChange={e => setData('master_siswa_id', e.target.value)}
+                                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.master_siswa_id ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                        required
+                                    >
+                                        <option value="">-- Pilih Siswa --</option>
+                                        {siswa.map(s => (
+                                            <option key={s.id} value={s.id}>{s.nama} - {s.sekolah?.unit}</option>
+                                        ))}
+                                    </select>
+                                    {errors.master_siswa_id && <p className="mt-1.5 text-sm text-red-500">{errors.master_siswa_id}</p>}
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="space-y-6">
+                        {/* SECTION 2: LOMBA */}
+                        <div className="mb-8">
+                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
+                                2. Data Lomba
+                            </h3>
+                            <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nama Lomba <span className="text-red-500">*</span></label>
                                 <input
@@ -162,19 +175,25 @@ export default function PrestasiCreate({ siswa }) {
                                 {errors.status_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.status_lomba}</p>}
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tahun Pelajaran</label>
-                                <input
-                                    type="text"
-                                    value={data.tahun_pelajaran}
-                                    onChange={e => setData('tahun_pelajaran', e.target.value)}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
-                                    placeholder="Contoh: 2023/2024"
-                                />
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tahun Pelajaran</label>
+                                    <input
+                                        type="text"
+                                        value={data.tahun_pelajaran}
+                                        onChange={e => setData('tahun_pelajaran', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                        placeholder="Contoh: 2023/2024"
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div className="space-y-6">
+                        {/* SECTION 3: GURU */}
+                        <div className="mb-8">
+                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
+                                3. Data Guru
+                            </h3>
+                            <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Eskul</label>
                                 <input
@@ -186,15 +205,16 @@ export default function PrestasiCreate({ siswa }) {
                                 />
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Pendamping</label>
-                                <input
-                                    type="text"
-                                    value={data.guru_pendamping}
-                                    onChange={e => setData('guru_pendamping', e.target.value)}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
-                                    placeholder="Nama Guru Pendamping (Opsional)"
-                                />
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Pendamping</label>
+                                    <input
+                                        type="text"
+                                        value={data.guru_pendamping}
+                                        onChange={e => setData('guru_pendamping', e.target.value)}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                        placeholder="Nama Guru Pendamping (Opsional)"
+                                    />
+                                </div>
                             </div>
                         </div>
 
