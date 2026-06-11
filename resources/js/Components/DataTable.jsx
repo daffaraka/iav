@@ -10,6 +10,10 @@ import {
 
 export default function DataTable({ columns, data, searchable = true }) {
   const [globalFilter, setGlobalFilter] = useState('');
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   // Automatically add an index column at the beginning
   const tableColumns = React.useMemo(() => {
@@ -46,12 +50,15 @@ export default function DataTable({ columns, data, searchable = true }) {
     columns: modifiedColumns,
     state: {
       globalFilter,
+      pagination,
     },
     onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    autoResetPageIndex: false,
   });
 
   return (

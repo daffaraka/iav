@@ -10,9 +10,21 @@ class MasterSiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = MasterSiswa::query();
+        
+        if ($request->has('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('nis', 'like', '%' . $request->search . '%');
+        }
+
+        $siswa = $query->get();
+
+        return \Inertia\Inertia::render('MasterSiswa/Index', [
+            'siswa' => $siswa,
+            'filters' => $request->only('search')
+        ]);
     }
 
     /**
@@ -66,6 +78,7 @@ class MasterSiswaController extends Controller
     public function generateQrCode(MasterSiswa $siswa)
     {
         $name = $siswa->nis;
+
         return response()->streamDownload(function () use ($name) {
             echo file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . $name);
         }, $siswa->nis . '-' . $siswa->nama . '-' . $siswa->kelas . '.png');

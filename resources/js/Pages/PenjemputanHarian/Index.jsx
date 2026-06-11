@@ -13,14 +13,18 @@ export default function Index() {
     const [selectedPenjemput, setSelectedPenjemput] = useState(null);
     const [typeOjol, setTypeOjol] = useState('');
 
+    const [tableData, setTableData] = useState(penjemputan || []);
+
     useEffect(() => {
-        // Ensure Echo is available (should be initialized in echo.js)
+        setTableData(penjemputan || []);
+    }, [penjemputan]);
+
+    useEffect(() => {
         if (window.Echo) {
             const channel = window.Echo.channel('apus-notification');
             channel.listen('.notifikasi-penjemputan', (eventData) => {
                 console.log('Realtime Event Received:', eventData);
                 
-                // Only alert if it's the user's class (if teacher)
                 if (auth.user.kelas && eventData.kelas === auth.user.kelas) {
                     toast.success(eventData.notifikasi || 'Penjemputan Terbaru', {
                         duration: 5000,
@@ -28,8 +32,12 @@ export default function Index() {
                     });
                 }
                 
-                // Reload data without full page reload
-                router.reload({ only: ['penjemputan'] });
+                axios.get('/reload-penjemputan', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(response => {
+                        if (response.data && response.data.data) {
+                            setTableData(response.data.data);
+                        }
+                    });
             });
 
             return () => {
@@ -110,33 +118,30 @@ export default function Index() {
                 const isSatpamOrAdmin = userRole === 'satpam' || userRole === 'admin' || userRole === 'super-admin';
 
                 if (!penjemput.waktu_dijemput) {
-                    if (isSatpamOrAdmin) {
-                        return (
-                            <div className="flex gap-2">
-                                <Link 
-                                    href={`/penjemputan-harian/satpam-konfirmasi-kedatangan/${penjemput.id}`} 
-                                    className="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors"
-                                    preserveScroll
-                                >
-                                    Konfirmasi Kedatangan
-                                </Link>
-                                <button 
-                                    onClick={() => openOjolModal(penjemput)} 
-                                    className="px-3 py-1.5 bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg transition-colors"
-                                >
-                                    Penjemput Lain
-                                </button>
-                            </div>
-                        );
-                    }
-                    return <span className="px-3 py-1.5 bg-warning-100 text-warning-800 text-sm font-medium rounded-lg">Satpam Belum Konfirmasi</span>;
+                    return (
+                        <div className="flex flex-wrap gap-2">
+                            <Link 
+                                href={`/penjemputan-harian/satpam-konfirmasi-kedatangan/${penjemput.id}`} 
+                                className="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors"
+                                preserveScroll
+                            >
+                                Konfirmasi Kedatangan
+                            </Link>
+                            <button 
+                                onClick={() => openOjolModal(penjemput)} 
+                                className="px-3 py-1.5 bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg transition-colors"
+                            >
+                                Penjemput Lain
+                            </button>
+                        </div>
+                    );
                 }
 
                 if (penjemput.waktu_dijemput && !penjemput.confirm_pic_at) {
                     return (
                         <Link 
                             href={`/penjemputan-harian/guru-konfirmasi/${penjemput.id}`}
-                            className="px-3 py-1.5 bg-info-500 hover:bg-info-600 text-white text-sm font-medium rounded-lg transition-colors"
+                            className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors inline-block"
                             preserveScroll
                         >
                             Konfirmasi Dijemput (Guru)
@@ -145,22 +150,19 @@ export default function Index() {
                 }
 
                 if (penjemput.waktu_dijemput && penjemput.confirm_pic_at && !penjemput.confirm_satpam_at) {
-                    if (isSatpamOrAdmin) {
-                        return (
-                            <Link 
-                                href={`/penjemputan-harian/satpam-konfirmasi-keluar/${penjemput.id}`}
-                                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors"
-                                preserveScroll
-                            >
-                                Siswa Sudah Keluar Area
-                            </Link>
-                        );
-                    }
-                    return <span className="px-3 py-1.5 bg-warning-100 text-warning-800 text-sm font-medium rounded-lg">Satpam Belum Konfirmasi Keluar</span>;
+                    return (
+                        <Link 
+                            href={`/penjemputan-harian/satpam-konfirmasi-keluar/${penjemput.id}`}
+                            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors inline-block"
+                            preserveScroll
+                        >
+                            Siswa Sudah Keluar Area
+                        </Link>
+                    );
                 }
 
                 if (penjemput.waktu_dijemput && penjemput.confirm_pic_at && penjemput.confirm_satpam_at) {
-                    return <span className="px-3 py-1.5 bg-success-500 text-white text-sm font-medium rounded-lg flex w-fit items-center gap-2"><i className="ph ph-check-circle"></i> Sudah Pulang</span>;
+                    return <span className="px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg flex w-fit items-center gap-2"><i className="ph ph-check-circle"></i> Sudah Pulang</span>;
                 }
 
                 return null;
@@ -199,7 +201,7 @@ export default function Index() {
             </div>
 
             <div className="bg-white dark:bg-surface-800 p-6 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700">
-                <DataTable columns={columns} data={penjemputan || []} searchable={true} />
+                <DataTable columns={columns} data={tableData || []} searchable={true} />
             </div>
 
             {/* Modal Ojol */}

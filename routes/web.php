@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use App\Models\Wig;
 use App\Models\TaskProcess;
@@ -112,3 +112,5 @@ if (app()->environment('local')) {
 }
 Route::get('siswa/{siswa}/qrcode', [App\Http\Controllers\MasterSiswaController::class, 'generateQrCode'])->name('siswa.generateQrCode');
 
+
+Route::get('siswa', [App\Http\Controllers\MasterSiswaController::class, 'index'])->name('siswa.index');

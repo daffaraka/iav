@@ -284,6 +284,48 @@ export default function Sidebar({ isSidebarOpen, isMobile, setIsSidebarOpen }) {
                                 </span>
                             )}
                         </Link>
+                        <Link
+                            href="/siswa"
+                            title="Data Siswa"
+                            className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
+                        >
+                            <i
+                                className={`ph ph-student text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
+                            ></i>
+                            {isSidebarOpen && (
+                                <span className="font-medium text-sm whitespace-nowrap">
+                                    Data Siswa
+                                </span>
+                            )}
+                        </Link>
+                        <Link
+                            href="/penjemputan-harian"
+                            title="Penjemputan Siswa"
+                            className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
+                        >
+                            <i
+                                className={`ph ph-car-profile text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
+                            ></i>
+                            {isSidebarOpen && (
+                                <span className="font-medium text-sm whitespace-nowrap">
+                                    Penjemputan Siswa
+                                </span>
+                            )}
+                        </Link>
+                        <Link
+                            href="/scan-qr"
+                            title="Scan QR Kedatangan"
+                            className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
+                        >
+                            <i
+                                className={`ph ph-qr-code text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
+                            ></i>
+                            {isSidebarOpen && (
+                                <span className="font-medium text-sm whitespace-nowrap">
+                                    Scan QR Kedatangan
+                                </span>
+                            )}
+                        </Link>
                     </div>
 
                     {/* Divider */}

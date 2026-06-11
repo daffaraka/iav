@@ -13,7 +13,7 @@ class QRCodeGenerator extends Controller
 {
     public function qrCodeScan()
     {
-        return view('dashboard.qr-scanner');
+        return \Inertia\Inertia::render('PenjemputanHarian/QRScanner');
     }
 
     public function scanQrCode(Request $request)

@@ -42,7 +42,9 @@ class MasterSiswaSeeder extends Seeder
 
         $faker = Faker::create('id_ID');
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
+            $nis = $i <= 10 ? (string)$i : $faker->unique()->numerify('########');
+
             MasterSiswa::create([
                 'nama'          => $faker->name,
                 'nik'           => $faker->unique()->numerify('################'), // 16 digit
@@ -55,8 +57,8 @@ class MasterSiswaSeeder extends Seeder
                 'no_hp'         => '08' . $faker->numerify('##########'),
                 'email'         => 'siswa_' . $i . '@example.com',
                 'tahun_ajaran'  => $faker->randomElement($tahunAjaran),
-                'nisn'          => $i, // 10 digit
-                'nis'           => $i,   // 8 digit
+                'nisn'          => $nis, // 10 digit
+                'nis'           => $nis,   // 8 digit
                 'jenjang'       => $faker->randomElement($jenjang),
                 'kelas'         => $faker->randomElement($kelas),
                 'sub_kelas'     => $faker->randomElement($subKelas),
