@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { usePage, Link } from '@inertiajs/react';
+import { usePage, Link, Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import DataTable from '@/Components/DataTable';
 import { Toaster } from 'react-hot-toast';
@@ -51,6 +51,7 @@ export default function Index() {
 
     return (
         <AuthenticatedLayout>
+            <Head title="Master Siswa" />
             <Toaster />
             <div className="flex flex-col gap-6">
                 <div className="flex items-center justify-between">

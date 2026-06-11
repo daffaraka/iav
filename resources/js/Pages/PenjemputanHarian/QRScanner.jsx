@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { router } from '@inertiajs/react';
+import { router, Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import toast, { Toaster } from 'react-hot-toast';
@@ -73,6 +73,7 @@ export default function QRScanner() {
 
     return (
         <AuthenticatedLayout>
+            <Head title="QR Scanner Penjemputan" />
             <Toaster />
             <div className="max-w-2xl mx-auto mt-8">
                 <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
