@@ -18,6 +18,8 @@ class DataPrestasi extends Model
         'lokasi',
         'tanggal_pelaksanaan',
         'keterangan',
+        'guru_eskul',
+        'guru_pendamping',
     ];
 
     public function masterSiswa()

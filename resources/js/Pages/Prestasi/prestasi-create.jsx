@@ -8,7 +8,9 @@ export default function PrestasiCreate({ siswa }) {
         nama_lomba: '',
         tingkat_lomba: '',
         status_lomba: '',
-        tahun_pelajaran: ''
+        tahun_pelajaran: '',
+        guru_eskul: '',
+        guru_pendamping: ''
     });
 
     const handleSubmit = (e) => {
@@ -112,6 +114,30 @@ export default function PrestasiCreate({ siswa }) {
                                     onChange={e => setData('tahun_pelajaran', e.target.value)}
                                     className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
                                     placeholder="Contoh: 2023/2024"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Eskul</label>
+                                <input
+                                    type="text"
+                                    value={data.guru_eskul}
+                                    onChange={e => setData('guru_eskul', e.target.value)}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                    placeholder="Nama Guru Eskul (Opsional)"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Pendamping</label>
+                                <input
+                                    type="text"
+                                    value={data.guru_pendamping}
+                                    onChange={e => setData('guru_pendamping', e.target.value)}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                    placeholder="Nama Guru Pendamping (Opsional)"
                                 />
                             </div>
                         </div>

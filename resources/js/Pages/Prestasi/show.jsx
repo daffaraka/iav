@@ -45,6 +45,14 @@ export default function PrestasiShow({ prestasi }) {
                             <p className="text-base font-semibold text-slate-800 dark:text-slate-200">{prestasi.tahun_pelajaran || '-'}</p>
                         </div>
                         <div>
+                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Guru Eskul</p>
+                            <p className="text-base font-semibold text-slate-800 dark:text-slate-200">{prestasi.guru_eskul || '-'}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Guru Pendamping</p>
+                            <p className="text-base font-semibold text-slate-800 dark:text-slate-200">{prestasi.guru_pendamping || '-'}</p>
+                        </div>
+                        <div>
                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Status Lomba</p>
                             <span className={`inline-flex px-3 py-1 rounded-md text-sm font-semibold mt-1 ${prestasi.status_lomba === 'Terkurasi' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'}`}>
                                 {prestasi.status_lomba}

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('lokasi');
             $table->date('tanggal_pelaksanaan');
             $table->text('keterangan')->nullable();
+            $table->string('guru_eskul')->nullable();
+            $table->string('guru_pendamping')->nullable();
             $table->timestamps();
         });
     }
