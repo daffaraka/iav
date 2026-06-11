@@ -182,13 +182,13 @@ class AQRController extends Controller
         $lokasiChartData = Tiket::selectRaw('lokasi_kendala, COUNT(*) as total')
             ->groupBy('lokasi_kendala')
             ->get()
-            ->map(fn($item) => ['name' => $item->lokasi_kendala ?: 'Tidak Diketahui', 'y' => $item->total])
+            ->map(fn($item) => ['name' => $item->lokasi_kendala ?: 'Tidak Diketahui', 'y' => (int) $item->total])
             ->toArray();
 
         $typePengirimChart = Tiket::selectRaw('pengirim, COUNT(*) as total_pengirim')
             ->groupBy('pengirim')
             ->get()
-            ->map(fn($item) => ['name' => $item->pengirim ?: 'Tidak Diketahui', 'y' => $item->total_pengirim])
+            ->map(fn($item) => ['name' => $item->pengirim ?: 'Tidak Diketahui', 'y' => (int) $item->total_pengirim])
             ->toArray();
 
 
