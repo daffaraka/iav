@@ -62,4 +62,12 @@ class MasterSiswaController extends Controller
     {
         //
     }
+
+    public function generateQrCode(MasterSiswa $siswa)
+    {
+        $name = $siswa->nis;
+        return response()->streamDownload(function () use ($name) {
+            echo file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . $name);
+        }, $siswa->nis . '-' . $siswa->nama . '-' . $siswa->kelas . '.png');
+    }
 }

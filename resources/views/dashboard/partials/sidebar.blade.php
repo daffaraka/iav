@@ -328,6 +328,25 @@
                 </a>
             </li>
 
+            <li class="menu-item {{ request()->is('penjemputan-harian*') || request()->is('qr-code-scan*') || request()->is('scan-qr*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-car"></i>
+                    <div data-i18n="Basic">Penjemputan Siswa</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ request()->is('penjemputan-harian') ? 'active' : '' }}">
+                        <a href="{{ route('penjemputan-harian.index') }}" class="menu-link">
+                            <div data-i18n="Basic">Data Penjemputan</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->is('scan-qr') ? 'active' : '' }}">
+                        <a href="{{ route('qrCodeScan') }}" class="menu-link">
+                            <div data-i18n="Basic">Scan QR Kedatangan</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
 
         @endrole
 

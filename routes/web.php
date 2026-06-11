@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use App\Models\Wig;
 use App\Models\TaskProcess;
@@ -9,6 +9,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\AqrOptionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\QRCodeGenerator;
+use App\Http\Controllers\PenjemputanHarianController;
 use App\Http\Controllers\MasterPtController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\LeadMeasureController;
@@ -79,6 +81,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
+    Route::get('scan-qr',[QRCodeGenerator::class,'qrCodeScan'])->name('qrCodeScan');
+    Route::post('scan-qr-code',[QRCodeGenerator::class,'scanQrCode'])->name('scan.scanQrCode');
+
+    Route::resource('penjemputan-harian', PenjemputanHarianController::class)->except('show');
+    Route::post('penjemput-datang',[PenjemputanHarianController::class,'penjemputDatang'])->name('penjemputDatang');
+
+    Route::get('penjemputan-harian/satpam-konfirmasi-kedatangan/{penjemputan_harian}', [PenjemputanHarianController::class, 'satpamKonfirmasiKedatangan'])->name('penjemputan-harian.satpamKonfirmasiKedatangan');
+    Route::get('penjemputan-harian/satpam-konfirmasi-keluar/{penjemputan_harian}', [PenjemputanHarianController::class, 'satpamKonfirmasiKeluar'])->name('penjemputan-harian.satpamKonfirmasiKeluar');
+    Route::get('penjemputan-harian/guru-konfirmasi/{penjemputan_harian}', [PenjemputanHarianController::class, 'guruKonfirmasi'])->name('penjemputan-harian.guruKonfirmasi');
+    Route::get('penjemputan-harian-kelas/{kelas}', [PenjemputanHarianController::class,'penjemputanKelas'])->name('penjemputan-harian.kelas');
+    Route::get('generate-harian' , [PenjemputanHarianController::class,'generateSiswaHariIni'])->name('penjemputan-harian.generateSiswaHariIni');
+    Route::post('penjemputan-harian/satpam-konfirmasi-ojol/', [PenjemputanHarianController::class, 'satpamKonfirmasiOjol'])->name('penjemputan-harian.satpamKonfirmasiOjol');
+    Route::post('data-siswa/{id}', [PenjemputanHarianController::class, 'dataSiswa'])->name('penjemputan-harian.dataSiswa');
+
+    // Ajax Reload
+    Route::get('reload-penjemputan', [PenjemputanHarianController::class, 'refreshTablePenjemputan'])->name('penjemputan-harian.refreshTablePenjemputan');
+    Route::get('null-penjemputan', [PenjemputanHarianController::class, 'nullPenjemputan'])->name('penjemputan-harian.nullPenjemputan');
+
     require __DIR__ . '/aqr.php';
 });
 
@@ -90,3 +110,5 @@ require __DIR__ . '/frontend.php';
 if (app()->environment('local')) {
     require __DIR__ . '/test-gemini.php';
 }
+Route::get('siswa/{siswa}/qrcode', [App\Http\Controllers\MasterSiswaController::class, 'generateQrCode'])->name('siswa.generateQrCode');
+
