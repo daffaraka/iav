@@ -8,8 +8,10 @@ use App\Models\Wig;
 use App\Models\Sekolah;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class WigController extends Controller
 {
@@ -213,14 +215,13 @@ class WigController extends Controller
     {
         $title = 'Edit';
 
-        // dd()
         $data = [
             'title' => $title . ' ' . $wig->judul_wig,
             'dept' => $departement,
             'wig' => $wig,
             'modul' => Str::lower($title)
         ];
-        return view('dashboard.wig.wig-edit', $data);
+        return Inertia::render('Departement/WigEdit', $data);
     }
 
     /**
@@ -276,9 +277,7 @@ class WigController extends Controller
                 // 'departement_id' => $request->departement_id
             ]);
 
-
-
-            return redirect()->back()->with('success', 'WIG berhasil diupdate');
+            return redirect()->route('departement.show', $wig->departement_id)->with('success', 'WIG berhasil diupdate');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Gagal mengupdate WIG: ' . $e->getMessage());
         }
