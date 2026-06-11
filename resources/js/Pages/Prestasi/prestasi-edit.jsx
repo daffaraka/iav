@@ -46,21 +46,20 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                             1. Data Siswa
                         </h3>
                         <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Siswa <span className="text-red-500">*</span></label>
-                                    <select
-                                        value={data.master_siswa_id}
-                                        onChange={e => setData('master_siswa_id', e.target.value)}
-                                        className={`w-full px-4 py-2.5 rounded-xl border ${errors.master_siswa_id ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
-                                        required
-                                    >
-                                        <option value="">-- Pilih Siswa --</option>
-                                        {siswa.map(s => (
-                                            <option key={s.id} value={s.id}>{s.nama} - {s.sekolah?.unit}</option>
-                                        ))}
-                                    </select>
-                                    {errors.master_siswa_id && <p className="mt-1.5 text-sm text-red-500">{errors.master_siswa_id}</p>}
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Siswa <span className="text-red-500">*</span></label>
+                                <select
+                                    value={data.master_siswa_id}
+                                    onChange={e => setData('master_siswa_id', e.target.value)}
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.master_siswa_id ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                    required
+                                >
+                                    <option value="">-- Pilih Siswa --</option>
+                                    {siswa.map(s => (
+                                        <option key={s.id} value={s.id}>{s.nama} - {s.sekolah?.unit}</option>
+                                    ))}
+                                </select>
+                                {errors.master_siswa_id && <p className="mt-1.5 text-sm text-red-500">{errors.master_siswa_id}</p>}
                             </div>
                         </div>
                     </div>
@@ -105,10 +104,8 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                                 </select>
                                 {errors.kategori_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.kategori_lomba}</p>}
                             </div>
-                        </div>
 
-                        {data.kategori_lomba && (
-                            <div className="space-y-6">
+                            {data.kategori_lomba && (
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tipe Lomba</label>
                                     <select
@@ -136,10 +133,8 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                                     </select>
                                     {errors.tipe_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.tipe_lomba}</p>}
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Lomba <span className="text-red-500">*</span></label>
                                 <select
@@ -158,9 +153,7 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                                 </select>
                                 {errors.tingkat_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.tingkat_lomba}</p>}
                             </div>
-                        </div>
 
-                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Status Lomba <span className="text-red-500">*</span></label>
                                 <select
@@ -176,16 +169,26 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                                 {errors.status_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.status_lomba}</p>}
                             </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tahun Pelajaran</label>
-                                    <input
-                                        type="text"
-                                        value={data.tahun_pelajaran}
-                                        onChange={e => setData('tahun_pelajaran', e.target.value)}
-                                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
-                                        placeholder="Contoh: 2023/2024"
-                                    />
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tahun Pelajaran</label>
+                                <select
+                                    value={data.tahun_pelajaran}
+                                    onChange={e => setData('tahun_pelajaran', e.target.value)}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                >
+                                    <option value="">-- Pilih Tahun Pelajaran --</option>
+                                    <option value="2020/2021">2020/2021</option>
+                                    <option value="2021/2022">2021/2022</option>
+                                    <option value="2022/2023">2022/2023</option>
+                                    <option value="2023/2024">2023/2024</option>
+                                    <option value="2024/2025">2024/2025</option>
+                                    <option value="2025/2026">2025/2026</option>
+                                    <option value="2026/2027">2026/2027</option>
+                                    <option value="2027/2028">2027/2028</option>
+                                    <option value="2028/2029">2028/2029</option>
+                                    <option value="2029/2030">2029/2030</option>
+                                    <option value="2030/2031">2030/2031</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -209,16 +212,15 @@ export default function PrestasiEdit({ prestasi, siswa }) {
                                 />
                             </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Pendamping</label>
-                                    <input
-                                        type="text"
-                                        value={data.guru_pendamping}
-                                        onChange={e => setData('guru_pendamping', e.target.value)}
-                                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
-                                        placeholder="Nama Guru Pendamping (Opsional)"
-                                    />
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Pendamping</label>
+                                <input
+                                    type="text"
+                                    value={data.guru_pendamping}
+                                    onChange={e => setData('guru_pendamping', e.target.value)}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                    placeholder="Nama Guru Pendamping (Opsional)"
+                                />
                             </div>
                         </div>
                     </div>
