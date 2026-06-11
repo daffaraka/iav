@@ -84,6 +84,7 @@ class DataPrestasiController extends Controller
         $request->validate([
             'master_siswa_id' => 'required',
             'nama_lomba' => 'required',
+            'penyelenggara_lomba' => 'required',
             'tingkat_lomba' => 'required',
             'status_lomba' => 'required',
             'lokasi' => 'required',
@@ -115,6 +116,7 @@ class DataPrestasiController extends Controller
         $request->validate([
             'master_siswa_id' => 'required',
             'nama_lomba' => 'required',
+            'penyelenggara_lomba' => 'required',
             'tingkat_lomba' => 'required',
             'status_lomba' => 'required',
             'lokasi' => 'required',

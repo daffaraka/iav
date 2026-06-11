@@ -124,13 +124,22 @@ export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <h3 className="text-xl font-bold text-slate-800 dark:text-white">Semua Data Prestasi</h3>
-                <Link
-                    href="/data-prestasi/create"
-                    className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-all"
-                >
-                    <i className="ph ph-plus mr-2 text-lg"></i>
-                    Tambah Data
-                </Link>
+                <div className="flex gap-3">
+                    <button
+                        type="button"
+                        className="inline-flex items-center justify-center px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-emerald-500/30 hover:bg-emerald-700 transition-all"
+                    >
+                        <i className="ph ph-file-csv mr-2 text-lg"></i>
+                        Import Data
+                    </button>
+                    <Link
+                        href="/data-prestasi/create"
+                        className="inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-all"
+                    >
+                        <i className="ph ph-plus mr-2 text-lg"></i>
+                        Tambah Data
+                    </Link>
+                </div>
             </div>
             
             <DataTable columns={columns} data={allPrestasi} searchable={true} />

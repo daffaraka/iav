@@ -12,6 +12,7 @@ class DataPrestasi extends Model
         'master_siswa_id',
         'sekolah_id',
         'nama_lomba',
+        'penyelenggara_lomba',
         'tingkat_lomba',
         'status_lomba',
         'tahun_pelajaran',

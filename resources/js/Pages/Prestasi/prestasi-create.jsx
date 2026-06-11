@@ -7,6 +7,7 @@ export default function PrestasiCreate({ siswa, guru }) {
     const { data, setData, post, processing, errors } = useForm({
         master_siswa_id: '',
         nama_lomba: '',
+        penyelenggara_lomba: '',
         kategori_lomba: '',
         tipe_lomba: '',
         tingkat_lomba: '',
@@ -93,6 +94,19 @@ export default function PrestasiCreate({ siswa, guru }) {
                                     required
                                 />
                                 {errors.nama_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.nama_lomba}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Penyelenggara Lomba <span className="text-red-500">*</span></label>
+                                <input
+                                    type="text"
+                                    value={data.penyelenggara_lomba}
+                                    onChange={e => setData('penyelenggara_lomba', e.target.value)}
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.penyelenggara_lomba ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                    placeholder="Masukkan penyelenggara lomba"
+                                    required
+                                />
+                                {errors.penyelenggara_lomba && <p className="mt-1.5 text-sm text-red-500">{errors.penyelenggara_lomba}</p>}
                             </div>
 
                             <div>

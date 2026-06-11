@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('sekolah_id')->constrained()->onDelete('cascade');
 
             $table->string('nama_lomba');
+            $table->string('penyelenggara_lomba');
             $table->string('tingkat_lomba');
             $table->enum('status_lomba', ['Terkurasi', 'Tidak terkurasi']);
             $table->string('tahun_pelajaran');

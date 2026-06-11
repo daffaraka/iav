@@ -25,6 +25,7 @@ class DataPrestasiSeeder extends Seeder
                 'master_siswa_id' => $faker->randomElement($siswa),
                 'sekolah_id' => $faker->randomElement($sekolah),
                 'nama_lomba' => $faker->company,
+                'penyelenggara_lomba' => $faker->company,
                 'tingkat_lomba' => $faker->randomElement(['Kecamatan', 'Kota', 'Provinsi', 'Nasional', 'Internasional']),
                 'status_lomba' => $faker->randomElement(['Terkurasi', 'Tidak terkurasi']),
                 'tahun_pelajaran' => $year . '-' . ($year + 1),
