@@ -51,7 +51,7 @@ export default function PrestasiEdit({ prestasi, siswa, guru }) {
 
             <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
                 {/* SECTION 1: SISWA */}
-                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-visible">
+                <div className="relative z-50 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-visible">
                     <div className="p-6">
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
                             1. Data Siswa
@@ -73,7 +73,7 @@ export default function PrestasiEdit({ prestasi, siswa, guru }) {
                 </div>
 
                 {/* SECTION 2: LOMBA */}
-                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-visible">
+                <div className="relative z-40 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-visible">
                     <div className="p-6">
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
                             2. Data Lomba
@@ -202,7 +202,7 @@ export default function PrestasiEdit({ prestasi, siswa, guru }) {
                 </div>
 
                 {/* SECTION 3: GURU */}
-                <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-visible">
+                <div className="relative z-30 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-visible">
                     <div className="p-6">
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white border-b border-surface-200 dark:border-surface-700 pb-2 mb-4">
                             3. Data Guru
