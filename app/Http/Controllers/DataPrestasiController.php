@@ -85,7 +85,9 @@ class DataPrestasiController extends Controller
             'master_siswa_id' => 'required',
             'nama_lomba' => 'required',
             'tingkat_lomba' => 'required',
-            'status_lomba' => 'required'
+            'status_lomba' => 'required',
+            'lokasi' => 'required',
+            'tanggal_pelaksanaan' => 'required|date'
         ]);
 
         $siswa = MasterSiswa::find($request->master_siswa_id);
@@ -114,7 +116,9 @@ class DataPrestasiController extends Controller
             'master_siswa_id' => 'required',
             'nama_lomba' => 'required',
             'tingkat_lomba' => 'required',
-            'status_lomba' => 'required'
+            'status_lomba' => 'required',
+            'lokasi' => 'required',
+            'tanggal_pelaksanaan' => 'required|date'
         ]);
 
         $prestasi = DataPrestasi::findOrFail($id);

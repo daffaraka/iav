@@ -12,6 +12,9 @@ export default function PrestasiCreate({ siswa, guru }) {
         tingkat_lomba: '',
         status_lomba: '',
         tahun_pelajaran: '',
+        lokasi: '',
+        tanggal_pelaksanaan: '',
+        keterangan: '',
         guru_eskul: '',
         guru_pendamping: '',
     });
@@ -143,6 +146,31 @@ export default function PrestasiCreate({ siswa, guru }) {
                             )}
 
                             <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Lokasi Lomba <span className="text-red-500">*</span></label>
+                                <input
+                                    type="text"
+                                    value={data.lokasi}
+                                    onChange={e => setData('lokasi', e.target.value)}
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.lokasi ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                    placeholder="Masukkan lokasi pelaksanaan"
+                                    required
+                                />
+                                {errors.lokasi && <p className="mt-1.5 text-sm text-red-500">{errors.lokasi}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tanggal Pelaksanaan <span className="text-red-500">*</span></label>
+                                <input
+                                    type="date"
+                                    value={data.tanggal_pelaksanaan}
+                                    onChange={e => setData('tanggal_pelaksanaan', e.target.value)}
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.tanggal_pelaksanaan ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all`}
+                                    required
+                                />
+                                {errors.tanggal_pelaksanaan && <p className="mt-1.5 text-sm text-red-500">{errors.tanggal_pelaksanaan}</p>}
+                            </div>
+
+                            <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Lomba <span className="text-red-500">*</span></label>
                                 <select
                                     value={data.tingkat_lomba}
@@ -196,6 +224,17 @@ export default function PrestasiCreate({ siswa, guru }) {
                                     <option value="2029/2030">2029/2030</option>
                                     <option value="2030/2031">2030/2031</option>
                                 </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Keterangan (Opsional)</label>
+                                <textarea
+                                    value={data.keterangan}
+                                    onChange={e => setData('keterangan', e.target.value)}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 focus:border-brand-500 focus:ring-brand-500/20 bg-white dark:bg-surface-900 text-slate-800 dark:text-white transition-all"
+                                    placeholder="Tambahkan keterangan jika ada"
+                                    rows="3"
+                                ></textarea>
                             </div>
                         </div>
                     </div>
