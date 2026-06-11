@@ -58,7 +58,7 @@ export default function PrestasiCreate({ siswa }) {
                             {errors.master_siswa_id && <p className="mt-1.5 text-sm text-red-500">{errors.master_siswa_id}</p>}
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nama Lomba <span className="text-red-500">*</span></label>
                                 <input
@@ -94,7 +94,7 @@ export default function PrestasiCreate({ siswa }) {
                         </div>
 
                         {data.kategori_lomba && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tipe Lomba</label>
                                     <select
@@ -125,7 +125,7 @@ export default function PrestasiCreate({ siswa }) {
                             </div>
                         )}
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Lomba <span className="text-red-500">*</span></label>
                                 <select
@@ -146,7 +146,7 @@ export default function PrestasiCreate({ siswa }) {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Status Lomba <span className="text-red-500">*</span></label>
                                 <select
@@ -174,7 +174,7 @@ export default function PrestasiCreate({ siswa }) {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guru Eskul</label>
                                 <input
