@@ -1,16 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
 import Alert from '../../Components/Alert';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function PtnIndex({ ptns, flash }) {
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus data ini?')) {
-            destroy('/master-ptn/' + id);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy('/master-ptn/' + confirmModal.id);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const columns = useMemo(() => [
@@ -85,6 +90,14 @@ export default function PtnIndex({ ptns, flash }) {
             <Alert type="success" message={flash?.success} />
 
             <DataTable columns={columns} data={ptns} searchable={true} />
+            
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus Master PTN/PTS?"
+                message="Data perguruan tinggi yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

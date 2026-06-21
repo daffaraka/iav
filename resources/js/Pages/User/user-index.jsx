@@ -1,15 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function UserIndex({ users, title }) {
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus user ini?')) {
-            destroy(`/user/${id}`);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy(`/user/${confirmModal.id}`);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const columns = useMemo(() => [
@@ -141,6 +146,13 @@ export default function UserIndex({ users, title }) {
 
             <DataTable columns={columns} data={users || []} />
             
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus User?"
+                message="Data user yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

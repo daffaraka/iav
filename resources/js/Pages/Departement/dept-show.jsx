@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import Chart from 'react-apexcharts';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function DepartementShow({ title, departement, wig_total, wig_aktif, wig_selesai, wig_tidak_aktif, chartPerWig }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
     
     const { data, setData, post, processing, errors, reset } = useForm({
         departement_id: departement.id,
@@ -28,9 +30,12 @@ export default function DepartementShow({ title, departement, wig_total, wig_akt
     };
 
     const handleDelete = (id) => {
-        if (confirm('Apakah anda yakin data WIG akan dihapus permanen?')) {
-            router.delete(`/wig/${id}`);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        router.delete(`/wig/${confirmModal.id}`);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     // Prepare chart configs
@@ -397,6 +402,14 @@ export default function DepartementShow({ title, departement, wig_total, wig_akt
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus WIG?"
+                message="Data WIG akan dihapus permanen beserta semua Lead Measure dan Task di dalamnya."
+            />
         </AuthenticatedLayout>
     );
 }

@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import Chart from 'react-apexcharts';
 import DataTable from '../../Components/DataTable';
 import Alert from '../../Components/Alert';
 import { useTheme } from '../../Contexts/ThemeContext';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function SekolahIndex({
     jagakarsa, cinere, pamulang,
@@ -15,11 +16,15 @@ export default function SekolahIndex({
 }) {
     const { isDarkMode } = useTheme();
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus data sekolah ini?')) {
-            destroy('/sekolah/' + id);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy('/sekolah/' + confirmModal.id);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const getPieOptions = (data) => ({
@@ -164,20 +169,41 @@ export default function SekolahIndex({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 flex flex-col">
                     <h6 className="text-base font-bold text-slate-800 dark:text-white mb-4">Tingkat Lomba - Jagakarsa</h6>
-                    <div className="flex-1 flex items-center justify-center">
-                        <Chart className="w-full" options={getPieOptions(tingkatJagakarsa).options} series={getPieOptions(tingkatJagakarsa).series} type="donut" height={320} />
+                    <div className="flex-1 flex items-center justify-center min-h-[300px]">
+                        {tingkatJagakarsa && tingkatJagakarsa.length > 0 ? (
+                            <Chart className="w-full" options={getPieOptions(tingkatJagakarsa).options} series={getPieOptions(tingkatJagakarsa).series} type="donut" height={320} />
+                        ) : (
+                            <div className="text-center text-slate-400 flex flex-col items-center">
+                                <i className="ph ph-chart-donut text-5xl mb-3 text-slate-300 dark:text-slate-600"></i>
+                                <p className="text-sm font-medium">Belum ada data prestasi</p>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 flex flex-col">
                     <h6 className="text-base font-bold text-slate-800 dark:text-white mb-4">Tingkat Lomba - Cinere</h6>
-                    <div className="flex-1 flex items-center justify-center">
-                        <Chart className="w-full" options={getPieOptions(tingkatCinere).options} series={getPieOptions(tingkatCinere).series} type="donut" height={320} />
+                    <div className="flex-1 flex items-center justify-center min-h-[300px]">
+                        {tingkatCinere && tingkatCinere.length > 0 ? (
+                            <Chart className="w-full" options={getPieOptions(tingkatCinere).options} series={getPieOptions(tingkatCinere).series} type="donut" height={320} />
+                        ) : (
+                            <div className="text-center text-slate-400 flex flex-col items-center">
+                                <i className="ph ph-chart-donut text-5xl mb-3 text-slate-300 dark:text-slate-600"></i>
+                                <p className="text-sm font-medium">Belum ada data prestasi</p>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft p-6 flex flex-col">
                     <h6 className="text-base font-bold text-slate-800 dark:text-white mb-4">Tingkat Lomba - Pamulang</h6>
-                    <div className="flex-1 flex items-center justify-center">
-                        <Chart className="w-full" options={getPieOptions(tingkatPamulang).options} series={getPieOptions(tingkatPamulang).series} type="donut" height={320} />
+                    <div className="flex-1 flex items-center justify-center min-h-[300px]">
+                        {tingkatPamulang && tingkatPamulang.length > 0 ? (
+                            <Chart className="w-full" options={getPieOptions(tingkatPamulang).options} series={getPieOptions(tingkatPamulang).series} type="donut" height={320} />
+                        ) : (
+                            <div className="text-center text-slate-400 flex flex-col items-center">
+                                <i className="ph ph-chart-donut text-5xl mb-3 text-slate-300 dark:text-slate-600"></i>
+                                <p className="text-sm font-medium">Belum ada data prestasi</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -206,6 +232,14 @@ export default function SekolahIndex({
             </div>
 
             <DataTable columns={columns} data={sekolahs} searchable={true} />
+            
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus Master Sekolah?"
+                message="Data sekolah yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

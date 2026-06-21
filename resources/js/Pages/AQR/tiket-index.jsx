@@ -2,8 +2,10 @@ import React, { useState, useMemo } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function TiketIndex({ tikets, userRoles }) {
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeletingAll, setIsDeletingAll] = useState(false);
     const [confirmText, setConfirmText] = useState('');
@@ -11,9 +13,12 @@ export default function TiketIndex({ tikets, userRoles }) {
     const isSuperAdmin = userRoles.includes('super-admin');
 
     const handleDelete = (id) => {
-        if (confirm('Apakah Anda yakin ingin menghapus tiket ini?')) {
-            router.delete(`/dashboard/aqr/tiket/${id}`);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        router.delete(`/dashboard/aqr/tiket/${confirmModal.id}`);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const handleDeleteAll = () => {
@@ -201,6 +206,14 @@ export default function TiketIndex({ tikets, userRoles }) {
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus Tiket?"
+                message="Tiket yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

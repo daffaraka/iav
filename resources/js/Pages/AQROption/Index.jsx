@@ -1,15 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function Index({ aqrOptions }) {
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus AQR Option ini?')) {
-            destroy(`/aqr-option/${id}`);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy(`/aqr-option/${confirmModal.id}`);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const columns = useMemo(() => [
@@ -89,6 +94,13 @@ export default function Index({ aqrOptions }) {
 
             <DataTable columns={columns} data={aqrOptions || []} />
             
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus AQR Option?"
+                message="AQR Option yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

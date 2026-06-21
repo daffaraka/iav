@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ThemeProvider } from './Contexts/ThemeContext';
+import { ToastProvider } from './Contexts/ToastContext';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Avicenna School';
 
@@ -15,7 +16,9 @@ createInertiaApp({
         const root = createRoot(el);
         root.render(
             <ThemeProvider>
-                <App {...props} />
+                <ToastProvider>
+                    <App {...props} />
+                </ToastProvider>
             </ThemeProvider>
         );
     },

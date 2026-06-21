@@ -1,15 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function MasterKelasIndex({ kelas }) {
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus kelas ini?')) {
-            destroy(`/master-kelas/${id}`);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy(`/master-kelas/${confirmModal.id}`);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const columns = useMemo(() => [
@@ -84,6 +89,14 @@ export default function MasterKelasIndex({ kelas }) {
             </div>
 
             <DataTable columns={columns} data={kelas || []} />
+            
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus Master Kelas?"
+                message="Data kelas yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

@@ -1,15 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function RoleIndex({ roles, title }) {
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus role ini?')) {
-            destroy(`/role/${id}`);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy(`/role/${confirmModal.id}`);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const columns = useMemo(() => [
@@ -70,6 +75,13 @@ export default function RoleIndex({ roles, title }) {
 
             <DataTable columns={columns} data={roles || []} />
 
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus Role?"
+                message="Role yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

@@ -1,16 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
 import Alert from '../../Components/Alert';
+import ConfirmModal from '../../Components/ConfirmModal';
 
 export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi, flash }) {
     const { delete: destroy } = useForm();
+    const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
 
     const handleDelete = (id) => {
-        if (confirm('Yakin ingin menghapus data ini?')) {
-            destroy('/data-prestasi/' + id);
-        }
+        setConfirmModal({ isOpen: true, id });
+    };
+
+    const confirmDelete = () => {
+        destroy('/data-prestasi/' + confirmModal.id);
+        setConfirmModal({ isOpen: false, id: null });
     };
 
     const renderSchoolCard = (title, data) => (
@@ -143,6 +148,14 @@ export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi
             </div>
             
             <DataTable columns={columns} data={allPrestasi} searchable={true} />
+            
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ isOpen: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Hapus Data Prestasi?"
+                message="Data prestasi siswa yang dihapus tidak dapat dikembalikan."
+            />
         </AuthenticatedLayout>
     );
 }

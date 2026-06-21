@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { usePage } from '@inertiajs/react';
 import Sidebar from '../Components/Sidebar';
 import Topbar from '../Components/Topbar';
+import ToastContainer from '../Components/Toast';
+import { useToast } from '../Contexts/ToastContext';
 
 export default function AuthenticatedLayout({ children }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isMobile, setIsMobile] = useState(false);
+    const { flash } = usePage().props;
+    const { showToast } = useToast();
+
+    useEffect(() => {
+        if (flash?.success) showToast('success', flash.success);
+        if (flash?.error) showToast('error', flash.error);
+        if (flash?.warning) showToast('warning', flash.warning);
+    }, [flash]);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -41,6 +52,8 @@ export default function AuthenticatedLayout({ children }) {
                     {children}
                 </main>
             </div>
+            
+            <ToastContainer />
         </div>
     );
 }

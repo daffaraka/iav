@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,8 +7,9 @@ import {
   getSortedRowModel,
   flexRender,
 } from '@tanstack/react-table';
+import Skeleton from './Skeleton';
 
-export default function DataTable({ columns, data, searchable = true }) {
+export default function DataTable({ columns, data, searchable = true, loading = false }) {
   const [globalFilter, setGlobalFilter] = useState('');
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -101,56 +102,62 @@ export default function DataTable({ columns, data, searchable = true }) {
 
       {/* Table Content */}
       <div className="overflow-x-auto custom-scrollbar rounded-xl border border-surface-200 dark:border-surface-700 shadow-sm bg-white dark:bg-surface-800">
-        <table className="w-full text-left text-sm whitespace-nowrap">
-          <thead className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-200 dark:border-surface-700 text-slate-600 dark:text-slate-300">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={`px-6 py-4 font-semibold ${
-                      header.column.getCanSort() ? 'cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      {{
-                        asc: <i className="ph ph-caret-up text-brand-500"></i>,
-                        desc: <i className="ph ph-caret-down text-brand-500"></i>,
-                      }[header.column.getIsSorted()] ?? null}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className="divide-y divide-surface-100 dark:divide-surface-700">
-            {table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="hover:bg-surface-50 dark:hover:bg-surface-700/50 transition-colors"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-6 py-4 text-slate-700 dark:text-slate-300">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
+        {loading ? (
+          <div className="p-4">
+            <Skeleton.Table rows={5} cols={columns.length + 1} />
+          </div>
+        ) : (
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-200 dark:border-surface-700 text-slate-600 dark:text-slate-300">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      className={`px-6 py-4 font-semibold ${
+                        header.column.getCanSort() ? 'cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: <i className="ph ph-caret-up text-brand-500"></i>,
+                          desc: <i className="ph ph-caret-down text-brand-500"></i>,
+                        }[header.column.getIsSorted()] ?? null}
+                      </div>
+                    </th>
                   ))}
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={columns.length + 1} className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
-                  <div className="flex flex-col items-center justify-center">
-                    <i className="ph ph-folder-open text-4xl mb-2 text-slate-300 dark:text-slate-600"></i>
-                    <p>Data tidak ditemukan</p>
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody className="divide-y divide-surface-100 dark:divide-surface-700">
+              {table.getRowModel().rows.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="hover:bg-surface-50 dark:hover:bg-surface-700/50 transition-colors"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="px-6 py-4 text-slate-700 dark:text-slate-300">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length + 1} className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
+                    <div className="flex flex-col items-center justify-center">
+                      <i className="ph ph-folder-open text-4xl mb-2 text-slate-300 dark:text-slate-600"></i>
+                      <p>Data tidak ditemukan</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Bottom Controls: Pagination */}
