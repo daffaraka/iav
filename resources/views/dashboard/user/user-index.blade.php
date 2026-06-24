@@ -39,30 +39,51 @@
                                             <td>{{ $user->kode_karyawan ?? '-' }}</td>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
-                                            <td>{{ $user->jabatan ?? '-' }}</td>
-                                            <td>{{ $user->departemen ?? '-' }}</td>
+                                            @php
+                                                $jabatanColor = match (strtolower($user->jabatan ?? '')) {
+                                                    'kepala sekolah' => 'primary',
+                                                    'wakil kurikulum' => 'success',
+                                                    'wakil kesiswaan' => 'info',
+                                                    'guru kelas' => 'warning',
+                                                    'guru pendamping kelas' => 'secondary',
+                                                    'admin' => 'danger',
+                                                    'user' => 'dark',
+                                                    default => 'primary',
+                                                };
+                                            @endphp
                                             <td>
-                                                @if($user->unit == 'Jagakarsa')
-                                                    <span class="badge bg-primary">{{ ucfirst($user->unit) }}</span>
-                                                @elseif($user->unit == 'Pamulang')
-                                                    <span class="badge bg-success">{{ ucfirst($user->unit) }}</span>
-                                                @elseif($user->unit == 'Cinere')
-                                                    <span class="badge bg-info">{{ ucfirst($user->unit) }}</span>
+                                                @if($user->jabatan)
+                                                    <span class="badge bg-{{ $jabatanColor }}">{{ $user->jabatan }}</span>
                                                 @else
                                                     -
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($user->jenjang == 'KB')
-                                                    <span class="badge bg-warning">{{ strtoupper($user->jenjang) }}</span>
-                                                @elseif($user->jenjang == 'TK')
-                                                    <span class="badge bg-secondary">{{ strtoupper($user->jenjang) }}</span>
-                                                @elseif($user->jenjang == 'SD')
-                                                    <span class="badge bg-primary">{{ strtoupper($user->jenjang) }}</span>
-                                                @elseif($user->jenjang == 'SMP')
-                                                    <span class="badge bg-success">{{ strtoupper($user->jenjang) }}</span>
-                                                @elseif($user->jenjang == 'SMA')
-                                                    <span class="badge bg-danger">{{ strtoupper($user->jenjang) }}</span>
+                                                @if($user->departemen)
+                                                    <span class="badge bg-transparent border border-{{ $jabatanColor }} text-{{ $jabatanColor }} fw-bold">{{ $user->departemen }}</span>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $unitLower = strtolower($user->unit ?? '');
+                                                @endphp
+                                                @if($unitLower == 'jagakarsa')
+                                                    <span class="badge bg-primary">Jagakarsa</span>
+                                                @elseif($unitLower == 'pamulang')
+                                                    <span class="badge bg-success">Pamulang</span>
+                                                @elseif($unitLower == 'cinere')
+                                                    <span class="badge bg-info">Cinere</span>
+                                                @elseif($unitLower == 'bps')
+                                                    <span class="badge bg-warning">BPS</span>
+                                                @else
+                                                    {{ $user->unit ?? '-' }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($user->jenjang)
+                                                    <span class="fw-bold">{{ strtoupper($user->jenjang) }}</span>
                                                 @else
                                                     -
                                                 @endif
