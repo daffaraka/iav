@@ -7,7 +7,7 @@ export default function Dashboard({ title, totalDepartemen, totalWig, totalLeadM
     
     // Prepare Data for Donut Chart
     const wigChartOptions = {
-        series: Object.values(wigPerDepartment),
+        series: Object.keys(wigPerDepartment || {}).length > 0 ? Object.values(wigPerDepartment).map(v => Number(v)) : [],
         options: {
             chart: {
                 type: 'donut',
