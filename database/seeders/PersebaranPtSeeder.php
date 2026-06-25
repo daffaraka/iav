@@ -55,20 +55,30 @@ class PersebaranPtSeeder extends Seeder
         });
 
         $ptnIds = MasterPt::pluck('id')->toArray();
+        $siswaIds = MasterSiswa::where('jenjang', 'SMA')->pluck('id')->toArray();
+        
+        if (empty($siswaIds)) {
+            $this->command->info('Tidak ada data di MasterSiswa dengan jenjang SMA.');
+            return;
+        }
 
-        MasterSiswa::where('jenjang', 'SMA')->chunk(100, function ($siswas) use ($ptnIds, $fakultas, $jurusan, $program_studi, $jalur, $strata, $akreditasi) {
-            foreach ($siswas as $siswa) {
-                PersebaranPt::create([
-                    'pt_id' => $ptnIds[array_rand($ptnIds)],
-                    'siswa_id' => $siswa->id,
-                    'fakultas' => $fakultas[array_rand($fakultas)],
-                    'jurusan' => $jurusan[array_rand($jurusan)],
-                    'program_studi' => $program_studi[array_rand($program_studi)],
-                    'starta' => $strata[array_rand($strata)],
-                    'akreditasi' => $akreditasi[array_rand($akreditasi)],
-                    'jalur_masuk' => $jalur[array_rand($jalur)]
-                ]);
-            }
-        });
+        $rumpun = ['Saintek', 'Soshum', 'Campuran'];
+
+        // Hapus data lama agar saat dishededing ulang tepat 20
+        PersebaranPt::truncate();
+
+        for ($i = 0; $i < 20; $i++) {
+            PersebaranPt::create([
+                'pt_id' => $ptnIds[array_rand($ptnIds)],
+                'siswa_id' => $siswaIds[array_rand($siswaIds)],
+                'fakultas' => $fakultas[array_rand($fakultas)],
+                'jurusan' => $jurusan[array_rand($jurusan)],
+                'rumpun_ilmu' => $rumpun[array_rand($rumpun)],
+                'program_studi' => $program_studi[array_rand($program_studi)],
+                'starta' => $strata[array_rand($strata)],
+                'akreditasi' => $akreditasi[array_rand($akreditasi)],
+                'jalur_masuk' => $jalur[array_rand($jalur)]
+            ]);
+        }
     }
 }

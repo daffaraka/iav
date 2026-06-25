@@ -3,37 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterPt;
+use App\Models\MasterSiswa;
 use App\Models\PersebaranPt;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 class PersebaranPtController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $persebarans = PersebaranPt::with(['ptn','siswa'])->latest()->get();
-        return view('dashboard.persebaran-pt.persebaran-index', compact('persebarans'));
+
+        $chartJalurMasuk = PersebaranPt::select('jalur_masuk', \DB::raw('count(*) as total'))
+            ->whereNotNull('jalur_masuk')
+            ->groupBy('jalur_masuk')
+            ->pluck('total', 'jalur_masuk');
+
+        $chartTopPtn = PersebaranPt::select('pt_id', \DB::raw('count(*) as total'))
+            ->with('ptn:id,nama_pt')
+            ->groupBy('pt_id')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->ptn?->nama_pt ?? 'Unknown' => $item->total];
+            });
+
+        $chartStatusPt = PersebaranPt::join('master_pts', 'persebaran_pts.pt_id', '=', 'master_pts.id')
+            ->select('master_pts.status_pt', \DB::raw('count(*) as total'))
+            ->whereNotNull('master_pts.status_pt')
+            ->where('master_pts.status_pt', '!=', '')
+            ->groupBy('master_pts.status_pt')
+            ->pluck('total', 'status_pt');
+
+        $chartProvinsi = PersebaranPt::join('master_pts', 'persebaran_pts.pt_id', '=', 'master_pts.id')
+            ->select('master_pts.provinsi', \DB::raw('count(*) as total'))
+            ->whereNotNull('master_pts.provinsi')
+            ->where('master_pts.provinsi', '!=', '')
+            ->groupBy('master_pts.provinsi')
+            ->pluck('total', 'provinsi');
+
+        return Inertia::render('PersebaranPT/persebaran-pt-index', [
+            'persebarans' => $persebarans,
+            'charts' => [
+                'jalurMasuk' => $chartJalurMasuk,
+                'topPtn' => $chartTopPtn,
+                'statusPt' => $chartStatusPt,
+                'provinsi' => $chartProvinsi
+            ]
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $ptns = MasterPt::orderBy('nama_pt')->get();
-        return view('dashboard.persebaran-pt.persebaran-create', compact('ptns'));
+        $siswas = MasterSiswa::orderBy('nama')->get();
+        
+        return Inertia::render('PersebaranPT/persebaran-pt-create', [
+            'ptns' => $ptns,
+            'siswas' => $siswas
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'master_ptn_id' => 'required|exists:master_pts,id',
+            'pt_id' => 'required|exists:master_pts,id',
+            'siswa_id' => 'required|exists:master_siswas,id',
             'fakultas' => 'nullable|string|max:255',
             'jurusan' => 'nullable|string|max:255',
+            'rumpun_ilmu' => 'nullable|in:Saintek,Soshum,Campuran',
             'program_studi' => 'nullable|string|max:255',
             'starta' => 'nullable|string|max:255',
             'akreditasi' => 'nullable|string|max:255',
@@ -42,52 +81,51 @@ class PersebaranPtController extends Controller
 
         PersebaranPt::create($request->all());
 
-        return redirect()->route('persebaran-pt.index')->with('success', 'Data persebaran berhasil ditambahkan.');
+        return redirect()->route('persebaran-ptn.index')->with('success', 'Data persebaran berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PersebaranPt $persebaranPt)
+    public function show(PersebaranPt $persebaranPtn)
     {
-        $persebaranPt->load('ptn');
-        return view('dashboard.persebaran-pt.persebaran-show', compact('persebaranPt'));
+        $persebaranPtn->load(['ptn', 'siswa']);
+        return Inertia::render('PersebaranPT/persebaran-pt-show', [
+            'persebaran' => $persebaranPtn
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PersebaranPt $persebaranPt)
+    public function edit(PersebaranPt $persebaranPtn)
     {
         $ptns = MasterPt::orderBy('nama_pt')->get();
-        return view('dashboard.persebaran-pt.persebaran-edit', compact('persebaranPt', 'ptns'));
+        $siswas = MasterSiswa::orderBy('nama')->get();
+
+        return Inertia::render('PersebaranPT/persebaran-pt-edit', [
+            'persebaran' => $persebaranPtn,
+            'ptns' => $ptns,
+            'siswas' => $siswas
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PersebaranPt $persebaranPt)
+    public function update(Request $request, PersebaranPt $persebaranPtn)
     {
         $request->validate([
-            'master_ptn_id' => 'required|exists:master_pts,id',
+            'pt_id' => 'required|exists:master_pts,id',
+            'siswa_id' => 'required|exists:master_siswas,id',
             'fakultas' => 'nullable|string|max:255',
             'jurusan' => 'nullable|string|max:255',
+            'rumpun_ilmu' => 'nullable|in:Saintek,Soshum,Campuran',
             'program_studi' => 'nullable|string|max:255',
             'starta' => 'nullable|string|max:255',
             'akreditasi' => 'nullable|string|max:255',
             'jalur_masuk' => 'nullable|string|max:255',
         ]);
 
-        $persebaranPt->update($request->all());
-        return redirect()->route('persebaran-pt.index')->with('success', 'Data persebaran berhasil diupdate.');
+        $persebaranPtn->update($request->all());
+        
+        return redirect()->route('persebaran-ptn.index')->with('success', 'Data persebaran berhasil diupdate.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PersebaranPt $persebaranPt)
+    public function destroy(PersebaranPt $persebaranPtn)
     {
-        $persebaranPt->delete();
-        return redirect()->route('persebaran-pt.index')->with('success', 'Data persebaran berhasil dihapus.');
+        $persebaranPtn->delete();
+        return redirect()->route('persebaran-ptn.index')->with('success', 'Data persebaran berhasil dihapus.');
     }
 }

@@ -12,6 +12,7 @@ class PersebaranPt extends Model
         'siswa_id',
         'fakultas',
         'jurusan',
+        'rumpun_ilmu',
         'program_studi',
         'starta',
         'akreditasi',

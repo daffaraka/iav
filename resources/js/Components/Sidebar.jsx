@@ -271,6 +271,20 @@ export default function Sidebar({ isSidebarOpen, isMobile, setIsSidebarOpen }) {
                             )}
                         </Link>
                         <Link
+                            href="/persebaran-ptn"
+                            title="Persebaran PTN/PTS"
+                            className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
+                        >
+                            <i
+                                className={`ph ph-map-pin text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
+                            ></i>
+                            {isSidebarOpen && (
+                                <span className="font-medium text-sm whitespace-nowrap">
+                                    Persebaran PTN/PTS
+                                </span>
+                            )}
+                        </Link>
+                        <Link
                             href="/data-prestasi"
                             title="Data Prestasi"
                             className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
