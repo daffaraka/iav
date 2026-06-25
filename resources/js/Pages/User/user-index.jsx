@@ -47,28 +47,12 @@ export default function UserIndex({ users, title }) {
                     const val = info.getValue();
                     if (!val) return "-";
                     const lowerVal = val.toLowerCase();
-                    let colorClass =
-                        "bg-surface-100 text-surface-800 dark:bg-surface-500/20 dark:text-surface-300";
-                    if (lowerVal.includes("kepala sekolah"))
-                        colorClass =
-                            "bg-primary-100 text-primary-800 dark:bg-primary-500/20 dark:text-primary-400";
-                    else if (lowerVal.includes("wakil"))
-                        colorClass =
-                            "bg-success-100 text-success-800 dark:bg-success-500/20 dark:text-success-400";
-                    else if (lowerVal.includes("guru"))
-                        colorClass =
-                            "bg-info-100 text-info-800 dark:bg-info-500/20 dark:text-info-400";
-                    else if (lowerVal.includes("admin"))
-                        colorClass =
-                            "bg-danger-100 text-danger-800 dark:bg-danger-500/20 dark:text-danger-400";
-
-                    return (
-                        <span
-                            className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium ${colorClass}`}
-                        >
-                            {val}
-                        </span>
-                    );
+                    let colorClass = 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
+                    if (lowerVal.includes('kepala sekolah')) colorClass = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
+                    else if (lowerVal.includes('wakil')) colorClass = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400';
+                    else if (lowerVal.includes('guru')) colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
+                    else if (lowerVal.includes('admin')) colorClass = 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400';
+                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>{val}</span>;
                 },
             },
             {
@@ -77,31 +61,13 @@ export default function UserIndex({ users, title }) {
                 cell: (info) => {
                     const val = info.getValue();
                     if (!val) return "-";
-                    const jabatan = (
-                        info.row.original.jabatan || ""
-                    ).toLowerCase();
-                    let colorClass =
-                        "border-surface-300 text-surface-700 dark:border-surface-500/40 dark:text-surface-300";
-                    if (jabatan.includes("kepala sekolah"))
-                        colorClass =
-                            "border-primary-400 text-primary-700 dark:border-primary-500/40 dark:text-primary-400";
-                    else if (jabatan.includes("wakil"))
-                        colorClass =
-                            "border-success-400 text-success-700 dark:border-success-500/40 dark:text-success-400";
-                    else if (jabatan.includes("guru"))
-                        colorClass =
-                            "border-info-400 text-info-700 dark:border-info-500/40 dark:text-info-400";
-                    else if (jabatan.includes("admin"))
-                        colorClass =
-                            "border-danger-400 text-danger-700 dark:border-danger-500/40 dark:text-danger-400";
-
-                    return (
-                        <span
-                            className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-bold border bg-transparent ${colorClass}`}
-                        >
-                            {val}
-                        </span>
-                    );
+                    const jabatan = (info.row.original.jabatan || "").toLowerCase();
+                    let colorClass = 'border-surface-300 text-surface-700 dark:border-surface-500/40 dark:text-surface-300';
+                    if (jabatan.includes('kepala sekolah')) colorClass = 'border-blue-400 text-blue-700 dark:border-blue-500/40 dark:text-blue-400';
+                    else if (jabatan.includes('wakil')) colorClass = 'border-emerald-400 text-emerald-700 dark:border-emerald-500/40 dark:text-emerald-400';
+                    else if (jabatan.includes('guru')) colorClass = 'border-cyan-400 text-cyan-700 dark:border-cyan-500/40 dark:text-cyan-400';
+                    else if (jabatan.includes('admin')) colorClass = 'border-red-400 text-red-700 dark:border-red-500/40 dark:text-red-400';
+                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border bg-transparent ${colorClass}`}>{val}</span>;
                 },
             },
             {
@@ -111,30 +77,12 @@ export default function UserIndex({ users, title }) {
                     const val = info.getValue();
                     if (!val) return "-";
                     const lowerVal = val.toLowerCase();
-                    let colorClass = "";
-                    if (lowerVal == "jagakarsa")
-                        colorClass =
-                            "bg-blue-100 text-primary-800 dark:bg-primary-500/20 dark:text-primary-400";
-                    else if (lowerVal == "pamulang")
-                        colorClass =
-                            "bg-green-100 text-success-800 dark:bg-success-500/20 dark:text-success-400";
-                    else if (lowerVal == "cinere")
-                        colorClass =
-                            "bg-red-100 text-info-800 dark:bg-info-500/20 dark:text-info-400";
-                    else if (lowerVal == "bps")
-                        colorClass =
-                            "bg-yellow-100 text-warning-800 dark:bg-warning-500/20 dark:text-warning-400";
-
-                    if (colorClass) {
-                        return (
-                            <span
-                                className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium ${colorClass}`}
-                            >
-                                {val}
-                            </span>
-                        );
-                    }
-                    return val;
+                    let colorClass = 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
+                    if(lowerVal == 'jagakarsa') colorClass = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
+                    if(lowerVal == 'pamulang') colorClass = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
+                    if(lowerVal == 'cinere') colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
+                    if(lowerVal == 'bps') colorClass = 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400';
+                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>{val}</span>;
                 },
             },
             {
@@ -143,31 +91,12 @@ export default function UserIndex({ users, title }) {
                 cell: (info) => {
                     const val = info.getValue();
                     if (!val) return "-";
-
-                    let colorClass = "";
-                    if (val == "KB")
-                        colorClass =
-                            "border-warning-400 text-warning-700 dark:border-warning-500/40 dark:text-warning-400";
-                    else if (val == "TK")
-                        colorClass =
-                            "border-amber-400 text-amber-700 dark:border-amber-500/40 dark:text-amber-400";
-                    else if (val == "SD")
-                        colorClass =
-                            "border-success-400 text-success-700 dark:border-success-500/40 dark:text-success-400";
-                    else if (val == "SMP")
-                        colorClass =
-                            "border-primary-400 text-primary-700 dark:border-primary-500/40 dark:text-primary-400";
-                    else if (val == "SMA")
-                        colorClass =
-                            "border-danger-400 text-danger-700 dark:border-danger-500/40 dark:text-danger-400";
-
-                    return (
-                        <span
-                            className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-bold border bg-transparent ${colorClass}`}
-                        >
-                            {val}
-                        </span>
-                    );
+                    let colorClass = 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400';
+                    if(val == 'TK' || val == 'KB') colorClass = 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400';
+                    if(val == 'SD') colorClass = 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400';
+                    if(val == 'SMP') colorClass = 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400';
+                    if(val == 'SMA') colorClass = 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400';
+                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${colorClass}`}>{val}</span>;
                 },
             },
             {
