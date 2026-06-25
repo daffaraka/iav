@@ -4,6 +4,7 @@ import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import DataTable from '../../Components/DataTable';
 import Alert from '../../Components/Alert';
 import ConfirmModal from '../../Components/ConfirmModal';
+import { UnitBadge } from '../../Components/TableBadges';
 
 export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi, flash }) {
     const { delete: destroy } = useForm();
@@ -58,7 +59,7 @@ export default function PrestasiIndex({ jagakarsa, cinere, pamulang, allPrestasi
         {
             accessorKey: 'siswa.sekolah.unit',
             header: 'Sekolah',
-            cell: info => info.getValue() || '-'
+            cell: info => <UnitBadge unit={info.getValue()} />
         },
         {
             accessorKey: 'nama_lomba',

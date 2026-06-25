@@ -8,7 +8,6 @@ use App\Models\Wig;
 use App\Models\Sekolah;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;

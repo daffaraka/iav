@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import { useTheme } from '../../Contexts/ThemeContext';
 import DataTable from '../../Components/DataTable';
-
+import { UnitBadge, JenjangBadge, RoleBadge } from '../../Components/TableBadges';
 export default function Dashboard({ 
     stats, 
     latestTiket, 
@@ -164,49 +164,17 @@ export default function Dashboard({
         {
             accessorKey: 'unit',
             header: 'Unit',
-            cell: info => {
-                const val = info.getValue();
-                let colorClass = 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
-                if(val === 'Jagakarsa') colorClass = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
-                if(val === 'Pamulang') colorClass = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
-                if(val === 'Cinere') colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
-                return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>{val || '-'}</span>;
-            }
+            cell: info => <UnitBadge unit={info.getValue()} />
         },
         {
             accessorKey: 'jenjang',
             header: 'Jenjang',
-            cell: info => {
-                const val = info.getValue();
-                if (!val) return '-';
-                let colorClass = 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400';
-                if(val === 'TK') colorClass = 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400';
-                if(val === 'SD') colorClass = 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400';
-                if(val === 'SMP') colorClass = 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400';
-                if(val === 'SMA') colorClass = 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400';
-                return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${colorClass}`}>{val}</span>;
-            }
+            cell: info => <JenjangBadge jenjang={info.getValue()} />
         },
         {
             accessorKey: 'roles',
             header: 'Roles',
-            cell: info => {
-                const roles = info.getValue() || [];
-                return (
-                    <div className="flex flex-wrap gap-1">
-                        {roles.map(role => {
-                            let colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
-                            if(role.name === 'kepala-psikolog') colorClass = 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400';
-                            if(role.name === 'psikolog') colorClass = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
-                            return (
-                                <span key={role.id} className={`inline-flex px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider ${colorClass}`}>
-                                    {role.name}
-                                </span>
-                            );
-                        })}
-                    </div>
-                );
-            }
+            cell: info => <RoleBadge roles={info.getValue()} />
         }
     ], []);
 

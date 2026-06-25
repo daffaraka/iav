@@ -6,6 +6,7 @@ import DataTable from '../../Components/DataTable';
 import Alert from '../../Components/Alert';
 import { useTheme } from '../../Contexts/ThemeContext';
 import ConfirmModal from '../../Components/ConfirmModal';
+import { UnitBadge, JenjangBadge } from '../../Components/TableBadges';
 
 export default function SekolahIndex({
     jagakarsa, cinere, pamulang,
@@ -112,18 +113,12 @@ export default function SekolahIndex({
         {
             accessorKey: 'unit',
             header: 'Unit',
-            cell: info => {
-                const val = info.getValue();
-                let bg = 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
-                if (val === 'Jagakarsa') bg = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
-                if (val === 'Cinere') bg = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
-                if (val === 'Pamulang') bg = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
-                return <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${bg}`}>{val}</span>;
-            }
+            cell: info => <UnitBadge unit={info.getValue()} />
         },
         {
             accessorKey: 'jenjang',
-            header: 'Jenjang'
+            header: 'Jenjang',
+            cell: info => <JenjangBadge jenjang={info.getValue()} />
         },
         {
             accessorKey: 'alamat',

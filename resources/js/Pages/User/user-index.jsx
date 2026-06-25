@@ -3,6 +3,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 import DataTable from "../../Components/DataTable";
 import ConfirmModal from "../../Components/ConfirmModal";
+import { JabatanBadge, DepartemenBadge, UnitBadge, JenjangBadge, RoleBadge } from "../../Components/TableBadges";
 
 export default function UserIndex({ users, title }) {
     const { delete: destroy } = useForm();
@@ -43,80 +44,27 @@ export default function UserIndex({ users, title }) {
             {
                 accessorKey: "jabatan",
                 header: "Jabatan",
-                cell: (info) => {
-                    const val = info.getValue();
-                    if (!val) return "-";
-                    const lowerVal = val.toLowerCase();
-                    let colorClass = 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
-                    if (lowerVal.includes('kepala sekolah')) colorClass = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
-                    else if (lowerVal.includes('wakil')) colorClass = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400';
-                    else if (lowerVal.includes('guru')) colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
-                    else if (lowerVal.includes('admin')) colorClass = 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400';
-                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>{val}</span>;
-                },
+                cell: (info) => <JabatanBadge jabatan={info.getValue()} />
             },
             {
                 accessorKey: "departemen",
                 header: "Departemen",
-                cell: (info) => {
-                    const val = info.getValue();
-                    if (!val) return "-";
-                    const jabatan = (info.row.original.jabatan || "").toLowerCase();
-                    let colorClass = 'border-surface-300 text-surface-700 dark:border-surface-500/40 dark:text-surface-300';
-                    if (jabatan.includes('kepala sekolah')) colorClass = 'border-blue-400 text-blue-700 dark:border-blue-500/40 dark:text-blue-400';
-                    else if (jabatan.includes('wakil')) colorClass = 'border-emerald-400 text-emerald-700 dark:border-emerald-500/40 dark:text-emerald-400';
-                    else if (jabatan.includes('guru')) colorClass = 'border-cyan-400 text-cyan-700 dark:border-cyan-500/40 dark:text-cyan-400';
-                    else if (jabatan.includes('admin')) colorClass = 'border-red-400 text-red-700 dark:border-red-500/40 dark:text-red-400';
-                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border bg-transparent ${colorClass}`}>{val}</span>;
-                },
+                cell: (info) => <DepartemenBadge departemen={info.getValue()} jabatan={info.row.original.jabatan} />
             },
             {
                 accessorKey: "unit",
                 header: "Unit",
-                cell: (info) => {
-                    const val = info.getValue();
-                    if (!val) return "-";
-                    const lowerVal = val.toLowerCase();
-                    let colorClass = 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
-                    if(lowerVal == 'jagakarsa') colorClass = 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400';
-                    if(lowerVal == 'pamulang') colorClass = 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400';
-                    if(lowerVal == 'cinere') colorClass = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400';
-                    if(lowerVal == 'bps') colorClass = 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400';
-                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>{val}</span>;
-                },
+                cell: (info) => <UnitBadge unit={info.getValue()} />
             },
             {
                 accessorKey: "jenjang",
                 header: "Jenjang",
-                cell: (info) => {
-                    const val = info.getValue();
-                    if (!val) return "-";
-                    let colorClass = 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400';
-                    if(val == 'TK' || val == 'KB') colorClass = 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400';
-                    if(val == 'SD') colorClass = 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400';
-                    if(val == 'SMP') colorClass = 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400';
-                    if(val == 'SMA') colorClass = 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400';
-                    return <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${colorClass}`}>{val}</span>;
-                },
+                cell: (info) => <JenjangBadge jenjang={info.getValue()} />
             },
             {
                 accessorKey: "roles",
                 header: "Role",
-                cell: (info) => {
-                    const roles = info.getValue() || [];
-                    return (
-                        <div className="flex flex-wrap gap-1">
-                            {roles.map((role) => (
-                                <span
-                                    key={role.id}
-                                    className="inline-flex px-2 py-0.5 rounded bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300 text-xs font-semibold"
-                                >
-                                    {role.name}
-                                </span>
-                            ))}
-                        </div>
-                    );
-                },
+                cell: (info) => <RoleBadge roles={info.getValue()} />
             },
             {
                 id: "wali_kelas",
