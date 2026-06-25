@@ -285,16 +285,30 @@ export default function Sidebar({ isSidebarOpen, isMobile, setIsSidebarOpen }) {
                             )}
                         </Link>
                         <Link
-                            href="/data-prestasi"
-                            title="Data Prestasi"
+                            href="/prestasi-siswa"
+                            title="Prestasi Siswa"
                             className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
                         >
                             <i
-                                className={`ph ph-trophy text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
+                                className={`ph ph-medal text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
                             ></i>
                             {isSidebarOpen && (
                                 <span className="font-medium text-sm whitespace-nowrap">
-                                    Data Prestasi
+                                    Prestasi Siswa
+                                </span>
+                            )}
+                        </Link>
+                        <Link
+                            href="/prestasi-guru"
+                            title="Prestasi Guru"
+                            className={`flex items-center py-2.5 text-slate-300 hover:bg-surface-800 hover:text-white group transition-all border-transparent hover:border-surface-600 ${isSidebarOpen ? "px-3 rounded-xl border-l-4" : "justify-center w-12 h-12 rounded-xl mt-1"}`}
+                        >
+                            <i
+                                className={`ph ph-certificate text-xl group-hover:text-amber-400 transition-colors ${isSidebarOpen ? "mr-3" : "mr-0"}`}
+                            ></i>
+                            {isSidebarOpen && (
+                                <span className="font-medium text-sm whitespace-nowrap">
+                                    Prestasi Guru
                                 </span>
                             )}
                         </Link>
