@@ -284,7 +284,7 @@ export default function PtIndex({ persebarans, charts, flash = {} }) {
                                             name: "Siswa",
                                             data: Object.values(
                                                 charts.provinsi || {},
-                                            ),
+                                            ).map(v => Number(v)),
                                         },
                                     ]}
                                     type="bar"
