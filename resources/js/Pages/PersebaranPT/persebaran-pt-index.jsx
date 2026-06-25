@@ -195,9 +195,11 @@ export default function PtIndex({ persebarans, charts, flash = {} }) {
                                             }
                                         }
                                     }}
-                                    series={Object.values(
-                                        charts.statusPt || {},
-                                    )}
+                                    series={
+                                        Object.keys(charts.statusPt || {}).length > 0 
+                                            ? Object.values(charts.statusPt).map(v => Number(v)) 
+                                            : []
+                                    }
                                     type="donut"
                                     height={250}
                                 />
