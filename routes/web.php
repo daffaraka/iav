@@ -30,8 +30,10 @@ use App\Http\Controllers\MasterSiswaController;
 use App\Http\Controllers\MasterGuruController;
 use App\Http\Controllers\MasterKelasController;
 
+use Inertia\Inertia;
+
 Route::get('/', function () {
-    return redirect()->route('dashboard.aqr.dashboard');
+    return Inertia::render('Welcome');
 });
 
 Route::middleware('auth')->group(function () {

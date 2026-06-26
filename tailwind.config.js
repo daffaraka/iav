@@ -42,6 +42,9 @@ export default {
             boxShadow: {
                 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
                 'softer': '0 2px 10px -1px rgba(0, 0, 0, 0.02)',
+            },
+            maxWidth: {
+                '10xl': '100rem', // 1600px
             }
         },
     },
