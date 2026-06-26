@@ -366,27 +366,27 @@ export default function Welcome() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
+            <footer className="bg-black border-t border-slate-800 pt-16 pb-8">
                 <div className="container mx-auto px-6 max-w-10xl text-center">
-                    <div className="w-12 h-12 bg-slate-900 dark:bg-slate-800 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center mx-auto mb-6">
                         <span className="text-2xl font-black text-white">A</span>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Avicenna Leadership School</h3>
-                    <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-md mx-auto">Sekolah Swasta Unggulan berbasis kepemimpinan, sains, dan teknologi.</p>
+                    <h3 className="text-xl font-bold text-white mb-2">Avicenna Leadership School</h3>
+                    <p className="text-slate-400 mb-8 max-w-md mx-auto">Sekolah Swasta Unggulan berbasis kepemimpinan, sains, dan teknologi.</p>
 
                     <div className="flex items-center justify-center gap-6 mb-12">
-                        <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-100 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-colors">
+                        <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-blue-900/50 hover:text-blue-400 transition-colors">
                             <i className="ph ph-instagram-logo text-xl"></i>
                         </a>
-                        <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-blue-100 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-colors">
+                        <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-blue-900/50 hover:text-blue-400 transition-colors">
                             <i className="ph ph-facebook-logo text-xl"></i>
                         </a>
-                        <a href="#" className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 transition-colors">
+                        <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-red-900/50 hover:text-red-400 transition-colors">
                             <i className="ph ph-youtube-logo text-xl"></i>
                         </a>
                     </div>
 
-                    <div className="pt-8 border-t border-slate-100 dark:border-slate-800 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="pt-8 border-t border-slate-800 text-sm text-slate-500">
                         Copyright &copy; 2019 - {new Date().getFullYear()} Yayasan Pendidikan Avicenna Prestasi. All rights reserved.
                     </div>
                 </div>
