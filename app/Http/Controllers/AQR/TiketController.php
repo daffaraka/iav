@@ -229,23 +229,25 @@ class TiketController extends Controller
 
 
         // dd($request->all());
-        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha', 'staff','guru','wali-kelas'])) {
+        if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha', 'staff','guru','wali-kelas', 'wakakur', 'wakasis', 'psikolog']) || Auth::id() === $tiket->pic_id) {
 
             $oldPicId = $tiket->pic_id;
 
             if ($tiket->pengirim == 'Masyarakat Umum') {
-                $tiket->update([
-                    'status' => 'Proses',
-                    'departemen' => $request->departemen,
-                    'admin_humas_id' => Auth::user()->id,
-                    'pic_id' => Auth::user()->id,
-                ]);
-            } else {
-                if ($tiket->status == 'New' || $request->has('pic_menanggapi')) {
+                if (Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas'])) {
                     $tiket->update([
                         'status' => 'Proses',
                         'departemen' => $request->departemen,
                         'admin_humas_id' => Auth::user()->id,
+                        'pic_id' => Auth::user()->id,
+                    ]);
+                }
+            } else {
+                if (($tiket->status == 'New' || $request->has('pic_menanggapi')) && Auth::user()->hasAnyRole(['super-admin', 'admin', 'humas', 'tata-usaha', 'kepala-sekolah', 'kepala-tata-usaha'])) {
+                    $tiket->update([
+                        'status' => 'Proses',
+                        'departemen' => $request->departemen,
+                        'admin_humas_id' => $tiket->admin_humas_id ?: Auth::user()->id,
                         'pic_id' => $request->pic_menanggapi,
                     ]);
                 }

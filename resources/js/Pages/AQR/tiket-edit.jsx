@@ -77,6 +77,8 @@ export default function TiketEdit({
         "psikolog",
         "staff",
         "guru",
+        "wakakur",
+        "wakasis"
     ]);
     const isPic = currentUser.id === tiket.pic_id;
     const isWargaSekolah = tiket.pengirim === "Warga Sekolah";
@@ -410,7 +412,7 @@ export default function TiketEdit({
                             </div>
                             <div className="p-6">
                                 {!tiket.progres ||
-                                tiket.progres.length === 0 ? (
+                                    tiket.progres.length === 0 ? (
                                     <div className="text-center py-8">
                                         <div className="w-16 h-16 rounded-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center mx-auto mb-3">
                                             <i className="ph ph-chat-teardrop-slash text-2xl text-slate-400"></i>
@@ -620,35 +622,37 @@ export default function TiketEdit({
 
                                     {status === "Proses" && isWargaSekolah && (
                                         <>
-                                            {isGroupA && (
+                                            {(isGroupA || isPic) && (
                                                 <div className="p-4 bg-surface-50 dark:bg-surface-900/50 rounded-xl border border-surface-100 dark:border-surface-700 mb-4 shadow-sm space-y-4">
                                                     <div className="flex justify-between items-center mb-2">
                                                         <h3 className="font-bold text-slate-800 dark:text-white">
                                                             PIC sudah ditentukan
                                                         </h3>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                setPICModalOpen(
-                                                                    true,
-                                                                )
-                                                            }
-                                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-surface-800 border border-brand-200 dark:border-brand-500/30 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-500/10 hover:border-brand-300 dark:hover:border-brand-500/50 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 group"
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform"
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                stroke="currentColor"
-                                                                strokeWidth="2.5"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
+                                                        {isGroupA && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    setPICModalOpen(
+                                                                        true,
+                                                                    )
+                                                                }
+                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-surface-800 border border-brand-200 dark:border-brand-500/30 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-500/10 hover:border-brand-300 dark:hover:border-brand-500/50 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 group"
                                                             >
-                                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                            </svg>
-                                                            Edit Ulang
-                                                        </button>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="2.5"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                >
+                                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                                                </svg>
+                                                                Edit Ulang
+                                                            </button>
+                                                        )}
                                                     </div>
 
                                                     <div className="grid grid-cols-1 gap-4">
@@ -864,8 +868,8 @@ export default function TiketEdit({
                                     {status !== "Selesai" && (
                                         <div className="pt-4 mt-2 border-t border-surface-100 dark:border-surface-700">
                                             {isSuperAdminOrHumas &&
-                                            !isWargaSekolah &&
-                                            status === "Proses" ? (
+                                                !isWargaSekolah &&
+                                                status === "Proses" ? (
                                                 <button
                                                     type="submit"
                                                     disabled={updateProcessing}
@@ -876,13 +880,13 @@ export default function TiketEdit({
                                                         : "Update Ticket"}
                                                 </button>
                                             ) : hasRole([
-                                                  "super-admin",
-                                                  "tata-usaha",
-                                                  "humas",
-                                                  "admin",
-                                                  "kepala-sekolah",
-                                                  "kepala-tata-usaha",
-                                              ]) ? (
+                                                "super-admin",
+                                                "tata-usaha",
+                                                "humas",
+                                                "admin",
+                                                "kepala-sekolah",
+                                                "kepala-tata-usaha",
+                                            ]) ? (
                                                 status === "New" ? (
                                                     <button
                                                         type="submit"
@@ -1240,7 +1244,7 @@ export default function TiketEdit({
                                 Tandai Tiket Selesai?
                             </h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 max-w-xs">
-                                Apakah Anda yakin ingin menyelesaikan tiket ini? 
+                                Apakah Anda yakin ingin menyelesaikan tiket ini?
                                 Status tiket akan berubah menjadi <span className="font-semibold text-emerald-600 dark:text-emerald-400">"Selesai"</span> dan tidak dapat dikembalikan.
                             </p>
                             <div className="flex items-center gap-3 w-full">

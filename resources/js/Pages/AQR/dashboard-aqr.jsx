@@ -5,15 +5,15 @@ import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import { useTheme } from '../../Contexts/ThemeContext';
 import DataTable from '../../Components/DataTable';
 import { UnitBadge, JenjangBadge, RoleBadge } from '../../Components/TableBadges';
-export default function Dashboard({ 
-    stats, 
-    latestTiket, 
-    latestProses, 
-    latestSelesai, 
-    pieChartData, 
-    barChartData, 
-    weekLabels, 
-    lokasiChartData, 
+export default function Dashboard({
+    stats,
+    latestTiket,
+    latestProses,
+    latestSelesai,
+    pieChartData,
+    barChartData,
+    weekLabels,
+    lokasiChartData,
     typePengirimChart,
     listPsikolog,
     userRoles
@@ -37,8 +37,8 @@ export default function Dashboard({
         },
         theme: { mode: isDarkMode ? 'dark' : 'light' },
         colors: [
-            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
-            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', 
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
+            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6',
             '#f97316', '#6366f1', '#64748b', '#84cc16'
         ],
         fill: {
@@ -80,7 +80,7 @@ export default function Dashboard({
 
     const donutChartOptions = {
         labels: statusLabels,
-        chart: { 
+        chart: {
             fontFamily: '"Plus Jakarta Sans", sans-serif',
             background: 'transparent',
             foreColor: isDarkMode ? '#cbd5e1' : '#64748b'
@@ -110,12 +110,12 @@ export default function Dashboard({
         ...donutChartOptions,
         labels: lokasiChartData ? lokasiChartData.map(d => d.name) : [],
         colors: [
-            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
-            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', 
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
+            '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6',
             '#f97316', '#6366f1', '#64748b', '#84cc16'
         ],
-        legend: { 
-            show: true, 
+        legend: {
+            show: true,
             position: 'bottom',
             horizontalAlign: 'center',
             itemMargin: { horizontal: 15, vertical: 8 }
@@ -128,11 +128,11 @@ export default function Dashboard({
         ...donutChartOptions,
         labels: typePengirimChart ? typePengirimChart.map(d => d.name) : [],
         colors: [
-            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
             '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6'
         ],
-        legend: { 
-            show: true, 
+        legend: {
+            show: true,
             position: 'bottom',
             horizontalAlign: 'center',
             itemMargin: { horizontal: 15, vertical: 8 }
@@ -181,19 +181,19 @@ export default function Dashboard({
     return (
         <AuthenticatedLayout>
             <Head title="AQR Dashboard" />
-            
+
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-800 dark:text-white tracking-tight">Dashboard AQR</h1>
                     <p className="text-sm text-slate-500 dark:text-slate-300 mt-1">Ringkasan tiket keluhan dan permintaan secara real-time.</p>
                 </div>
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                     <Link href="/dashboard/aqr/tiket/create" className="px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium shadow-soft shadow-brand-500/30 hover:bg-brand-700 transition-colors flex items-center">
                         <i className="ph ph-plus mr-2 text-lg"></i>
                         Buat Tiket Baru
                     </Link>
-                </div>
+                </div> */}
             </div>
 
             {/* Summary Cards */}
@@ -256,7 +256,7 @@ export default function Dashboard({
 
             {/* 3 Columns Ticket Lists */}
             <div className={`grid grid-cols-1 ${canSeeNewTickets ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-6 mt-6`}>
-                
+
                 {/* Tiket Baru Column */}
                 {canSeeNewTickets && (
                     <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft overflow-hidden flex flex-col h-[500px]">
