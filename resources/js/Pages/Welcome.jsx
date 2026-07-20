@@ -140,7 +140,7 @@ export default function Welcome() {
                 <div className="container mx-auto max-w-10xl">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 mt-24">
                         {/* Card Cinere */}
-                        <PortalCard 
+                        <PortalCard
                             href="http://cinere.sekolah-avicenna.sch.id/"
                             image="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             label="Cabang"
@@ -151,7 +151,7 @@ export default function Welcome() {
                         />
 
                         {/* Card Jagakarsa */}
-                        <PortalCard 
+                        <PortalCard
                             href="http://jagakarsa.sekolah-avicenna.sch.id/"
                             image="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             label="Cabang"
@@ -162,7 +162,7 @@ export default function Welcome() {
                         />
 
                         {/* Card Pamulang */}
-                        <PortalCard 
+                        <PortalCard
                             href="http://pamulang.sekolah-avicenna.sch.id/"
                             image="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             label="Cabang"
@@ -173,7 +173,7 @@ export default function Welcome() {
                         />
 
                         {/* Card PPDB */}
-                        <PortalCard 
+                        <PortalCard
                             href="https://ppdb.sekolah-avicenna.sch.id/"
                             image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             label="Pendaftaran"
@@ -184,7 +184,7 @@ export default function Welcome() {
                         />
 
                         {/* Card AQR */}
-                        <PortalCard 
+                        <PortalCard
                             href="/dashboard"
                             image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             label="Internal Sistem"

@@ -12,7 +12,7 @@ class MasterGuruController extends Controller
 {
     public function index()
     {
-        $guru = User::role(['guru', 'walikelas'])->latest()->get();
+        $guru = User::role(['guru', 'wali-kelas'])->latest()->get();
         return Inertia::render('MasterGuru/master-guru-index', [
             'guru' => $guru
         ]);
@@ -30,7 +30,7 @@ class MasterGuruController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => ['required', Rule::in(['guru', 'walikelas'])],
+            'role' => ['required', Rule::in(['guru', 'wali-kelas'])],
             'kelas' => 'nullable|string'
         ]);
 
@@ -64,7 +64,7 @@ class MasterGuruController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($guru->id)],
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($guru->id)],
-            'role' => ['required', Rule::in(['guru', 'walikelas'])],
+            'role' => ['required', Rule::in(['guru', 'wali-kelas'])],
             'kelas' => 'nullable|string'
         ]);
 

@@ -15,7 +15,7 @@ class TiketSeeder extends Seeder
      */
     public function run(): void
     {
-        $departemen = ['Humas', 'Tata-Usaha', 'Wakakur', 'Wakasis', 'Psikolog','BK'];
+        $departemen = ['Humas', 'Tata-Usaha', 'Wakakur', 'Wakasis', 'Psikolog', 'BK'];
         $status = ['New', 'Proses', 'Selesai'];
 
         $jenisKendala = [
@@ -86,7 +86,7 @@ class TiketSeeder extends Seeder
 
 
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $selectedStatus = $status[array_rand($status)];
             $aqrOptions = AqrOption::inRandomOrder()->first();
             Tiket::create([
