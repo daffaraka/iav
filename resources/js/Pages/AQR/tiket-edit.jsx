@@ -191,7 +191,8 @@ export default function TiketEdit({
                             Detail Tiket
                         </h1>
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-300 ml-8">
+                    {/* Nomor Tiket */}
+                    <p className="text-sm text-slate-800 border-2 bg-green-400 font-bold border-green-300 p-2 rounded shadow-md dark:text-slate-300 ml-8">
                         #{tiket.no_tiket}
                     </p>
                 </div>
@@ -238,7 +239,7 @@ export default function TiketEdit({
                                 </p>
                             </div>
                             <span
-                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white ${getStatusColor(status)}`}
+                                className={`inline-flex items-center px-5 py-3 rounded-full text-md shadow-md font-semibold text-white ${getStatusColor(status)}`}
                             >
                                 {status}
                             </span>
@@ -428,7 +429,8 @@ export default function TiketEdit({
                                             >
                                                 <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-surface-800 bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 shrink-0 shadow-sm">
                                                     <span className="font-bold text-sm">
-                                                        {tiket.progres.length - idx}
+                                                        {tiket.progres.length -
+                                                            idx}
                                                     </span>
                                                 </div>
                                                 <div className="flex-1 p-4 rounded-2xl bg-surface-50 dark:bg-surface-900/50 border border-surface-100 dark:border-surface-700 shadow-sm">
@@ -982,7 +984,9 @@ export default function TiketEdit({
                                     <div className="mt-4 pt-4 border-t border-surface-100 dark:border-surface-700">
                                         <button
                                             type="button"
-                                            onClick={() => setSelesaiModalOpen(true)}
+                                            onClick={() =>
+                                                setSelesaiModalOpen(true)
+                                            }
                                             className="w-full py-2.5 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 rounded-xl font-medium transition-colors flex justify-center items-center border border-red-200 dark:border-red-500/20"
                                         >
                                             <i className="ph ph-check-fat mr-2"></i>{" "}
@@ -1240,8 +1244,12 @@ export default function TiketEdit({
                                 Tandai Tiket Selesai?
                             </h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 max-w-xs">
-                                Apakah Anda yakin ingin menyelesaikan tiket ini? 
-                                Status tiket akan berubah menjadi <span className="font-semibold text-emerald-600 dark:text-emerald-400">"Selesai"</span> dan tidak dapat dikembalikan.
+                                Apakah Anda yakin ingin menyelesaikan tiket ini?
+                                Status tiket akan berubah menjadi{" "}
+                                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                                    "Selesai"
+                                </span>{" "}
+                                dan tidak dapat dikembalikan.
                             </p>
                             <div className="flex items-center gap-3 w-full">
                                 <button
@@ -1254,7 +1262,9 @@ export default function TiketEdit({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        router.get(`/dashboard/aqr/tiket/selesaikan/${tiket.id}`);
+                                        router.get(
+                                            `/dashboard/aqr/tiket/selesaikan/${tiket.id}`,
+                                        );
                                         setSelesaiModalOpen(false);
                                     }}
                                     className="flex-1 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl text-sm font-semibold transition-all shadow-soft shadow-emerald-500/30 flex items-center justify-center gap-1.5"
