@@ -106,6 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::get('null-penjemputan', [PenjemputanHarianController::class, 'nullPenjemputan'])->name('penjemputan-harian.nullPenjemputan');
 
     require __DIR__ . '/aqr.php';
+    require __DIR__ . '/avicenna_way.php';
 });
 
 

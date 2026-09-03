@@ -28,6 +28,7 @@ class User extends Authenticatable
         'unit',
         'jenjang',
         'departemen',
+        'dept_id',
         'no_hp',
         'jabatan',
         'kelas',
@@ -68,5 +69,10 @@ class User extends Authenticatable
     public function tiket()
     {
         return $this->hasMany(Tiket::class);
+    }
+
+    public function aw_activities()
+    {
+        return $this->hasMany(AwActivity::class);
     }
 }
