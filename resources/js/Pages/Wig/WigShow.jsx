@@ -17,6 +17,14 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
 
     const score = chartWig ? chartWig.reduce((acc, curr) => acc + parseFloat(curr.progress), 0) : 0;
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '-';
+        return new Date(dateString).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    };
     const gaugeOptions = {
         chart: { type: 'radialBar', sparkline: { enabled: true } },
         plotOptions: {
@@ -223,7 +231,13 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                         <div className="flex flex-wrap gap-6 mt-6">
                             <div className="flex items-center gap-2 text-teal-100">
                                 <Calendar className="w-5 h-5" />
-                                <span>{wig.tanggal_mulai_wig} — {wig.tanggal_berakhir_wig}</span>
+                                <div className="bg-slate-700 text-white border border-200 rounded-md p-1 px-4">
+                                    {formatDate(wig.tanggal_mulai_wig)}
+                                </div>
+                                -
+                                <div className="bg-slate-700 text-white border border-200 rounded-md p-1 px-4">
+                                    {formatDate(wig.tanggal_berakhir_wig)}
+                                </div>
                             </div>
                         </div>
                     </div>

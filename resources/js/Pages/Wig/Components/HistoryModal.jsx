@@ -28,6 +28,7 @@ export default function HistoryModal({
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Riwayat WIG (Keterangan) <span className="text-red-500">*</span></label>
                             <input
                                 type="text"
+                                placeholder="Contoh: Penyelesaian milestone fase 1..."
                                 value={histData.riwayat_wig}
                                 onChange={e => setHistData('riwayat_wig', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500"
@@ -39,6 +40,7 @@ export default function HistoryModal({
                             <input
                                 type="number"
                                 step="0.01"
+                                placeholder="Contoh: 10 atau 0.5"
                                 value={histData.realisasi}
                                 onChange={e => setHistData('realisasi', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500"

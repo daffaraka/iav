@@ -28,6 +28,7 @@ export default function ProgressModal({
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Progress WIG</label>
                             <input
                                 type="number"
+                                placeholder="Contoh: 25"
                                 value={progData.progress_wig}
                                 onChange={e => setProgData('progress_wig', e.target.value)}
                                 className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500"

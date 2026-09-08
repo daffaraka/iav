@@ -32,6 +32,7 @@ export default function TaskModal({
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nama Tugas/Task <span className="text-red-500">*</span></label>
                             <input
                                 type="text"
+                                placeholder="Contoh: Menyusun dokumen standar operasional..."
                                 value={taskData.nama_tugas}
                                 onChange={e => setTaskData('nama_tugas', e.target.value)}
                                 className={`w-full px-4 py-2.5 rounded-xl border ${taskErrors.nama_tugas ? 'border-red-500' : 'border-surface-200 dark:border-surface-600'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500`}
@@ -42,6 +43,7 @@ export default function TaskModal({
                         <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Deskripsi</label>
                             <textarea
+                                placeholder="Tuliskan catatan atau rincian tugas..."
                                 value={taskData.deskripsi}
                                 onChange={e => setTaskData('deskripsi', e.target.value)}
                                 rows="3"
@@ -53,6 +55,7 @@ export default function TaskModal({
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Jumlah Realisasi</label>
                                 <input
                                     type="number"
+                                    placeholder="Contoh: 10"
                                     value={taskData.jumlah_realisasi}
                                     onChange={e => setTaskData('jumlah_realisasi', e.target.value)}
                                     className={`w-full px-4 py-2.5 rounded-xl border ${taskErrors.jumlah_realisasi ? 'border-red-500' : 'border-surface-200 dark:border-surface-600'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500`}

@@ -37,6 +37,7 @@ export default function WigCreate({ departements = [], users = [] }) {
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Judul WIG</label>
                             <input 
                                 type="text" 
+                                placeholder="Contoh: Meningkatkan efisiensi layanan operasional..."
                                 value={data.judul_wig}
                                 onChange={e => setData({...data, judul_wig: e.target.value})}
                                 className="w-full rounded-xl border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition-colors"
@@ -48,6 +49,7 @@ export default function WigCreate({ departements = [], users = [] }) {
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Deskripsi</label>
                             <textarea 
                                 rows="4"
+                                placeholder="Tuliskan deskripsi lengkap atau sasaran strategis dari WIG ini..."
                                 value={data.deskripsi_wig}
                                 onChange={e => setData({...data, deskripsi_wig: e.target.value})}
                                 className="w-full rounded-xl border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition-colors"
@@ -98,6 +100,7 @@ export default function WigCreate({ departements = [], users = [] }) {
                                     type="number" 
                                     min="0"
                                     max="100"
+                                    placeholder="Masukkan bobot KPI (0 - 100)"
                                     value={data.bobot_kpi}
                                     onChange={e => setData({...data, bobot_kpi: e.target.value})}
                                     className="w-full rounded-xl border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition-colors"
