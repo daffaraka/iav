@@ -28,14 +28,16 @@ class PermissionSeeder extends Seeder
             'rating-tiket',
             'user',
             'penjemputan-harian',
-            'featured-question'
+            'featured-question',
+            'tiket-karyawan',
+            'progres-tiket-karyawan'
         ];
 
         $actions = ['view', 'create', 'edit', 'delete'];
 
         foreach ($modules as $module) {
             foreach ($actions as $action) {
-                Permission::create(['name' => $action . '-' . $module]);
+                Permission::firstOrCreate(['name' => $action . '-' . $module]);
             }
         }
 
@@ -55,11 +57,13 @@ class PermissionSeeder extends Seeder
             'konfirmasi-kedatangan',
             'konfirmasi-keluar',
             'konfirmasi-ojol',
-            'konfirmasi-penyerahan'
+            'konfirmasi-penyerahan',
+            'monitor-all-tiket-karyawan',
+            'tiket-karyawan-finish'
         ];
 
         foreach ($specificPermissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
     }
 }

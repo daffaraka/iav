@@ -12,6 +12,8 @@ class LeadMeasure extends Model
         'judul_lead',
         'deskripsi_lead',
         'target',
+        'bobot_persentase',
+        'frekuensi',
         'satuan',
         'status',
         'tanggal_mulai',

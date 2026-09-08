@@ -25,7 +25,8 @@ class RolePermissionSeeder extends Seeder
             'view-lowongan-progress', 'create-lowongan-progress', 'edit-lowongan-progress',
             'view-aqr-dashboard',
             'view-tiket', 'edit-tiket',
-            'view-aduan', 'edit-aduan'
+            'view-aduan', 'edit-aduan',
+            'view-tiket-karyawan', 'create-tiket-karyawan', 'edit-tiket-karyawan'
         ];
         $staff->givePermissionTo($staffPermissions);
 
@@ -38,6 +39,7 @@ class RolePermissionSeeder extends Seeder
             'view-wig', 'view-lead-measure', 'view-task-process',
             'create-task-process', 'edit-task-process',
             'view-tiket', 'create-tiket',
+            'view-tiket-karyawan', 'create-tiket-karyawan', 'edit-tiket-karyawan',
             'view-penjemputan-harian', 'konfirmasi-penyerahan'
         ];
         $guru->givePermissionTo($guruPermissions);
@@ -65,6 +67,7 @@ class RolePermissionSeeder extends Seeder
             'view-user', 'create-user', 'edit-user',
             'view-aqr-dashboard',
             'view-tiket', 'create-tiket', 'edit-tiket', 'tiket-finish',
+            'view-tiket-karyawan', 'create-tiket-karyawan', 'edit-tiket-karyawan', 'tiket-karyawan-finish',
             'view-aduan', 'create-aduan', 'edit-aduan',
             'view-rating-tiket', 'create-rating-tiket', 'edit-rating-tiket',
             'export-data'
@@ -87,6 +90,7 @@ class RolePermissionSeeder extends Seeder
             'view-wig-progress',
             'view-aqr-dashboard',
             'view-tiket',
+            'view-tiket-karyawan', 'monitor-all-tiket-karyawan',
             'view-aduan',
             'view-reports',
             'view-analytics',

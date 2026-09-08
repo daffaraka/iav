@@ -14,13 +14,13 @@ class UserController extends Controller
     {
         $data['users'] = User::with('roles')->latest()->get();
         $data['title'] = 'Manajemen User';
-        return Inertia::render('User/user-index', $data);
+        return Inertia::render('User/UserIndex', $data);
     }
 
     public function create()
     {
         $roles = Role::all();
-        return Inertia::render('User/user-create', ['roles' => $roles]);
+        return Inertia::render('User/UserCreate', ['roles' => $roles]);
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('roles')->findOrFail($id);
-        return Inertia::render('User/user-show', ['user' => $user]);
+        return Inertia::render('User/UserShow', ['user' => $user]);
     }
 
     public function edit($id)
@@ -60,7 +60,7 @@ class UserController extends Controller
         $title = 'Edit User '.$user->name;
         $permissions = \Spatie\Permission\Models\Permission::all();
         $userPermissions = $user->getDirectPermissions()->pluck('id', 'id')->all();
-        return Inertia::render('User/user-edit', [
+        return Inertia::render('User/UserEdit', [
             'user' => $user,
             'roles' => $roles,
             'jabatans' => $jabatans,
@@ -91,7 +91,12 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8',
             'department' => 'nullable|string|max:100',
             'location' => 'nullable|string|max:100',
-            'role' => 'required|exists:roles,name'
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,name',
+            'unit' => 'nullable|string',
+            'jenjang' => 'nullable|string',
+            'kelas' => 'nullable|string',
+            'sub_kelas' => 'nullable|string'
         ]);
 
         if ($request->has('password') && $validated['password']) {
@@ -101,7 +106,7 @@ class UserController extends Controller
         }
 
         $user->update($validated);
-        $user->syncRoles([$validated['role']]);
+        $user->syncRoles($validated['roles']);
 
         return redirect()->route('user.index')
             ->with('success', 'User berhasil diupdate');

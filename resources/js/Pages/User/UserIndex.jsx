@@ -63,7 +63,7 @@ export default function UserIndex({ users, title }) {
             },
             {
                 accessorKey: "roles",
-                header: "Role",
+                header: "Role System",
                 cell: (info) => <RoleBadge roles={info.getValue()} />
             },
             {

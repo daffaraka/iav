@@ -16,6 +16,10 @@ Route::middleware('auth')->prefix('dashboard/aqr')->name('dashboard.aqr.')->grou
     Route::resource('progres-tiket', ProgresTiketController::class);
 
     Route::resource('aqr-option', AqrOptionController::class);
+    
+    // Tiket Karyawan
+    Route::resource('tiket-karyawan', \App\Http\Controllers\AQR\TiketKaryawanController::class);
+
     // Tiket actions
     Route::patch('tiket/{id}/proses', [TiketController::class, 'proses'])->name('tiket.proses');
     Route::post('tiket/{id}/rating', [TiketController::class, 'rating'])->name('tiket.rating');

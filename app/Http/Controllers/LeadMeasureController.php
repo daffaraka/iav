@@ -30,7 +30,7 @@ class LeadMeasureController extends Controller
             'modul' => Str::lower($title),
             'wig' => $wig
         ];
-        return Inertia::render('Departement/LeadMeasureCreate', $data);
+        return Inertia::render('LeadMeasure/LeadMeasureCreate', $data);
     }
 
     /**
@@ -43,6 +43,8 @@ class LeadMeasureController extends Controller
             'judul_lead' => 'required|string|max:255',
             'deskripsi_lead' => 'required|string',
             'target' => 'required|numeric|min:0',
+            'bobot_persentase' => 'required|numeric|min:0|max:100',
+            'frekuensi' => 'required|string',
             'satuan' => 'required|string|max:50',
             'status' => 'required|in:active,inactive',
             'tanggal_mulai' => 'required|date',
@@ -56,6 +58,8 @@ class LeadMeasureController extends Controller
             'judul_lead' => $request->judul_lead,
             'deskripsi_lead' => $request->deskripsi_lead,
             'target' => $request->target,
+            'bobot_persentase' => $request->bobot_persentase,
+            'frekuensi' => $request->frekuensi,
             'satuan' => $request->satuan,
             // 'status' => $request->status,
             'tanggal_mulai' => $request->tanggal_mulai,

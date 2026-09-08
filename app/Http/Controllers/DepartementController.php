@@ -152,13 +152,17 @@ class DepartementController extends Controller
 
 
 
+        $score = (float) (clone $wig)->load('wig_progresses')->wig_progresses->sum('progress_wig');
+
         $data = [
             'title' => $departement->nama_dept . ' > ' . $wig->judul_wig,
             'departement' => $departement,
             'wig' => $wig,
             'data_lm' => $tasks,
             'progressTerbaru' => $progressTerbaru,
-            'chartWig' => $chartWig
+            'chartWig' => $chartWig,
+            'boards' => $wig->lead_measures,
+            'score' => $score
         ];
 
         if (request()->ajax()) {
@@ -169,7 +173,7 @@ class DepartementController extends Controller
             ]);
         } else {
 
-            return Inertia::render('Departement/dept-show-wig', $data);
+            return Inertia::render('Wig/WigShow', $data);
         }
     }
 

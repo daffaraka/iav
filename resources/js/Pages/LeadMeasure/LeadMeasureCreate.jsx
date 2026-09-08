@@ -8,6 +8,8 @@ export default function LeadMeasureCreate({ title, wig }) {
         judul_lead: '',
         deskripsi_lead: '',
         target: '',
+        bobot_persentase: '',
+        frekuensi: 'mingguan',
         satuan: '%',
         tanggal_mulai: '',
         tanggal_selesai: '',
@@ -82,6 +84,35 @@ export default function LeadMeasureCreate({ title, wig }) {
                                     className={`w-full px-4 py-2.5 rounded-xl border ${errors.target ? 'border-red-500' : 'border-surface-200 dark:border-surface-600'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500 focus:border-brand-500 transition-colors`}
                                 />
                                 {errors.target && <p className="mt-1 text-sm text-red-500">{errors.target}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Bobot Persentase (%)</label>
+                                <input
+                                    type="number"
+                                    required
+                                    value={data.bobot_persentase}
+                                    onChange={e => setData('bobot_persentase', e.target.value)}
+                                    placeholder="Contoh: 40"
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.bobot_persentase ? 'border-red-500' : 'border-surface-200 dark:border-surface-600'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500 focus:border-brand-500 transition-colors`}
+                                />
+                                {errors.bobot_persentase && <p className="mt-1 text-sm text-red-500">{errors.bobot_persentase}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Frekuensi Target</label>
+                                <select
+                                    required
+                                    value={data.frekuensi}
+                                    onChange={e => setData('frekuensi', e.target.value)}
+                                    className={`w-full px-4 py-2.5 rounded-xl border ${errors.frekuensi ? 'border-red-500' : 'border-surface-200 dark:border-surface-600'} bg-white dark:bg-surface-900 text-slate-800 dark:text-white text-sm focus:ring-brand-500 focus:border-brand-500 transition-colors`}
+                                >
+                                    <option value="harian">Harian</option>
+                                    <option value="mingguan">Mingguan</option>
+                                    <option value="bulanan">Bulanan</option>
+                                    <option value="bebas">Bebas</option>
+                                </select>
+                                {errors.frekuensi && <p className="mt-1 text-sm text-red-500">{errors.frekuensi}</p>}
                             </div>
 
                             <div>

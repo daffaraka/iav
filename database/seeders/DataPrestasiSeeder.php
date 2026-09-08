@@ -19,7 +19,7 @@ class DataPrestasiSeeder extends Seeder
         $sekolah = Sekolah::all()->pluck('id')->toArray();
         $siswa = MasterSiswa::all()->pluck('id')->toArray();
         $faker = Factory::create('id_ID');
-        for ($i=1; $i < 100; $i++) {
+        for ($i = 1; $i < 100; $i++) {
             $year = $faker->numberBetween(2015, (int) date('Y'));
             DataPrestasi::create([
                 'master_siswa_id' => $faker->randomElement($siswa),

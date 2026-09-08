@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             DepartementSeeder::class,
             SekolahSeeder::class,
             MasterSiswaSeeder::class,
-            DataPrestasiSeeder::class,
+            // DataPrestasiSeeder::class,
             WigSeeder::class,
             LeadMeasureSeeder::class,
             TaskProcessSeeder::class,
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             TiketSeeder::class,
             TopUniversitasSeeder::class,
             PersebaranPtSeeder::class,
-
+            TimelineProjectSeeder::class,
         ]);
     }
 }
