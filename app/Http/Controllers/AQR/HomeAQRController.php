@@ -115,9 +115,9 @@ class HomeAQRController extends Controller
                     ->whereHas('roles', function ($q) {
                         $q->where('name', 'psikolog');
                     });
-                
+
                 $psikologCount = $psikologQuery->count();
-                
+
                 if ($psikologCount > 1) {
                     $adminUnit = $psikologQuery->whereHas('roles', function ($q) {
                         $q->where('name', 'kepala-psikolog');
@@ -184,7 +184,8 @@ class HomeAQRController extends Controller
 
 
 
-            return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket]);
+            return redirect()->route('helpdesk.home.tiket-show', ['tiket' => $tiket->no_tiket])
+                ->with('success_tiket', true);
         } catch (\Throwable $th) {
 
             // return dd(json_encode($th->getMessage()));
@@ -204,6 +205,7 @@ class HomeAQRController extends Controller
         $email = $request->email ?? $request->email;
         $tiket = Tiket::with('first_pic', 'pic', 'progres')
             ->where('no_tiket', $noTiket)
+            ->where('email', $email)
             ->first();
 
 

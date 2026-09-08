@@ -155,7 +155,8 @@
                         class="px-4 py-3 bg-gray-50 rounded-xl
                          text-gray-900 whitespace-pre-wrap border
                         border-gray-200
-                        shadow-md">{{ $tiket->detail_kendala }}</div>
+                        shadow-md">
+                        {{ $tiket->detail_kendala }}</div>
                 </div>
 
                 @if ($tiket->filename)
@@ -200,9 +201,11 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Penanganan</label>
-                                <div class="px-4 py-3 bg-gray-50 rounded-xl
+                                <div
+                                    class="px-4 py-3 bg-gray-50 rounded-xl
                                 text-gray-900
-                                whitespace-pre-wrap">{{ $progres->penanganan }}</div>
+                                whitespace-pre-wrap">
+                                    {{ $progres->penanganan }}</div>
                             </div>
 
                             @if ($progres->fotopengerjaan)
@@ -326,5 +329,42 @@
             ratingText.textContent = ratingTexts[rating];
         }
     </script>
+
+    @push('scripts')
+        @if (session('success_tiket'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        html: `
+                    <div class="text-left space-y-4 text-gray-700">
+                        <p class="text-base">Tiket Anda berhasil dibuat.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <p class="font-semibold text-gray-700 text-sm">Nomor Tiket:</p>
+                            <p class="text-2xl font-bold text-blue-600 font-mono mb-2">{{ $tiket->no_tiket }}</p>
+                            <p class="font-semibold text-gray-700 text-sm">Email:</p>
+                            <p class="text-lg font-medium text-gray-900">{{ $tiket->email ?? 'Tidak ada email (Hanya dengan nomor tiket)' }}</p>
+                        </div>
+                        <div class="flex items-start bg-red-50 p-3 rounded-lg border border-red-100 mt-4">
+                            <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3 text-lg"></i>
+                            <p class="text-sm text-red-700 font-medium">
+                                Harap simpan nomor tiket ini dengan baik dan cek email Anda secara berkala untuk memantau status perkembangan tiket.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                        icon: 'success',
+                        confirmButtonText: '<i class="fas fa-check mr-2"></i> Saya Mengerti',
+                        confirmButtonColor: '#2563EB',
+                        allowOutsideClick: false,
+                        customClass: {
+                            popup: 'rounded-2xl',
+                            confirmButton: 'px-6 py-2.5 text-gray-900 border border-gray-500 rounded-xl font-medium shadow-sm hover:shadow-md transition-shadow'
+                        }
+                    });
+                });
+            </script>
+        @endif
+    @endpush
 
 @endsection
