@@ -68,6 +68,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('wig', WigController::class);
         Route::get('wig/{wig}/history', [WigController::class, 'historyIndex'])->name('wig.history.index');
         Route::post('wig/{wig}/history', [WigController::class, 'storeHistory'])->name('wig.history.store');
+        Route::get('wig/{wig}/history/{history}', [WigController::class, 'showHistory'])->name('wig.history.show');
+        Route::put('wig/{wig}/history/{history}', [WigController::class, 'updateHistory'])->name('wig.history.update');
+        Route::delete('wig/{wig}/history/{history}', [WigController::class, 'destroyHistory'])->name('wig.history.destroy');
+
         Route::resource('wig.lead-measure', LeadMeasureController::class);
         Route::resource('wig.lead-measure.task-process', TaskProcessController::class);
         Route::resource('departement.wig.progress-wig', WigProgressController::class);
@@ -131,17 +135,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('scan-qr',[QRCodeGenerator::class,'qrCodeScan'])->name('qrCodeScan');
-    Route::post('scan-qr-code',[QRCodeGenerator::class,'scanQrCode'])->name('scan.scanQrCode');
+    Route::get('scan-qr', [QRCodeGenerator::class, 'qrCodeScan'])->name('qrCodeScan');
+    Route::post('scan-qr-code', [QRCodeGenerator::class, 'scanQrCode'])->name('scan.scanQrCode');
 
     Route::resource('penjemputan-harian', PenjemputanHarianController::class)->except('show');
-    Route::post('penjemput-datang',[PenjemputanHarianController::class,'penjemputDatang'])->name('penjemputDatang');
+    Route::post('penjemput-datang', [PenjemputanHarianController::class, 'penjemputDatang'])->name('penjemputDatang');
 
     Route::get('penjemputan-harian/satpam-konfirmasi-kedatangan/{penjemputan_harian}', [PenjemputanHarianController::class, 'satpamKonfirmasiKedatangan'])->name('penjemputan-harian.satpamKonfirmasiKedatangan');
     Route::get('penjemputan-harian/satpam-konfirmasi-keluar/{penjemputan_harian}', [PenjemputanHarianController::class, 'satpamKonfirmasiKeluar'])->name('penjemputan-harian.satpamKonfirmasiKeluar');
     Route::get('penjemputan-harian/guru-konfirmasi/{penjemputan_harian}', [PenjemputanHarianController::class, 'guruKonfirmasi'])->name('penjemputan-harian.guruKonfirmasi');
-    Route::get('penjemputan-harian-kelas/{kelas}', [PenjemputanHarianController::class,'penjemputanKelas'])->name('penjemputan-harian.kelas');
-    Route::get('generate-harian' , [PenjemputanHarianController::class,'generateSiswaHariIni'])->name('penjemputan-harian.generateSiswaHariIni');
+    Route::get('penjemputan-harian-kelas/{kelas}', [PenjemputanHarianController::class, 'penjemputanKelas'])->name('penjemputan-harian.kelas');
+    Route::get('generate-harian', [PenjemputanHarianController::class, 'generateSiswaHariIni'])->name('penjemputan-harian.generateSiswaHariIni');
     Route::post('penjemputan-harian/satpam-konfirmasi-ojol/', [PenjemputanHarianController::class, 'satpamKonfirmasiOjol'])->name('penjemputan-harian.satpamKonfirmasiOjol');
     Route::post('data-siswa/{id}', [PenjemputanHarianController::class, 'dataSiswa'])->name('penjemputan-harian.dataSiswa');
 

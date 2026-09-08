@@ -6,6 +6,7 @@ use App\Models\Departement;
 use App\Models\Sekolah;
 use App\Models\User;
 use App\Models\Wig;
+use App\Models\WigHistory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -19,20 +20,20 @@ class WigController extends Controller
     {
         $wigsQuery = Wig::withCount('lead_measures')
             ->with(['deptartement', 'user', 'wig_progresses']);
-            
+
         $wigs = $wigsQuery->paginate(10);
-        
+
         $allWigs = Wig::with('wig_progresses')->get();
         $totalWigs = $allWigs->count();
         $activeWigs = $allWigs->where('status_wig', 1)->count();
-        
+
         // Calculate overall average progress
         $totalProgress = 0;
-        foreach($allWigs as $w) {
+        foreach ($allWigs as $w) {
             $totalProgress += (float) $w->wig_progresses->sum('progress_wig');
         }
         $averageProgress = $totalWigs > 0 ? round($totalProgress / $totalWigs, 2) : 0;
-            
+
         return Inertia::render('Wig/WigIndex', [
             'wigs' => $wigs,
             'totalWigs' => $totalWigs,
@@ -45,7 +46,7 @@ class WigController extends Controller
     {
         $departements = Departement::all();
         $users = User::all();
-        
+
         return Inertia::render('Wig/WigCreate', [
             'departements' => $departements,
             'users' => $users
@@ -76,13 +77,13 @@ class WigController extends Controller
     public function historyIndex(\Illuminate\Http\Request $request, Wig $wig)
     {
         $query = $wig->wig_histories()->with('user')->orderBy('tanggal', 'desc');
-        
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('riwayat_wig', 'like', "%{$search}%")
-                  ->orWhereHas('user', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
+                ->orWhereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
         }
 
         $histories = $query->paginate(10)->withQueryString();
@@ -105,7 +106,7 @@ class WigController extends Controller
 
         $data = $request->only(['riwayat_wig', 'realisasi', 'tanggal']);
         $data['user_id'] = auth()->id();
-        
+
         if ($request->hasFile('lampiran')) {
             $data['lampiran'] = $request->file('lampiran')->store('lampiran_wig', 'public');
         }
@@ -123,14 +124,14 @@ class WigController extends Controller
             'user',
             'wig_progresses'
         ]);
-        
+
         $score = (float) $wig->wig_histories()->sum('realisasi');
-        
+
         $progressTerbaru = $wig->wig_histories()
-                            ->orderBy('tanggal', 'desc')
-                            ->orderBy('created_at', 'desc')
-                            ->take(5)
-                            ->get();
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
         $tasks = \Illuminate\Support\Facades\DB::table('task_processes')
             ->select(
@@ -159,13 +160,14 @@ class WigController extends Controller
         $chartWig = [];
         $runningTotal = 0;
         $maxMonth = !empty($monthlySums) ? max(array_keys($monthlySums)) : (int) date('n');
-        
+
         for ($m = 1; $m <= $maxMonth; $m++) {
             $sumThisMonth = $monthlySums[$m] ?? 0;
             $runningTotal += $sumThisMonth;
             $chartWig[] = [
                 'bulan' => \Illuminate\Support\Carbon::create()->month($m)->locale('id')->translatedFormat('F'),
-                'progress' => (float) $runningTotal
+                'progress' => (float) $runningTotal,
+                'realisasi_bulanan' => (float) $sumThisMonth,
             ];
         }
 
@@ -184,7 +186,7 @@ class WigController extends Controller
     {
         $departements = Departement::all();
         $users = User::all();
-        
+
         return Inertia::render('Wig/WigEdit', [
             'wig' => $wig,
             'departements' => $departements,
@@ -255,12 +257,70 @@ class WigController extends Controller
 
     public function wigChart($id)
     {
-        $wig = Wig::find($id);
-        $chartWig = (clone $wig)->load('wig_progresses')->wig_progresses->groupBy('bulan')->map(function ($progress, $bulan) {
-            return [
-                'bulan' => Carbon::create()->month($bulan)->locale('id')->translatedFormat('F'),
-                'progress' => $progress->sum('progress_wig')
+        $wig = Wig::findOrFail($id);
+        $histories = $wig->wig_histories()->orderBy('tanggal')->get();
+        $monthlySums = [];
+        foreach ($histories as $h) {
+            $month = (int) \Carbon\Carbon::parse($h->tanggal)->format('n');
+            if (!isset($monthlySums[$month])) $monthlySums[$month] = 0;
+            $monthlySums[$month] += (float) $h->realisasi;
+        }
+
+        $chartWig = [];
+        $runningTotal = 0;
+        $maxMonth = !empty($monthlySums) ? max(array_keys($monthlySums)) : (int) date('n');
+
+        for ($m = 1; $m <= $maxMonth; $m++) {
+            $sumThisMonth = $monthlySums[$m] ?? 0;
+            $runningTotal += $sumThisMonth;
+            $chartWig[] = [
+                'bulan' => \Illuminate\Support\Carbon::create()->month($m)->locale('id')->translatedFormat('F'),
+                'progress' => (float) $runningTotal,
+                'realisasi_bulanan' => (float) $sumThisMonth,
             ];
-        })->sortKeys()->toArray();
+        }
+
+        return response()->json(['chartWig' => $chartWig]);
+    }
+
+
+    public function showHistory(Wig $wig, WigHistory $history)
+    {
+        abort_if($history->wig_id !== $wig->id, 404);
+
+        return Inertia::render('WigHistories/WigHistoriesShow', [
+            'wig' => $wig,
+            'history' => $history->load('user'),
+        ]);
+    }
+
+    public function updateHistory(Request $request, Wig $wig, WigHistory $history)
+    {
+        abort_if($history->wig_id !== $wig->id, 404);
+
+        $request->validate([
+            'riwayat_wig' => 'required|string',
+            'realisasi' => 'required|numeric',
+            'tanggal' => 'required|date',
+            'lampiran' => 'nullable|file|max:5120'
+        ]);
+
+        $data = $request->only(['riwayat_wig', 'realisasi', 'tanggal']);
+        $data['user_id'] = auth()->id();
+
+        if ($request->hasFile('lampiran')) {
+            $data['lampiran'] = $request->file('lampiran')->store('lampiran_wig', 'public');
+        }
+
+        $history->update($data);
+
+        return redirect()->back()->with('success', 'Riwayat berhasil diperbarui');
+    }
+
+    public function destroyHistory(Wig $wig, WigHistory $history)
+    {
+        abort_if($history->wig_id !== $wig->id, 404);
+        $history->delete();
+        return redirect()->back()->with('success', 'Riwayat berhasil dihapus');
     }
 }

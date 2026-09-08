@@ -4,18 +4,23 @@ import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout';
 import Chart from 'react-apexcharts';
 import { Target, Calendar } from 'lucide-react';
 import HistoryModal from './Components/HistoryModal';
+import HistoryEditModal from './Components/HistoryEditModal';
 import TaskModal from './Components/TaskModal';
 import ViewTasksModal from './Components/ViewTasksModal';
+import WigProgressTerbaru from './WigProgressTerbaru';
 
-export default function WigShow({ title, wig, departement, progressTerbaru, data_lm, chartWig }) {
+export default function WigShow({ title, wig, departement, progressTerbaru, data_lm, chartWig, score: propScore }) {
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+    const [isHistoryEditModalOpen, setIsHistoryEditModalOpen] = useState(false);
+    const [activeHistoryId, setActiveHistoryId] = useState(null);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isViewTasksModalOpen, setIsViewTasksModalOpen] = useState(false);
     const [activeLmId, setActiveLmId] = useState(null);
     const [activeMonth, setActiveMonth] = useState(null);
     const [viewTasksData, setViewTasksData] = useState([]);
+    const [isWigProgressEditModalOpen, setIsWigProgressEditModalOpen] = useState(false);
 
-    const score = chartWig ? chartWig.reduce((acc, curr) => acc + parseFloat(curr.progress), 0) : 0;
+    const score = propScore !== undefined ? parseFloat(propScore) : (chartWig && chartWig.length > 0 ? parseFloat(chartWig[chartWig.length - 1]?.progress || 0) : 0);
 
     const formatDate = (dateString) => {
         if (!dateString) return '-';
@@ -49,6 +54,14 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
         lampiran: null
     });
 
+    const { data: editHistData, setData: setEditHistData, post: postEditHist, processing: editHistProcessing, reset: editHistReset, clearErrors: clearEditHistErrors } = useForm({
+        _method: 'put',
+        riwayat_wig: '',
+        realisasi: '',
+        tanggal: '',
+        lampiran: null
+    });
+
     const { data: taskData, setData: setTaskData, post: postTask, processing: taskProcessing, reset: taskReset, errors: taskErrors } = useForm({
         lm_id: '',
         nama_tugas: '',
@@ -67,6 +80,39 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                 histReset();
             }
         });
+    };
+
+    const openHistoryEditModal = (history) => {
+        setActiveHistoryId(history.id);
+        setEditHistData({
+            _method: 'put',
+            riwayat_wig: history.riwayat_wig || '',
+            realisasi: history.realisasi || '',
+            tanggal: history.tanggal ? history.tanggal.split('T')[0] : '',
+            lampiran: null
+        });
+        setIsHistoryEditModalOpen(true);
+    };
+
+    const submitHistoryEdit = (e) => {
+        e.preventDefault();
+        postEditHist(`/wig/${wig.id}/history/${activeHistoryId}`, {
+            forceFormData: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                setIsHistoryEditModalOpen(false);
+                editHistReset();
+                setActiveHistoryId(null);
+            }
+        });
+    };
+
+    const handleDeleteHistory = (history) => {
+        if (confirm('Apakah Anda yakin ingin menghapus riwayat ini?')) {
+            router.delete(`/wig/${wig.id}/history/${history.id}`, {
+                preserveScroll: true
+            });
+        }
     };
 
     const submitTask = (e) => {
@@ -111,40 +157,47 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
 
         // Convert object to array if necessary, or just map if it's already an array
         const chartDataArray = Object.values(chartWig);
-        const progressData = chartDataArray.map(item => item.progress);
+        const progressData = chartDataArray.map(item => parseFloat(item.progress || 0));
+        const monthlyData = chartDataArray.map(item => parseFloat(item.realisasi_bulanan ?? item.monthly ?? 0));
         const bulanData = chartDataArray.map(item => item.bulan);
 
         return {
-            series: [{
-                name: 'Progress',
-                data: progressData
-            }],
+            series: [
+                {
+                    name: 'Progress Akumulatif',
+                    data: progressData
+                },
+                {
+                    name: 'Realisasi Bulanan (Bayangan)',
+                    data: monthlyData
+                }
+            ],
             options: {
                 chart: {
                     type: 'line',
                     toolbar: { show: true },
                     fontFamily: 'Inter, sans-serif',
-
                 },
-                // Konfigurasi stroke (garis nya)
-                strok: {
-                    curve: "smooth",
-                    width: 3
+                // Konfigurasi stroke (garis): Seri 1 solid tebal, Seri 2 putus-putus/bayangan
+                stroke: {
+                    curve: 'smooth',
+                    width: [3.5, 2.5],
+                    dashArray: [0, 6]
                 },
-
-                // Tambahkan titik koordinat (marker/dots) agar bisa memperjleas nilai
+                // Titik koordinat (marker/dots)
                 markers: {
-                    size: 5,
-                    colors: ['#000'],
+                    size: [5, 4],
+                    colors: ['#2563eb', '#94a3b8'],
                     strokeColors: '#ffffff',
                     strokeWidth: 2,
                     hover: {
-                        size: 8,
+                        size: 7,
                     }
                 },
-                colors: ['#3b82f6'],
+                colors: ['#2563eb', '#94a3b8'],
                 dataLabels: {
                     enabled: true,
+                    enabledOnSeries: [0], // Tampilkan badge nilai hanya pada garis akumulatif agar grafik tidak bertumpuk
                     offsetY: -8,
                     style: {
                         fontSize: '11px',
@@ -170,7 +223,25 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                 },
                 yaxis: {
                     labels: { style: { colors: '#64748b' } },
-                    title: { text: 'Progress', style: { color: '#64748b', fontWeight: 600 } },
+                    title: { text: 'Nilai Progress', style: { color: '#64748b', fontWeight: 600 } },
+                },
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '12px',
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: 500,
+                    offsetY: 8,
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 12,
+                    },
+                    itemMargin: {
+                        horizontal: 16,
+                        vertical: 8
+                    }
                 },
                 grid: {
                     borderColor: '#e9ecef',
@@ -184,12 +255,12 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                 },
                 tooltip: {
                     theme: 'dark',
+                    shared: true,
+                    intersect: false,
                     y: {
                         formatter: (val) => `${val}`,
                     }
                 }
-
-
             }
         };
     };
@@ -298,7 +369,7 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                     </div>
                 </div>
 
-                <div className="lg:col-span-1">
+                {/* <div className="lg:col-span-1">
                     <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-soft overflow-hidden h-full flex flex-col">
                         <div className="px-6 py-4 border-b border-surface-100 dark:border-surface-700 bg-surface-50/50 dark:bg-surface-800/50">
                             <h3 className="font-bold text-slate-800 dark:text-white flex items-center">
@@ -336,6 +407,15 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                             </ul>
                         </div>
                     </div>
+                </div> */}
+
+                <div className="lg:col-span-1">
+                    <WigProgressTerbaru
+                        progressTerbaru={progressTerbaru}
+                        formatDate={formatDate}
+                        onEditClick={openHistoryEditModal}
+                        onDeleteClick={handleDeleteHistory}
+                    />
                 </div>
             </div>
 
@@ -420,6 +500,15 @@ export default function WigShow({ title, wig, departement, progressTerbaru, data
                     setHistData={setHistData}
                     submitHistory={submitHistory}
                     histProcessing={histProcessing}
+                />
+
+                <HistoryEditModal
+                    isOpen={isHistoryEditModalOpen}
+                    onClose={() => { setIsHistoryEditModalOpen(false); editHistReset(); setActiveHistoryId(null); }}
+                    histData={editHistData}
+                    setHistData={setEditHistData}
+                    submitHistory={submitHistoryEdit}
+                    histProcessing={editHistProcessing}
                 />
 
                 {/* Modal Tambah Task Baru */}
