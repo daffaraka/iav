@@ -42,6 +42,11 @@ class Wig extends Model
         return $this->hasMany(WigProgress::class);
     }
 
+    public function wig_histories()
+    {
+        return $this->hasMany(WigHistory::class);
+    }
+
 
     public function lead_measures()
     {

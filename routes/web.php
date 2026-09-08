@@ -66,11 +66,55 @@ Route::middleware('auth')->group(function () {
         Route::get('departement/{departement}/{wig}/edit', [WigController::class, 'editByDept'])->name('dept.edit.wig');
 
         Route::resource('wig', WigController::class);
+        Route::get('wig/{wig}/history', [WigController::class, 'historyIndex'])->name('wig.history.index');
+        Route::post('wig/{wig}/history', [WigController::class, 'storeHistory'])->name('wig.history.store');
         Route::resource('wig.lead-measure', LeadMeasureController::class);
         Route::resource('wig.lead-measure.task-process', TaskProcessController::class);
         Route::resource('departement.wig.progress-wig', WigProgressController::class);
         Route::post('departement/store-wig', [WigController::class, 'storeByDept'])->name('wig.storeByDept');
         Route::resource('persebaran-ptn', PersebaranPtController::class);
+
+        // === NEW MIGRATION: TimeLine Project Module ===
+        Route::resource('timeline-project', \App\Http\Controllers\NewMigration\TimelineProjectController::class);
+        Route::prefix('kanban')->name('kanban.')->group(function () {
+            // WIG/KPI Management has been moved to timeline-project
+
+            // Lead Measure (Board) Management
+            Route::post('lead-measure', [\App\Http\Controllers\NewMigration\LeadMeasureController::class, 'store'])->name('lead-measure.store');
+            Route::put('lead-measure/{lead_measure}', [\App\Http\Controllers\NewMigration\LeadMeasureController::class, 'update'])->name('lead-measure.update');
+            Route::delete('lead-measure/{lead_measure}', [\App\Http\Controllers\NewMigration\LeadMeasureController::class, 'destroy'])->name('lead-measure.destroy');
+
+            // Kanban Board
+            Route::get('board/{lead_measure}', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'index'])->name('board.index');
+            Route::post('task', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'store'])->name('task.store');
+            Route::put('task/{task}', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'update'])->name('task.update');
+            Route::delete('task/{task}', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'destroy'])->name('task.destroy');
+            Route::post('task/{task}/move', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'move'])->name('task.move');
+            Route::post('task/reorder', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'reorder'])->name('task.reorder');
+            Route::get('my-jobs', [\App\Http\Controllers\NewMigration\TaskProcessController::class, 'myJobs'])->name('task.my-jobs');
+
+            // Checklists
+            Route::post('checklist', [\App\Http\Controllers\ChecklistController::class, 'store'])->name('checklist.store');
+            Route::put('checklist/{checklist}', [\App\Http\Controllers\ChecklistController::class, 'update'])->name('checklist.update');
+            Route::delete('checklist/{checklist}', [\App\Http\Controllers\ChecklistController::class, 'destroy'])->name('checklist.destroy');
+            Route::post('checklist/{checklist}/toggle', [\App\Http\Controllers\ChecklistController::class, 'toggle'])->name('checklist.toggle');
+
+            // Comments
+            Route::post('comment', [\App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
+            Route::delete('comment/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])->name('comment.destroy');
+
+            // Labels
+            Route::post('task-label', [\App\Http\Controllers\TaskLabelController::class, 'store'])->name('task-label.store');
+            Route::delete('task-label/{taskLabel}', [\App\Http\Controllers\TaskLabelController::class, 'destroy'])->name('task-label.destroy');
+
+            // Meetings
+            Route::resource('meeting', \App\Http\Controllers\MeetingController::class);
+
+            // Master Data
+            Route::resource('task-weight', \App\Http\Controllers\TaskWeightController::class)->except(['create', 'edit', 'show']);
+            Route::resource('kategori-program', \App\Http\Controllers\KategoriProgramKerjaController::class)->except(['create', 'edit', 'show']);
+            Route::resource('master-label', \App\Http\Controllers\MasterLabelController::class)->except(['create', 'edit', 'show']);
+        });
     });
 
     // Routing json
