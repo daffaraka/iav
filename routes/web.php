@@ -169,3 +169,11 @@ Route::get('siswa/{siswa}/qrcode', [App\Http\Controllers\MasterSiswaController::
 
 
 Route::get('siswa', [App\Http\Controllers\MasterSiswaController::class, 'index'])->name('siswa.index');
+
+// === Error Pages Preview & Global Fallback ===
+Route::get('/errors/preview/{status?}', [\App\Http\Controllers\NewMigration\ErrorPageController::class, 'preview'])
+    ->whereNumber('status')
+    ->name('errors.preview');
+
+Route::fallback([\App\Http\Controllers\NewMigration\ErrorPageController::class, 'fallback'])
+    ->name('errors.fallback');
